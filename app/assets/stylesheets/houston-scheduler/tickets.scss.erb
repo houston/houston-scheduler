@@ -1,0 +1,63 @@
+h3 { margin: 1em 0; }
+
+.ticket, .headings {
+  display: block;
+  line-height: 34px;
+  margin: 1px 0;
+  padding: 1px 0;
+  border-radius: 2px;
+  
+  &::after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+  }
+  
+  &.hovered { background-color: #ffc; }
+  &.saved { background-color: #cfc; }
+  &.working { 
+    background-image: url(<%= asset_path "preloader.gif" %>);
+    background-position: right center;
+    background-repeat: no-repeat;
+  }
+  
+  > div {
+    float: left;
+    height: 34px;
+    position: relative;
+    
+    &.ticket-summary { width: 80%; overflow: hidden; text-overflow: ellipsis; }
+    &.ticket-effort { width: 10%; }
+    &.ticket-value { width: 10%; }
+  }
+}
+
+.headings div {
+  height: auto;
+  font-weight: bold;
+  
+  small { font-weight: normal; }
+}
+
+#tickets {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  line-height: 34px;
+  
+  .output,
+  input {
+    font-size: 1.08em;
+    padding: .5em .75em;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: auto;
+    margin: 0;
+  }
+}

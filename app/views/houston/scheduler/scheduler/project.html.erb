@@ -1,0 +1,30 @@
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#">Schedule</a></li>
+  <li><a href="#no-effort"><span class="tickets-without-effort-count"></span> tickets with no <b>effort</b> estimate</a></li>
+  <li><a href="#no-value"><span class="tickets-without-value-count"></span> tickets with no <b>value</b> estimate</a></li>
+</ul>
+
+<div id="houston_scheduler_view"></div>
+
+<% content_for :javascripts do %>
+<script type="text/javascript">
+  $(function() {
+    window.tickets = <%=raw @tickets.map { |t| {
+      "id" => t.id,
+      "estimated_effort" => t.estimated_effort,
+      "estimated_value" => t.estimated_value,
+      "summary" => t.summary
+    } }.to_json %>;
+    
+    console.log('ticket count', tickets.length);
+    console.log('a ticket', tickets[0]);
+    
+    tickets = new Scheduler.Tickets(tickets);
+    
+    new Scheduler.ProjectView({
+      tickets: tickets,
+      el: $('#houston_scheduler_view')
+    });
+  });
+</script>
+<% end %>

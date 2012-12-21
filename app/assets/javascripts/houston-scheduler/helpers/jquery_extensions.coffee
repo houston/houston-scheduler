@@ -5,6 +5,18 @@ $.fn.extend
     view.render()
     @
   
+  cssHover: (selector)->
+    if arguments.length == 0
+      @hover(
+        -> $(@).addClass('hovered'),
+        -> $(@).removeClass('hovered'))
+    else
+      @delegate selector, 'hover', (e)->
+        if e.type == 'mouseenter'
+          $(@).addClass('hovered')
+        else
+          $(@).removeClass('hovered')
+  
   serializeFormElements: ->
     data = {}
     @find('input, select, textarea').each ->
