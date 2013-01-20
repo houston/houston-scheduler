@@ -1,18 +1,60 @@
+KEYS = {
+  13: "RETURN",
+  27: "ESC",
+  38: "UP",
+  40: "DOWN"
+}
+
 class Scheduler.EditTicketsView extends Backbone.View
-  tagName: 'ol'
+  className: "edit-estimates-view"
+  
+  
+  events:
+    'keydown input': 'onKeyDown'
+  
+  
+  keyDownHandlers:
+    UP:     -> @putFocusOn @prevLine()
+    DOWN:   -> @putFocusOn @nextLine()
   
   
   initialize: ->
-    @template = HandlebarsTemplates[@templatePath]
+    @ticketTemplate = HandlebarsTemplates[@templatePath]
     @tickets = @options.tickets
   
   
   render: ->
-    $(@el).attr('id', 'tickets').empty()
+    $(@el).html @pageTemplate()
+    
+    $list = $('#tickets').empty()
     @tickets.each (ticket)=>
       view = new Scheduler.EditTicketView
         ticket: ticket
-        template: @template
+        template: @ticketTemplate
         isValid: _.bind(@isValid, @)
-      $(@el).appendView(view)
+      $list.appendView(view)
     @
+  
+  
+  onKeyDown: (e)->
+      keyName = @identifyKey(e.keyCode)
+      handler = @keyDownHandlers[keyName]
+      if handler
+        e.preventDefault()
+        handler.apply(@)
+  
+  identifyKey: (code)->
+      KEYS[code]
+  
+  
+  putFocusOn: ($line)->
+    $line.find('input:first').focus()
+  
+  prevLine: ->
+    @thisLine().prev()
+    
+  nextLine: ->
+    @thisLine().next()
+    
+  thisLine: ->
+    $('input:focus').closest('.ticket')

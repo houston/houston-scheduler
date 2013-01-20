@@ -1,6 +1,6 @@
 class Scheduler.TicketView extends Backbone.View
   tagName: 'li'
-  className: 'task'
+  className: 'ticket'
   
   # events:
   #   'keyup input': 'updateTicket'

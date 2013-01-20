@@ -1,7 +1,7 @@
-<ul class="nav nav-tabs">
-  <li class="active"><a href="#">Schedule</a></li>
-  <li><a href="#no-effort"><span class="tickets-without-effort-count"></span> tickets with no <b>effort</b> estimate</a></li>
-  <li><a href="#no-value"><span class="tickets-without-value-count"></span> tickets with no <b>value</b> estimate</a></li>
+<ul id="houston_scheduler_tabs" class="nav nav-pills">
+  <li class="active"><a href="#schedule">Schedule</a></li>
+  <li><a href="#estimate-effort">Estimate Effort <span class="badge tickets-without-effort-count zero"></span></a></li>
+  <li><a href="#estimate-value">Estimate Value <span class="badge tickets-without-value-count zero"></span></a></li>
 </ul>
 
 <div id="houston_scheduler_view"></div>
@@ -11,8 +11,8 @@
   $(function() {
     window.tickets = <%=raw @tickets.map { |t| {
       "id" => t.id,
-      "estimated_effort" => t.estimated_effort,
-      "estimated_value" => t.estimated_value,
+      "estimated_effort" => t.extended_attributes["estimated_effort"],
+      "estimated_value" => t.extended_attributes["estimated_value"],
       "summary" => t.summary
     } }.to_json %>;
     

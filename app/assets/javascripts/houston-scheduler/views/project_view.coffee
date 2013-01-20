@@ -2,7 +2,7 @@ class Scheduler.ProjectView extends Backbone.View
   
   
   events:
-    'click .nav-tabs li': 'selectTab'
+    'click .nav > li': 'selectTab'
   
   
   
@@ -27,8 +27,11 @@ class Scheduler.ProjectView extends Backbone.View
   
   
   render: ->
-    $('.tickets-without-effort-count').html(@ticketsWithNoEffort().length);
-    $('.tickets-without-value-count').html(@ticketsWithNoValue().length);
+    count = @ticketsWithNoEffort().length
+    $('.tickets-without-effort-count').html(count).toggleClass('zero', count == 0)
+    
+    count = @ticketsWithNoValue().length
+    $('.tickets-without-value-count').html(count).toggleClass('zero', count == 0)
   
   
   selectTab: (e)->

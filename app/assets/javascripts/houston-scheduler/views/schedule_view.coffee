@@ -121,10 +121,10 @@ class Scheduler.ScheduleView extends Backbone.View
     onComplete    = options.onComplete
     
     $el = $(@el)
-    $tickets = $el.find('.task')
-    ticketHeight = 38
+    $tickets = $el.find('.ticket')
+    ticketHeight = 24
     
-    $('#tickets').css(height: $('#tickets').height())
+    $('#tickets').css(height: $('#tickets').height()).removeClass('with-stripes')
     $tickets.positionAbsolutely()
     
     $.clear()
@@ -146,7 +146,7 @@ class Scheduler.ScheduleView extends Backbone.View
         $ticket.tween(params)
     
     $.play =>
-      $('#tickets').css(height: '')
+      $('#tickets').css(height: '').addClass('with-stripes')
       @updateSchedule()
       onComplete()
 
