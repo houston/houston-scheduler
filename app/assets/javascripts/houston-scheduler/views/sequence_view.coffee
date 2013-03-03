@@ -1,14 +1,12 @@
-class Scheduler.ScheduleView extends Backbone.View
+class Scheduler.SequenceView extends Backbone.View
   
   events:
     'click #sort_tickets': 'sortByPriority'
     'change #queuing_discipline': 'changeQueuingDiscipline'
-    'change #resources_count': 'updateWipConstraint'
   
   initialize: ->
     @tickets = @options.tickets
     @queuingDiscipline = new Scheduler.QueuingDiscipline.MaximizeRoi()
-    @wip = 3
   
   sortedTickets: ->
     _.sortBy(@tickets, @queuingDiscipline.sorter)
@@ -20,13 +18,12 @@ class Scheduler.ScheduleView extends Backbone.View
     @sortByPriority()
   
   render: ->
-    template = HandlebarsTemplates['houston-scheduler/tickets/index']
+    template = HandlebarsTemplates['houston-scheduler/tickets/sequence']
     html = template
       queuingDisciplines: Scheduler.QueuingDisciplines
     $(@el).html(html)
     
     @renderTickets()
-    @renderSchedule()
     @
   
   renderTickets: ->
@@ -35,69 +32,6 @@ class Scheduler.ScheduleView extends Backbone.View
     for ticket in @sortedTickets()
       $ul.appendView(new Scheduler.TicketView(ticket: ticket))
   
-  renderSchedule: ->
-    $schedule = $('#schedule')
-    $schedule.empty()
-    
-    @tickets.each (ticket)->
-      # color = projects[ticket.get('project')]
-      color = '#39b3aa'
-      $schedule.append "<div class=\"scheduled-task\" data-cid=\"#{ticket.cid}\" style=\"background-color: #{color}\"></div>"
-    
-    @updateSchedule()
-  
-  
-  
-  updateWipConstraint: ->
-    @wip = +$('#resources_count').val()
-    @updateSchedule()
-  
-  updateSchedule: ->
-    tickets = @sortedTickets()
-    numberOfRows = @wip
-    rows = (new Row(i) for i in [1..numberOfRows])
-    
-    positionByCID = {}
-    for ticket in tickets
-      shortestRow = _.min rows, (row)-> row.width()
-      positionByCID[ticket.cid] =
-        width: +ticket.get('estimated_effort')
-        y: shortestRow.index
-        x: shortestRow.width()
-      shortestRow.addTicket(ticket)
-    
-    maxWidth = (_.max rows, (row)-> row.width()).width()
-    
-    $('#schedule_axis').html("#{maxWidth} hours")
-    
-    # $.clear()
-    
-    $('#schedule').tween
-      height: 
-        stop: @wip * 22
-        duration: 0.50
-        effect: 'quadInOut'
-    
-    for cid, position of positionByCID
-      widthPercent = position.width / maxWidth * 100
-      leftPercent = position.x / maxWidth * 100
-      top = (position.y - 1) * 22
-      
-      $(".scheduled-task[data-cid=#{cid}]").tween
-        left:
-          stop: "#{leftPercent}%"
-          duration: 0.50
-          effect: 'quadInOut'
-        width:
-          stop: "#{widthPercent}%"
-          duration: 0.50
-          effect: 'quadInOut'
-        top:
-          stop: top
-          duration: 0.50
-          effect: 'quadInOut'
-    
-    $.play()
   
   
   sortByPriority: ->
@@ -147,19 +81,4 @@ class Scheduler.ScheduleView extends Backbone.View
     
     $.play =>
       $('#tickets').css(height: '').addClass('with-stripes')
-      @updateSchedule()
       onComplete()
-
-
-class Row
-  
-  constructor: (index)->
-    @index = index
-    @tickets = []
-  
-  addTicket: (ticket)->
-    @tickets.push ticket
-  
-  width: ->
-    _.reduce @tickets, ((sum, ticket)-> sum + +ticket.get('estimated_effort')), 0
-

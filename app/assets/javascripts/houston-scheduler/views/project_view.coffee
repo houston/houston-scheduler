@@ -9,8 +9,7 @@ class Scheduler.ProjectView extends Backbone.View
   initialize: ->
     @tickets = @options.tickets
     @tickets.on 'change', _.bind(@render, @)
-    @router = new Scheduler.Router
-      parent: @
+    @router = new Scheduler.Router(parent: @)
     
     Backbone.history.start()
     @render()
