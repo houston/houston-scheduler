@@ -1,33 +1,26 @@
 .edit-estimates-view {
   
+  table {
+    border-collapse: separate;
+    border-spacing: 0 2px;
+    border: none;
+  }
+  
   .ticket, .headings {
-    display: block;
     line-height: 34px;
-    margin: 1px 0;
     padding: 1px 0;
-    border-radius: 2px;
     
-    &::after {
-      content: ".";
-      display: block;
-      clear: both;
-      visibility: hidden;
-      line-height: 0;
-      height: 0;
-    }
-    
-    &.focus { background-color: #ffc; }
     &.saved { background-color: #cfc; }
+    &.focus { background-color: #ffc; }
     &.working { 
       background-image: url(<%= asset_path "preloader.gif" %>);
       background-position: right center;
       background-repeat: no-repeat;
     }
     
-    > div {
-      float: left;
-      height: 34px;
+    > td {
       position: relative;
+      border: none;
     
       &.ticket-summary { width: 84%; overflow: hidden; text-overflow: ellipsis; }
       &.ticket-effort { width: 16%; }

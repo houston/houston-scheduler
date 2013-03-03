@@ -8,6 +8,9 @@ class Scheduler.Ticket extends Backbone.Model
 class Scheduler.Tickets extends Backbone.Collection
   model: Scheduler.Ticket
   
+  sortBy: (field)->
+    super (ticket)-> ticket.get(field)
+  
   withNoValueEstimate: ->
     @select (ticket)-> +ticket.get('estimated_value') == 0
     

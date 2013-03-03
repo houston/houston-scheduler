@@ -1,5 +1,5 @@
 class Scheduler.EditTicketView extends Backbone.View
-  tagName: 'li'
+  tagName: 'tr'
   className: 'ticket'
   
   

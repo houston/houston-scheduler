@@ -21,19 +21,33 @@ class Scheduler.EditTicketsView extends Backbone.View
   initialize: ->
     @ticketTemplate = HandlebarsTemplates[@templatePath]
     @tickets = @options.tickets
+    
+    $.tablesorter.addParser
+      id: 'inputs'
+      is: (s)-> false # don't auto-detect
+      format: (text, table, td)->
+        $(td).find('input').val()
+      type: 'numeric'
   
   
   render: ->
     $(@el).html @pageTemplate()
     
     $list = $('#tickets').empty()
-    @tickets.each (ticket)=>
+    @tickets.sortBy(@attribute).each (ticket)=>
       view = new Scheduler.EditTicketView
         ticket: ticket
         template: @ticketTemplate
         isValid: _.bind(@isValid, @)
       $list.appendView(view)
+    
+    $('.table-sortable').tablesorter
+      headers: {0: {sorter: 'inputs'}}
     @
+  
+  
+  isValid: (ticket)->
+    +ticket.get(@attribute) > 0
   
   
   onKeyDown: (e)->
