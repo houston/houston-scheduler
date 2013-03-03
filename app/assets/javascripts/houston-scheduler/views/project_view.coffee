@@ -1,11 +1,6 @@
 class Scheduler.ProjectView extends Backbone.View
   
   
-  events:
-    'click .nav > li': 'selectTab'
-  
-  
-  
   initialize: ->
     @tickets = @options.tickets
     @tickets.on 'change', _.bind(@render, @)
@@ -40,7 +35,3 @@ class Scheduler.ProjectView extends Backbone.View
     
     count = @ticketsWaitingForValueEstimate().length
     $('.tickets-without-value-count').html(count).toggleClass('zero', count == 0)
-  
-  
-  selectTab: (e)->
-    
