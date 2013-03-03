@@ -2,39 +2,42 @@ class Scheduler.EditTicketView extends Backbone.View
   tagName: 'tr'
   className: 'ticket'
   
-  
   events:
     'click': 'putFocusInFirstInput'
     'focus input': 'takeFocus'
     'blur input': 'loseFocus'
     'change input': 'saveValue'
+    'click .btn-unable-to-estimate': 'onToggleUnableToEstimate'
+  
   
   
   initialize: ->
     @ticket = @options.ticket
     @template = @options.template
     @isValid = @options.isValid
-    $(@el).cssHover()
-  
+    @attribute = @options.attribute
+    @$el.cssHover()
   
   render: ->
-    $(@el)
+    @$el
       .attr('id', "ticket_#{@ticket.get('id')}")
       .html(@template @ticket.toJSON())
       .toggleClass('saved', @isValid(@ticket))
       .delegate('.ticket-details', 'click', _.bind(@showTicketDetails, @))
+    @unableToEstimate() if @ticket.get("unable_to_set_#{@attribute}")
     @
   
   
-  putFocusInFirstInput: ->
-    $(@el).find('input:first').focus()
   
+  putFocusInFirstInput: ->
+    @$el.find('input:first').focus()
   
   takeFocus: ->
-    $(@el).addClass('focus')
+    @$el.addClass('focus')
   
   loseFocus: ->
-    $(@el).removeClass('focus')
+    @$el.removeClass('focus')
+  
   
   
   showTicketDetails: (e)->
@@ -55,16 +58,50 @@ class Scheduler.EditTicketView extends Backbone.View
       """
       $(html).modal()
   
+  
+  
   saveValue: ->
-    attributes = $(@el).serializeFormElements()
-    $(@el).addClass 'working'
+    attributes = @$el.serializeFormElements()
+    @saveAttributes attributes, =>
+      @$el.toggleClass('saved', @isValid(@ticket))
+  
+  saveAttributes: (attributes, callback)->
+    @$el.addClass 'working'
     @ticket.save attributes,
       success: =>
-        $(@el)
-          .removeClass('working')
-          .toggleClass('saved', @isValid(@ticket))
+        @$el.removeClass('working')
+        callback()
       error: =>
         console.log arguments
-        $(@el).removeClass 'working'
+        @$el.removeClass 'working'
       complete: =>
-        $(@el).removeClass 'working'
+        @$el.removeClass 'working'
+  
+  
+  
+  onToggleUnableToEstimate: (e)->
+    e.preventDefault()
+    
+    attributes = {}
+    attributes["unable_to_set_#{@attribute}"] = disableMe = if @$el.hasClass('unable-to-estimate') then null else true
+    @unableToEstimate() if disableMe
+    
+    @saveAttributes attributes, =>
+      @updateAbilityToEstimate()
+  
+  updateAbilityToEstimate: ->
+    if @ticket.get("unable_to_set_#{@attribute}")
+      @unableToEstimate()
+    else
+      @ableToEstimate()
+  
+  unableToEstimate: ->
+    @$el.addClass('unable-to-estimate').removeClass('focus')
+    @$el.find('button').addClass('active')
+    @$el.find('input').attr('disabled', 'disabled')
+  
+  ableToEstimate: ->
+    @$el.removeClass('unable-to-estimate')
+    @$el.find('button').removeClass('active')
+    @$el.find('input').removeAttr('disabled').focus().select()
+

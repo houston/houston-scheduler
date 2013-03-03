@@ -11,11 +11,9 @@ class Scheduler.Tickets extends Backbone.Collection
   sortBy: (field)->
     super (ticket)-> ticket.get(field)
   
-  withNoValueEstimate: ->
-    @select (ticket)-> +ticket.get('estimated_value') == 0
-    
-  withNoEffortEstimate: ->
-    @select (ticket)-> +ticket.get('estimated_effort') == 0
+  unableToEstimate: ->
+    @select (ticket)->
+      ticket.get('unable_to_set_estimated_effort') or ticket.get('unable_to_set_estimated_value')
   
   withBothEstimates: ->
     @select (ticket)-> (+ticket.get('estimated_value') > 0) && (+ticket.get('estimated_effort') > 0)

@@ -39,6 +39,7 @@ class Scheduler.EditTicketsView extends Backbone.View
         ticket: ticket
         template: @ticketTemplate
         isValid: _.bind(@isValid, @)
+        attribute: @attribute
       $list.appendView(view)
     
     $('.table-sortable').tablesorter
@@ -72,3 +73,4 @@ class Scheduler.EditTicketsView extends Backbone.View
     
   thisLine: ->
     $('input:focus').closest('.ticket')
+
