@@ -21,6 +21,7 @@ class Scheduler.EditTicketView extends Backbone.View
     $(@el)
       .attr('id', "ticket_#{@ticket.get('id')}")
       .html(@template @ticket.toJSON())
+      .toggleClass('saved', @isValid(@ticket))
       .delegate('.ticket-details', 'click', _.bind(@showTicketDetails, @))
     @
   

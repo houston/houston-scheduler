@@ -17,11 +17,11 @@ class Scheduler.Router extends Backbone.Router
   
   showTicketsWithNoEffort: ->
     @updateActiveTab()
-    @show new Scheduler.EditTicketEffortView(tickets: @parent.ticketsWithNoEffort())
+    @show new Scheduler.EditTicketEffortView(tickets: @parent.tickets)
   
   showTicketsWithNoValue: ->
     @updateActiveTab()
-    @show new Scheduler.EditTicketValueView(tickets: @parent.ticketsWithNoValue())
+    @show new Scheduler.EditTicketValueView(tickets: @parent.tickets)
   
   
   show: (view)->
