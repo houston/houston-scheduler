@@ -12,6 +12,9 @@
   $(function() {
     window.tickets = <%=raw @tickets.map { |t| {
       "id" => t.id,
+      "number" => t.number,
+      "ticketUrl" => t.ticket_system_ticket_url,
+      "ticketSystem" => t.project.ticket_tracking_adapter,
       "estimated_effort" => t.extended_attributes["estimated_effort"],
       "estimated_value" => t.extended_attributes["estimated_value"],
       "unable_to_set_estimated_effort" => t.extended_attributes["unable_to_set_estimated_effort"],

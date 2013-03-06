@@ -12,7 +12,7 @@
   <tbody id="tickets">
     {{#tickets}}
       <tr class="ticket" data-ticket-id="{{id}}">
-        <td class="ticket-summary">{{summary}} <a href="/tickets/{{id}}.json" class="ticket-details" tabindex="-1">more</a></td>
+        <td class="ticket-summary">{{summary}}  <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a> <a href="/tickets/{{id}}.json" class="ticket-details" tabindex="-1">more</a></td>
         <td class="ticket-command">
           <button tabindex="-1" class="btn btn-success btn-can-estimate">Can Estimate!</button>
         </td>
