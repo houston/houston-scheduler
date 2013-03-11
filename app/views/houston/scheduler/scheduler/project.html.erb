@@ -20,16 +20,17 @@
       "estimated_value" => t.extended_attributes["estimated_value"],
       "unable_to_set_estimated_effort" => t.extended_attributes["unable_to_set_estimated_effort"],
       "unable_to_set_estimated_value" => t.extended_attributes["unable_to_set_estimated_value"],
-      "summary" => t.summary
+      "summary" => t.summary,
+      "prerequisites" => t.ticket_prerequisite_ids
     } }.to_json %>;
     
     console.log('ticket count', tickets.length);
     console.log('a ticket', tickets[0]);
     
-    tickets = new Scheduler.Tickets(tickets);
+    Scheduler.tickets = new Scheduler.Tickets(tickets);
     
     new Scheduler.ProjectView({
-      tickets: tickets,
+      tickets: Scheduler.tickets,
       el: $('#houston_scheduler_view')
     });
   });

@@ -6,6 +6,7 @@
   {{#tickets}}
     <li class="sequence2-ticket" style="height: {{estimated_effort}}em;">
       <p class="sequence2-ticket-summary">{{summary}}
+        {{{formatPrerequisites prerequisites}}}
         <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a>
       </p>
       <span class="sequence2-updown">
