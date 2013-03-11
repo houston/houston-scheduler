@@ -17,3 +17,6 @@ class Scheduler.Tickets extends Backbone.Collection
   
   withBothEstimates: ->
     @select (ticket)-> (+ticket.get('estimated_value') > 0) && (+ticket.get('estimated_effort') > 0)
+  
+  withEffortEstimate: ->
+    @select (ticket)-> +ticket.get('estimated_value') > 0

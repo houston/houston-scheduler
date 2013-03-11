@@ -12,6 +12,7 @@ class Scheduler.ProjectView extends Backbone.View
   
   ticketsWithBothEstimates: -> @tickets.withBothEstimates()
   ticketsUnableToEstimate: -> @tickets.unableToEstimate()
+  ticketsWithEffortEstimate: -> @tickets.withEffortEstimate()
   
   ticketsWaitingForEffortEstimate: ->
     @tickets.select (ticket)->

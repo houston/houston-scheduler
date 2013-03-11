@@ -3,6 +3,7 @@ class Scheduler.Router extends Backbone.Router
   routes:
     '':                   'showSequence'
     'sequence':           'showSequence'
+    'sequence2':          'showSequence2'
     'unable-to-estimate': 'showUnableToEstimate'
     'estimate-effort':    'showTicketsWithNoEffort'
     'estimate-value':     'showTicketsWithNoValue'
@@ -15,6 +16,10 @@ class Scheduler.Router extends Backbone.Router
   showSequence: ->
     @activateTab('#sequence')
     @show new Scheduler.SequenceView(tickets: @parent.ticketsWithBothEstimates())
+  
+  showSequence2: ->
+    @activateTab('#sequence2')
+    @show new Scheduler.Sequence2View(tickets: @parent.ticketsWithEffortEstimate())
   
   showUnableToEstimate: ->
     @updateActiveTab()

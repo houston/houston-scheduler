@@ -1,0 +1,17 @@
+<h3>
+  Tickets
+</h3>
+
+<ul id="sequence2">
+  {{#tickets}}
+    <li class="sequence2-ticket" style="height: {{estimated_effort}}em;">
+      <p class="sequence2-ticket-summary">{{summary}}
+        <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a>
+      </p>
+      <span class="sequence2-updown">
+        <a class="sequence2-moveup"><i class="icon-chevron-up"></i></a>
+        <a class="sequence2-movedown"><i class="icon-chevron-down"></i></a>
+      </span>
+    </li>
+  {{/tickets}}
+</ul>

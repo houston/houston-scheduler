@@ -1,0 +1,72 @@
+#sequence2 {
+  margin: 0;
+}
+
+.sequence2-ticket {
+  display: block;
+  margin: 0.25em 0;
+  
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
+  position: relative;
+  
+  background: white;
+  border: 1px solid #e8e8e8;
+  background: -webkit-linear-gradient(90deg, #f6f6f6, #ffffff) repeat scroll 0 0 transparent;
+  background: -moz-linear-gradient(90deg, #f6f6f6, #ffffff) repeat scroll 0 0 transparent;
+  box-shadow: 0 0 3px #e0e0e0;
+  
+//  &.hover { // green
+//    border-color: rgb(182, 226, 175);
+//    background: -webkit-linear-gradient(90deg, rgb(234, 247, 232), rgb(249, 255, 249)) repeat scroll 0 0 transparent;
+//    background: -moz-linear-gradient(90deg, #f6f6f6, #ffffff) repeat scroll 0 0 transparent;
+//    box-shadow: 0 0 3px rgb(211, 247, 204);
+//  }
+  &.hover { // steel blue
+    border-color: rgb(169, 215, 226);
+    background: -webkit-linear-gradient(90deg, rgb(229, 238, 240), rgb(250, 251, 252)) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(90deg, rgb(229, 238, 240), rgb(250, 251, 252)) repeat scroll 0 0 transparent;
+    box-shadow: 0 0 3px rgb(193, 228, 236);
+  }
+  
+  &.sequence2-locked {
+    border-color: rgb(158, 212, 224);
+    background: -webkit-linear-gradient(90deg, rgb(212, 235, 240), rgb(247, 249, 250)) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(90deg, rgb(212, 235, 240), rgb(247, 249, 250)) repeat scroll 0 0 transparent;
+    box-shadow: 0 0 3px rgb(193, 228, 236);
+    
+    .sequence2-updown { 
+      display: block;
+      position: absolute;
+      right: 2em;
+      top: 50%;
+      line-height: 1em;
+      margin-top: -0.5em;
+      
+      a {
+        display: inline-block;
+        cursor: pointer;
+      }
+      
+      a:hover {
+        background: #0088cc;
+        color: white;
+        text-decoration: none;
+        border-radius: 2px;
+      }
+    }
+  }
+}
+
+.sequence2-ticket-summary {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  margin-top: -0.5em;
+  line-height: 1em;
+  cursor: default;
+}
+
+.sequence2-updown { 
+  display: none;
+}

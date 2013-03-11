@@ -5,8 +5,8 @@
     
     > div {
       display: inline-block;
-      height: 24px;
-      line-height: 24px;
+      line-height: 1em;
+      padding: 6px 0;
       position: relative;
       
       &.ticket-description { width: 70%; }
