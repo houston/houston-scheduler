@@ -1,3 +1,4 @@
+window.Scheduler ?= {}
 Scheduler.QueuingDiscipline ?= {}
 Scheduler.QueuingDisciplines ?= []
 

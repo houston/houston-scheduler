@@ -12,17 +12,38 @@ rescue LoadError
   RDoc::Task = Rake::RDocTask
 end
 
-RDoc::Task.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'HoustonScheduler'
-  rdoc.options << '--line-numbers'
-  rdoc.rdoc_files.include('README.rdoc')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+
+task 'load_app' do
+  # load_app is defined and invoked in engine.rake, below
+  # we have to sneak in our additions so konacha is loaded.
+  
+  require 'action_controller/railtie'
+  require 'konacha'
+  load 'tasks/konacha.rake'
+  
+  module Konacha
+    def self.spec_root
+      Houston::Scheduler::Engine.config.root + config.spec_dir
+    end
+  end
+  
+  class Konacha::Engine
+    initializer "konacha.engine.environment", after: "konacha.environment" do
+      # Rails.application is the dummy app in test/dummy
+      Rails.application.config.assets.paths << Houston::Scheduler::Engine.config.root + Konacha.config.spec_dir
+    end
+  end
+  
+  require 'capybara/poltergeist'
+  Konacha.configure do |config|
+    config.driver = :poltergeist
+  end if defined?(Konacha)
+  
 end
+
 
 APP_RAKEFILE = File.expand_path("../test/dummy/Rakefile", __FILE__)
 load 'rails/tasks/engine.rake'
-
 
 
 Bundler::GemHelper.install_tasks
