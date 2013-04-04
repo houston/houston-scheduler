@@ -2,13 +2,35 @@
   margin: 0;
 }
 
+.popover-title { margin: 0 !important; }
+
+.sequence2-columns {
+  &:after {
+    content: '.';
+    clear: both;
+    display: block;
+    margin-bottom: 7em;
+  }
+}
+
+.sequence2-column {
+  width: 50%;
+  float: left;
+}
+
+#houston_scheduler_view h3.sequence2-title, .sequence2-list {
+  margin: 0 8px 0.5em;
+  padding: 0;
+}
+
 .sequence2-ticket {
   display: block;
   margin: 0.25em 0;
   
-  border-radius: 0.5em;
+  border-radius: 0.4em;
   padding: 0.5em 1em;
   position: relative;
+  overflow: hidden;
   
   background: white;
   border: 1px solid #e8e8e8;
@@ -22,6 +44,7 @@
 //    background: -moz-linear-gradient(90deg, #f6f6f6, #ffffff) repeat scroll 0 0 transparent;
 //    box-shadow: 0 0 3px rgb(211, 247, 204);
 //  }
+  
   &.hover { // steel blue
     border-color: rgb(169, 215, 226);
     background: -webkit-linear-gradient(90deg, rgb(229, 238, 240), rgb(250, 251, 252)) repeat scroll 0 0 transparent;
@@ -34,7 +57,62 @@
     background: -webkit-linear-gradient(90deg, rgb(212, 235, 240), rgb(247, 249, 250)) repeat scroll 0 0 transparent;
     background: -moz-linear-gradient(90deg, rgb(212, 235, 240), rgb(247, 249, 250)) repeat scroll 0 0 transparent;
     box-shadow: 0 0 3px rgb(193, 228, 236);
+  }
+  
+  &.sequence2-ticket-no-effort {
+    height: 10em;
+    border-color: #d4d4d4;
+    background-color: #f6f6f6;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAVElEQVR42rXMIREAIADAwOWgBv2LUATLIbhpxMTbZ6/xa/5ocpHmV5Y/Ua4oV5QryhXlinJFuaJcUS6SXJMyv6jyhyYXTS6aXDS5aHLR5KLJRZPrAAwPil0S8MMqAAAAAElFTkSuQmCC) !important;
     
+    &::after {
+      font-family: 'FontAwesome';
+      font-size: 48px;
+      content: '\f063';
+//      color: #f7da1a;
+//      color: rgba(0,0,0,0.16);
+      color: rgba(139, 136, 91, 0.1);
+//      color: rgba(228, 225, 186, 0.84);
+      
+      display: block;
+      position: absolute;
+//      left: 0;
+//      right: 0;
+//      text-align: center;
+      right: 8px;
+      bottom: 18px;
+    }
+    
+    &::before {
+      font-family: 'FontAwesome';
+      font-size: 48px;
+      content: '\f062';
+//      color: #f7da1a;
+//      color: rgba(0,0,0,0.16);
+      color: rgba(139, 136, 91, 0.1);
+//      color: rgba(228, 225, 186, 0.84);
+      
+      display: block;
+      position: absolute;
+//      left: 0;
+//      right: 0;
+//      text-align: center;
+      right: 8px;
+      top: 18px;
+    }
+  }
+  
+  &.sequence2-ticket-cant-estimate {
+    height: 10em;
+    border-color: rgb(231, 170, 170);
+    background-color: #f6f6f6;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAU0lEQVR42rXMoQ0AIADAsN2B4Qn+fwtLEGQaMVFb9hq/5o8mF2l+ZfkT5YpyRbmiXFGuKFeUK8oV5SLJNSnziyp/aHLR5KLJRZOLJhdNLppcNLkOeXn+P/ZZdQcAAAAASUVORK5CYII=) !important;
+    box-shadow: 0 0 3px rgb(255, 165, 165);
+  }
+}
+
+#sequence2_sorted .sequence2-ticket {
+  &.sequence2-locked {
     .sequence2-updown { 
       display: block;
       position: absolute;

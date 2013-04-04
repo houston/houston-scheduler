@@ -19,7 +19,7 @@ class Scheduler.Router extends Backbone.Router
   
   showSequence2: ->
     @activateTab('#sequence2')
-    @show new Scheduler.Sequence2View(tickets: @parent.ticketsWithEffortEstimate())
+    @show new Scheduler.Sequence2View(tickets: @parent.tickets)
   
   showUnableToEstimate: ->
     @updateActiveTab()

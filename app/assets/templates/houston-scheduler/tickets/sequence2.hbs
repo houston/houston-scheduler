@@ -1,18 +1,11 @@
-<h3>
-  Tickets
-</h3>
-
-<ul id="sequence2">
-  {{#tickets}}
-    <li class="sequence2-ticket" style="height: {{estimated_effort}}em;">
-      <p class="sequence2-ticket-summary">{{summary}}
-        {{{formatPrerequisites prerequisites}}}
-        <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a>
-      </p>
-      <span class="sequence2-updown">
-        <a class="sequence2-moveup"><i class="icon-chevron-up"></i></a>
-        <a class="sequence2-movedown"><i class="icon-chevron-down"></i></a>
-      </span>
-    </li>
-  {{/tickets}}
-</ul>
+<div class="sequence2-columns">
+  <div class="sequence2-column">
+    <h3 class="sequence2-title sequence2-title-unsorted">Backlog</h3>
+    <ul id="sequence2_unsorted" class="sequence2-list"></ul>
+  </div>
+  
+  <div class="sequence2-column">
+    <h3 class="sequence2-title sequence2-title-sorted">Work Queue</h3>
+    <ul id="sequence2_sorted" class="sequence2-list"></ul>
+  </div>
+</div>
