@@ -1,9 +1,9 @@
 class Scheduler.Ticket extends Backbone.Model
-  urlRoot: '/tickets'
+  urlRoot: '/scheduler/tickets'
   
   validate: (attributes)->
-    return 'estimated_effort can not be negative' if attributes.estimated_effort && attributes.estimated_effort < 0
-    return 'estimated_value can not be negative' if attributes.estimated_value && attributes.estimated_value < 0
+    return 'estimatedEffort can not be negative' if attributes.estimatedEffort && attributes.estimatedEffort < 0
+    return 'estimatedValue can not be negative' if attributes.estimatedValue && attributes.estimatedValue < 0
 
 class Scheduler.Tickets extends Backbone.Collection
   model: Scheduler.Ticket
@@ -11,12 +11,20 @@ class Scheduler.Tickets extends Backbone.Collection
   sortBy: (field)->
     super (ticket)-> ticket.get(field)
   
+  sorted: -> _.sortBy @withSequence(), (ticket)-> +ticket.get('sequence')
+  withSequence: ->
+    @select (ticket)-> !!ticket.get('sequence')
+  
+  unsorted: -> @withoutSequence()
+  withoutSequence: ->
+    @select (ticket)-> !ticket.get('sequence')
+  
   unableToEstimate: ->
     @select (ticket)->
-      ticket.get('unable_to_set_estimated_effort') or ticket.get('unable_to_set_estimated_value')
+      ticket.get('unableToSetEstimatedEffort') or ticket.get('unableToSetEstimatedValue')
   
   withBothEstimates: ->
-    @select (ticket)-> (+ticket.get('estimated_value') > 0) && (+ticket.get('estimated_effort') > 0)
+    @select (ticket)-> (+ticket.get('estimatedValue') > 0) && (+ticket.get('estimatedEffort') > 0)
   
   withEffortEstimate: ->
-    @select (ticket)-> +ticket.get('estimated_value') > 0
+    @select (ticket)-> +ticket.get('estimatedValue') > 0

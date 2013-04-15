@@ -25,8 +25,8 @@ class Scheduler.UnableToEstimateView extends Backbone.View
     ticket = _.find @tickets, (ticket)-> ticket.id is id
     
     attributes =
-      unable_to_set_estimated_effort: null
-      unable_to_set_estimated_value: null
+      unableToSetEstimatedEffort: null
+      unableToSetEstimatedValue: null
     
     $button = $ticket.find('button')
     $ticket.addClass 'working'

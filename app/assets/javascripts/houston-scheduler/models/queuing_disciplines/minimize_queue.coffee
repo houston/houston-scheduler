@@ -7,7 +7,7 @@ class Scheduler.QueuingDiscipline.MinimizeQueue
   name: "Minimize Queue"
   
   sorter: (ticket)->
-    ticket.get('estimated_effort')
+    ticket.get('estimatedEffort')
 
 
 Scheduler.QueuingDisciplines.push new Scheduler.QueuingDiscipline.MinimizeQueue()

@@ -7,7 +7,7 @@ class Scheduler.QueuingDiscipline.MaximizeRoi
   name: "Maximize ROI"
   
   sorter: (ticket)->
-    priority = ticket.get('estimated_value') / ticket.get('estimated_effort')
+    priority = ticket.get('estimatedValue') / ticket.get('estimatedEffort')
     -priority
 
 

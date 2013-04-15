@@ -1,9 +1,17 @@
 <ul id="houston_scheduler_tabs" class="nav nav-pills">
-  <li class="active"><a href="#sequence">Sequence</a></li>
-  <li><a href="#sequence2">Alt Sequence (Demo)</a></li>
-  <li><a href="#unable-to-estimate">Discussion Needed <span class="badge tickets-unable-to-estimate-count zero"></span></a></li>
-  <li><a href="#estimate-effort">Estimate Effort <span class="badge tickets-without-effort-count zero"></span></a></li>
-  <li><a href="#estimate-value">Estimate Value <span class="badge tickets-without-value-count zero"></span></a></li>
+  <li class="active"><a href="#sequence2">Sequence <span class="badge tickets-without-sequence zero"></span></a></li>
+  <% if can?(:estimate, @project) %>
+    <li><a href="#estimate-effort">Estimate Effort <span class="badge tickets-without-effort-count zero"></span></a></li>
+  <% end %>
+  <% if can?(:estimate, @project) || can?(:prioritize, @project) %>
+    <li><a href="#unable-to-estimate">Discussion Needed <span class="badge tickets-unable-to-estimate-count zero"></span></a></li>
+  <% end %>
+  
+  <%# These are works-in-progress -%>
+  <% if current_user.try(:administrator?) %>
+    <li><a href="#sequence">Sequence</a></li>
+    <li><a href="#estimate-value">Estimate Value <span class="badge tickets-without-value-count zero"></span></a></li>
+  <% end %>
 </ul>
 
 <div id="houston_scheduler_view"></div>
@@ -11,26 +19,26 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
-    window.tickets = <%=raw @tickets.map { |t| {
+    tickets = <%=raw @tickets.map { |t| {
       "id" => t.id,
       "number" => t.number,
       "ticketUrl" => t.ticket_system_ticket_url,
       "ticketSystem" => t.project.ticket_tracking_adapter,
-      "estimated_effort" => t.extended_attributes["estimated_effort"],
-      "estimated_value" => t.extended_attributes["estimated_value"],
-      "unable_to_set_estimated_effort" => t.extended_attributes["unable_to_set_estimated_effort"],
-      "unable_to_set_estimated_value" => t.extended_attributes["unable_to_set_estimated_value"],
+      "sequence" => t.extended_attributes["sequence"],
+      "estimatedEffort" => t.extended_attributes["estimated_effort"],
+      "estimatedValue" => t.extended_attributes["estimated_value"],
+      "unableToSetEstimatedEffort" => t.extended_attributes["unable_to_set_estimated_effort"],
+      "unableToSetEstimatedValue" => t.extended_attributes["unable_to_set_estimated_value"],
       "summary" => t.summary,
       "prerequisites" => t.ticket_prerequisite_ids
     } }.to_json %>;
-    
-    console.log('ticket count', tickets.length);
-    console.log('a ticket', tickets[0]);
     
     Scheduler.tickets = new Scheduler.Tickets(tickets);
     
     new Scheduler.ProjectView({
       tickets: Scheduler.tickets,
+      canEstimate: <%= can?(:estimate, @project) %>,
+      canPrioritize: <%= can?(:prioritize, @project) %>,
       el: $('#houston_scheduler_view')
     });
   });

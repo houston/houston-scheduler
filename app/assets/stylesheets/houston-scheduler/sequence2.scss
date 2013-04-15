@@ -2,6 +2,29 @@
   margin: 0;
 }
 
+#sequence2_sorted {
+  min-height: 240px;
+  padding-bottom: 80px;
+  
+  &.sort-active {
+    background: #efefef;
+    position: relative;
+    
+    &::after {
+      position: absolute;
+      font-family: FontAwesome;
+      content: '\f0ab';
+      font-size: 180px;
+      left: 50%;
+      top: 50%;
+      margin-left: -90px;
+      margin-top: -90px;
+      color: rgba(0,0,0,0.1);
+      z-index: 1001; // right over the drag helpers
+    }
+  }
+}
+
 .popover-title { margin: 0 !important; }
 
 .sequence2-columns {
@@ -57,6 +80,8 @@
     background: -webkit-linear-gradient(90deg, rgb(212, 235, 240), rgb(247, 249, 250)) repeat scroll 0 0 transparent;
     background: -moz-linear-gradient(90deg, rgb(212, 235, 240), rgb(247, 249, 250)) repeat scroll 0 0 transparent;
     box-shadow: 0 0 3px rgb(193, 228, 236);
+    
+    .sequence2-ticket-summary { margin-right: 80px; }
   }
   
   &.sequence2-ticket-no-effort {
