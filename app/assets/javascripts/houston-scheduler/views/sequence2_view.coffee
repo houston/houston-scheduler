@@ -1,13 +1,19 @@
 class Scheduler.Sequence2View extends Backbone.View
   
-  events:
-    'click .sequence2-ticket': 'toggleLock'
-    'click .sequence2-moveup': 'moveUp'
-    'click .sequence2-movedown': 'moveDown'
   
   initialize: ->
     @tickets = @options.tickets
     @readonly = @options.readonly
+    
+    # To cut down on network traffic, send the 
+    # send the sort order 800ms after the user has
+    # stopped making changes to it.
+    #
+    @delayedNotifier = new Lail.DelayedAction(_.bind(@updateOrder, @), delay: 800)
+    
+    $('body').click (e)->
+      if $(e.target).closest('.sequence2-list').length == 0
+        $('.sequence2-list .selected').removeClass('selected')
     
     @sortedTickets = @tickets.sorted()
     @unsortedTickets = @tickets.unsorted()
@@ -26,40 +32,26 @@ class Scheduler.Sequence2View extends Backbone.View
     unless @readonly
       view = @
       @$el.find('li').pseudoHover()
-      @$el.find('.sequence2-list').sortable
+      @$el.find('.sequence2-list').multisortable
         connectWith: '.sequence2-list'
         activate: (event, ui)-> $(@).addClass('sort-active')
         deactivate: (event, ui)-> $(@).removeClass('sort-active')
+        
+        # unselect items in the opposite list
+        click: (event, e)->
+          $('.sequence2-list').not(e.parent()).find('.selected').removeClass('selected')
       
-      @$el.find('#sequence2_sorted').on 'sortupdate', (event, ui)->
-        id = ui.item.attr('data-ticket-id')
-        ticket = view.tickets.get(id)
-        sorted = ui.item.closest('#sequence2_sorted').length > 0
-        index = if sorted then ui.item.index() + 1 else null
-        
-        if sorted
-          console.log "ticket ##{id} was move to position #{index}"
-        else
-          console.log "ticket ##{id} was moved to the backlog"
-        
-        ui.item.addClass('working')
-        ticket.save {sequence: index},
-          success: =>
-            ui.item.removeClass('working')
-          error: =>
-            console.log arguments
-            ui.item.removeClass('working')
-          complete: =>
-            ui.item.removeClass('working')
+      @$el.find('#sequence2_sorted').on 'sortupdate', (event, ui)=>
+        @delayedNotifier.trigger()
     @
   
-  toggleLock: (e)->
-    return if @readonly
+  updateOrder: ->
+    $tickets = $('#sequence2_sorted .sequence2-ticket')
+    ids = _.map $tickets, (el)-> $(el).attr('data-ticket-id')
+    ids = "empty" if $tickets.length == 0
+    url = window.location.pathname + '/ticket_order'
+    $.put url, {order: ids}
     
-    $ticket = $(e.target).closest('.sequence2-ticket')
-    $('.sequence2-locked').not($ticket).removeClass('sequence2-locked')
-    $ticket.toggleClass('sequence2-locked')
-  
   moveUp: (e)->
     e.preventDefault()
     e.stopImmediatePropagation()
