@@ -35,7 +35,7 @@ class Scheduler.Sequence2View extends Backbone.View
     
     unless @readonly
       view = @
-      @$el.find('li').pseudoHover()
+      @$el.find('.sequence2-ticket').pseudoHover()
       @$el.find('.sequence2-list').multisortable
         connectWith: '.sequence2-list'
         activate: (event, ui)-> $(@).addClass('sort-active')

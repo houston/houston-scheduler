@@ -1,12 +1,8 @@
-#sequence2 {
-  margin: 0;
-}
+#sequence2 { margin: 0; }
 
 .sequence2-instructions { padding-left: 8px; }
 
 .sequence2-explanation { color: #005580; font-weight: bold; cursor: pointer; }
-
-#houston_scheduler_view li.placeholder { display: block; }
 
 #houston_scheduler_view .popover-title { margin: 0; }
 
@@ -16,42 +12,42 @@
   min-height: 240px;
   padding-bottom: 80px;
   
-//  &.sort-active {
-//    background: #efefef;
-//    position: relative;
-//    
-//    &::after {
-//      position: absolute;
-//      font-family: FontAwesome;
-//      content: '\f0ab';
-//      font-size: 180px;
-//      left: 50%;
-//      top: 50%;
-//      margin-left: -90px;
-//      margin-top: -90px;
-//      color: rgba(0,0,0,0.1);
-//      z-index: 1001; // right over the drag helpers
-//    }
-//  }
+  &.sort-active {
+    box-shadow: 0 0 3px 3px rgb(233, 253, 224);
+    background-color: rgb(250, 255, 249);
+    
+    &::after {
+      position: fixed;
+      font-family: FontAwesome;
+      content: '\f0ab';
+      font-size: 180px;
+      left: 75%;
+      top: 50%;
+      margin-left: -90px;
+      margin-top: -90px;
+      color: rgba(74, 199, 18, 0.1);
+      z-index: 1001; // right over the drag helpers
+    }
+  }
 }
 
 .sequence2-columns {
-  &:after {
-    content: '.';
-    clear: both;
-    display: block;
-    margin-bottom: 7em;
-  }
+  table-layout: fixed;
+  width: 100%;
 }
 
 .sequence2-column {
   width: 50%;
-  float: left;
+  vertical-align: top;
 }
 
-#houston_scheduler_view h3.sequence2-title, .sequence2-list {
+#houston_scheduler_view h3.sequence2-title {
   margin: 0 0 0.5em;
   padding: 0 8px;
+}
+
+.sequence2-list {
+  padding: 8px;
 }
 
 .sequence2-ticket {

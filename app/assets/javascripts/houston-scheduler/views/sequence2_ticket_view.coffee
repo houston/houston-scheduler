@@ -1,5 +1,5 @@
 class Scheduler.Sequence2TicketView extends Backbone.View
-  tagName: 'li'
+  tagName: 'div'
   className: 'sequence2-ticket'
   
   initialize: ->
