@@ -12,7 +12,11 @@ module Houston
       
       def project
         @project = Project.find_by_slug!(params[:slug])
-        @tickets = @project.find_tickets(status: neq(:closed), resolution: 0)
+        if @project.has_ticket_tracking?
+          @tickets = @project.find_tickets(status: neq(:closed), resolution: 0)
+        else
+          render template: "houston/scheduler/scheduler/no_ticket_tracking"
+        end
       end
       
       
