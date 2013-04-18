@@ -1,3 +1,8 @@
+<h1>
+  <%= @project.name %>
+  <small>Scheduler</small>
+</h1>
+
 <ul id="houston_scheduler_tabs" class="nav nav-pills">
   <li class="active"><a href="#sequence2">Sequence <span class="badge tickets-without-sequence zero"></span></a></li>
   <% if can?(:estimate, @project) %>
