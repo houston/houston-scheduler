@@ -22,7 +22,8 @@ class Scheduler.Router extends Backbone.Router
   showSequence2: ->
     @activateTab('#sequence2')
     @show new Scheduler.Sequence2View
-      tickets: @parent.tickets,
+      project: @parent.project
+      tickets: @parent.tickets
       readonly: !@parent.canPrioritize
   
   showUnableToEstimate: ->

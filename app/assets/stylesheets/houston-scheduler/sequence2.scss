@@ -2,7 +2,15 @@
   margin: 0;
 }
 
+.sequence2-instructions { padding-left: 8px; }
+
+.sequence2-explanation { color: #005580; font-weight: bold; cursor: pointer; }
+
 #houston_scheduler_view li.placeholder { display: block; }
+
+#houston_scheduler_view .popover-title { margin: 0; }
+
+.alert .popover { color: #333; }
 
 #sequence2_sorted {
   min-height: 240px;

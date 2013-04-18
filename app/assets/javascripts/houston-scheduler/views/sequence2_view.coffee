@@ -2,6 +2,7 @@ class Scheduler.Sequence2View extends Backbone.View
   
   
   initialize: ->
+    @project = @options.project
     @tickets = @options.tickets
     @readonly = @options.readonly
     
@@ -20,11 +21,14 @@ class Scheduler.Sequence2View extends Backbone.View
   
   render: ->
     template = HandlebarsTemplates['houston-scheduler/tickets/sequence2']
-    html = template()
+    html = template
+      projectName: @project.name
     @$el.html(html)
     
     $unsortedTickets = @$el.find('#sequence2_unsorted')
     $sortedTickets = @$el.find('#sequence2_sorted')
+    
+    @$el.find('.sequence2-explanation').popover()
     
     $unsortedTickets.appendView(new Scheduler.Sequence2TicketView(ticket: ticket)) for ticket in @unsortedTickets
     $sortedTickets.appendView(new Scheduler.Sequence2TicketView(ticket: ticket)) for ticket in @sortedTickets

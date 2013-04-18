@@ -2,6 +2,7 @@ class Scheduler.ProjectView extends Backbone.View
   
   
   initialize: ->
+    @project = @options.project
     @tickets = @options.tickets
     @canEstimate = @options.canEstimate
     @canPrioritize = @options.canPrioritize
