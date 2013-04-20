@@ -27,8 +27,8 @@
     tickets = <%=raw @tickets.map { |t| {
       "id" => t.id,
       "number" => t.number,
-      "ticketUrl" => t.ticket_system_ticket_url,
-      "ticketSystem" => t.project.ticket_tracking_adapter,
+      "ticketUrl" => t.ticket_tracker_ticket_url,
+      "ticketSystem" => t.project.ticket_tracker_name,
       "sequence" => t.extended_attributes["sequence"],
       "estimatedEffort" => t.extended_attributes["estimated_effort"],
       "estimatedValue" => t.extended_attributes["estimated_value"],
