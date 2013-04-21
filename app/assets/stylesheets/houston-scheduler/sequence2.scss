@@ -84,14 +84,25 @@
       left: 0;
       bottom: 0;
       right: 0;
+      opacity: 0.66;
+    }
+    &::after {
+      font-family: 'FontAwesome';
+      font-size: 1.15em;
+      font-weight: normal;
+      content: '\f071';
+      color: rgb(162, 150, 105);
+      position: absolute;
+      top: 8px;
+      right: 8px;
     }
   }
   
   &.sequence2-ticket-cant-estimate {
     height: 10em;
-    border-color: rgb(231, 170, 170);
+    border-color: rgb(206, 164, 164);
     &::before {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAU0lEQVR42rXMoQ0AIADAsN2B4Qn+fwtLEGQaMVFb9hq/5o8mF2l+ZfkT5YpyRbmiXFGuKFeUK8oV5SLJNSnziyp/aHLR5KLJRZOLJhdNLppcNLkOeXn+P/ZZdQcAAAAASUVORK5CYII=) !important;
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAU0lEQVR42rXMoQ0AIADAsN2B4Qn+fwtLEGQaMVFb9hq/5o8mF2l+ZfkT5YpyRbmiXFGuKFeUK8oV5SLJNSnziyp/aHLR5KLJRZOLJhdNLppcNLkOeXn+P/ZZdQcAAAAASUVORK5CYII=) !important;
       content: '.';
       color: transparent;
       position: absolute;
@@ -99,9 +110,43 @@
       left: 0;
       bottom: 0;
       right: 0;
+      opacity: 0.50;
+    }
+    &::after {
+      font-family: 'FontAwesome';
+      font-size: 1.15em;
+      font-weight: normal;
+      content: '\f071';
+      color: rgb(170, 114, 114);
+      position: absolute;
+      top: 8px;
+      right: 8px;
     }
     
     box-shadow: 0 0 3px rgb(255, 165, 165);
+  }
+  
+  .warning {
+    position: absolute;
+    top: 6px;
+    right: 32px;
+    width: 0;
+    font-size: 11px;
+    line-height: 1em;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: right;
+    
+    -webkit-transition: width 0.1s ease-out;
+    -moz-transition: width 0.1s ease-out;
+    -o-transition: width 0.1s ease-out;
+    transition: width 0.1s ease-out;
+  }
+  
+  &.hover {
+    &::after { color: #333; }
+    .warning { width: 240px; }
   }
   
   &.selected {
