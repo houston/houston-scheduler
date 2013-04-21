@@ -16,6 +16,7 @@ class Scheduler.EditTicketView extends Backbone.View
     @template = @options.template
     @isValid = @options.isValid
     @attribute = @options.attribute
+    @unableToSetAttribute = "unableToSet#{@attribute[0].toUpperCase()}#{@attribute.substr(1)}"
     @$el.cssHover()
   
   render: ->
@@ -24,7 +25,7 @@ class Scheduler.EditTicketView extends Backbone.View
       .html(@template @ticket.toJSON())
       .toggleClass('saved', @isValid(@ticket))
       .delegate('.ticket-details', 'click', _.bind(@showTicketDetails, @))
-    @unableToEstimate() if @ticket.get("unable_to_set_#{@attribute}")
+    @unableToEstimate() if @ticket.get(@unableToSetAttribute)
     @
   
   
@@ -83,14 +84,14 @@ class Scheduler.EditTicketView extends Backbone.View
     e.preventDefault()
     
     attributes = {}
-    attributes["unable_to_set_#{@attribute}"] = disableMe = if @$el.hasClass('unable-to-estimate') then null else true
+    attributes[@unableToSetAttribute] = disableMe = if @$el.hasClass('unable-to-estimate') then null else true
     @unableToEstimate() if disableMe
     
     @saveAttributes attributes, =>
       @updateAbilityToEstimate()
   
   updateAbilityToEstimate: ->
-    if @ticket.get("unable_to_set_#{@attribute}")
+    if @ticket.get(@unableToSetAttribute)
       @unableToEstimate()
     else
       @ableToEstimate()
