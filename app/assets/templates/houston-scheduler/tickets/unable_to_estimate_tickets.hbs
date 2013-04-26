@@ -1,7 +1,8 @@
 <h3>
-  Estimate Value
+  Discussion Needed
 </h3>
 
+{{#if tickets}}
 <table class="table table-sortable table-unable-to-estimate-tickets">
   <thead>
     <tr>
@@ -20,3 +21,6 @@
     {{/tickets}}
   </tbody>
 </table>
+{{else}}
+<div class="alert alert-success">There are no tickets that the Develpment Team is unable to estimate.</div>
+{{/if}}
