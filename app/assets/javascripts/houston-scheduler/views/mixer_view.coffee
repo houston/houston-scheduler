@@ -33,7 +33,7 @@ class Scheduler.MixerView extends Backbone.View
     
     @projects.each (project)=>
       throttle = @throttleByProjectId[project.id]
-      if throttle?
+      if throttle
         @appendToActiveProjects(project, throttle)
       else
         @appendToInactiveProjects(project)
@@ -74,7 +74,7 @@ class Scheduler.MixerView extends Backbone.View
     project = _.find @projects, (project)-> project.id == id
     if project
       $a.closest('.mixer-active-project').remove()
-      delete @throttleByProjectId[id]
+      @throttleByProjectId[id] = 0
       @appendToInactiveProjects(project)
       @trigger 'change', @throttleByProjectId
   

@@ -14,6 +14,9 @@ class Scheduler.MixPlannerView extends Backbone.View
     @mixerView = new Scheduler.MixerView(projects: @projects)
     @mixerView.bind 'change', _.bind(@refreshMix, @)
     
+    $('#reset_mixes').click _.bind(@reset, @)
+    $('#save_mixes').click _.bind(@save, @)
+    
     @$el = $('#mixes_by_week')
     @el = @$el[0]
     
@@ -71,6 +74,8 @@ class Scheduler.MixPlannerView extends Backbone.View
     
     # @svg.select('.x.axis').call(xAxis)
     
+    @renderMixesGraph()
+    
     for week in @weeks
       @$el.append("<a class=\"mixer-mix\" href=\"##{@formatDate(week)}\">#{@formatWeek(week)}</a>")
   
@@ -125,3 +130,26 @@ class Scheduler.MixPlannerView extends Backbone.View
     graph.transition().duration(200)
       .attr("d", (d)=> @area(d.values) )
       .style("fill", (d, i)=> @color(i) )
+  
+  
+  
+  reset: (e)->
+    e.preventDefault()
+    window.location.reload()
+  
+  save: (e)->
+    e.preventDefault()
+    
+    $save = $(e.target)
+    $save.attr('disabled', 'disabled').html('<i class="icon-spinner icon-spin"></i> Saving...')
+    
+    $.put('/scheduler/mixer', {mixes: @mixes})
+      .success =>
+        $('.alert').remove()
+        $('#body').prepend('<div class="alert alert-success">Changes saved <a class="close" data-dismiss="alert" href="#">&times;</a></div>')
+      .error =>
+        console.log(arguments) if console?.log
+        $('.alert').remove()
+        $('#body').prepend('<div class="alert alert-error">An error occurred <a class="close" data-dismiss="alert" href="#">&times;</a></div>')
+      .complete =>
+        $save.removeAttr('disabled').html('Save')
