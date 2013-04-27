@@ -12,6 +12,8 @@ class Scheduler.MixerView extends Backbone.View
     @$activeProjects = @$el.find('#active_projects')
     @$inactiveProjects = @$el.find('#inactive_projects')
     
+    @throttleByProjectId = {}
+    
     @renderActiveProject = HandlebarsTemplates['houston-scheduler/mixer/active_project']
     @renderInactiveProject = HandlebarsTemplates['houston-scheduler/mixer/inactive_project']
     
@@ -31,8 +33,9 @@ class Scheduler.MixerView extends Backbone.View
       range: "min"
       max: 100
       value: 0
-      slide: _.bind(@refreshPercent, @)
-      change: _.bind(@refreshPercent, @)
+      start: _.bind(@calculateMaxValueForSlider, @)
+      slide: _.bind(@coercePercent, @)
+      change: _.bind(@coercePercentOnChange, @)
   
   appendToInactiveProjects: (project)->
     $project = @renderInactiveProject(project)
@@ -53,12 +56,41 @@ class Scheduler.MixerView extends Backbone.View
     e.preventDefault()
     $a = $(e.target).closest('a')
     id = +$a.attr('data-id')
+    
     project = _.find @projects, (project)-> project.id == id
     if project
       $a.closest('.mixer-active-project').remove()
+      delete @throttleByProjectId[id]
       @appendToInactiveProjects(project)
   
   
   
-  refreshPercent: (e, {handle, value})->
-    $(handle).closest('.mixer-active-project').find('.mixer-throttle-percentage').html(value)
+  calculateMaxValueForSlider: (e, {handle})->
+    $project = $(handle).closest('.mixer-active-project')
+    id = +$project.attr('data-id')
+    @maxValueForSlider = @calculateMaxValueForProject(id)
+  
+  calculateMaxValueForProject: (id)->
+    maxValue = 100
+    maxValue -= value for projectId, value of @throttleByProjectId when +projectId isnt id
+    maxValue
+  
+  coercePercent: (e, {handle, value})->
+    coerced = false
+    
+    if value > @maxValueForSlider
+      value = @maxValueForSlider
+      $(handle).closest('.ui-slider').slider('value', value)
+      coerced = true
+    
+    $project = $(handle).closest('.mixer-active-project')
+    id = $project.attr('data-id')
+    @throttleByProjectId[id] = value
+    
+    $project.find('.mixer-throttle-percentage').html(value)
+    !coerced
+  
+  coercePercentOnChange: (e, ui)->
+    @calculateMaxValueForSlider(e, ui)
+    @coercePercent(e, ui)
+    true
