@@ -8,31 +8,43 @@ class Scheduler.MixerView extends Backbone.View
     @projects = @options.projects
     @$el = $('#mixer_view')
     @el = @$el[0]
+    @renderActiveProject = HandlebarsTemplates['houston-scheduler/mixer/active_project']
+    @renderInactiveProject = HandlebarsTemplates['houston-scheduler/mixer/inactive_project']
+  
+  loadMix: (mix)->
+    @throttleByProjectId = mix
+    @render()
+  
+  render: ->
+    @$el.html '''
+      <div class="active-projects">
+        <h6>Active Projects</h6>
+        <div id="active_projects"></div>
+      </div>
+      
+      <div class="inactive-projects">
+        <h6>Inactive Projects</h6>
+        <div id="inactive_projects"></div>
+      </div>
+      '''
     
     @$activeProjects = @$el.find('#active_projects')
     @$inactiveProjects = @$el.find('#inactive_projects')
     
-    @throttleByProjectId = {}
-    
-    @renderActiveProject = HandlebarsTemplates['houston-scheduler/mixer/active_project']
-    @renderInactiveProject = HandlebarsTemplates['houston-scheduler/mixer/inactive_project']
-    
-    @render()
-    
-  render: ->
     @projects.each (project)=>
-      if project.active
-        @appendToActiveProjects(project)
+      throttle = @throttleByProjectId[project.id]
+      if throttle?
+        @appendToActiveProjects(project, throttle)
       else
         @appendToInactiveProjects(project)
   
-  appendToActiveProjects: (project)->
-    $project = $ @renderActiveProject(project)
+  appendToActiveProjects: (project, throttle)->
+    $project = $ @renderActiveProject(_.extend(project, throttle: throttle))
     @$activeProjects.append $project
     $project.find('.mixer-throttle').slider
       range: "min"
       max: 100
-      value: 0
+      value: throttle,
       start: _.bind(@calculateMaxValueForSlider, @)
       slide: _.bind(@coercePercent, @)
       change: _.bind(@coercePercentOnChange, @)
@@ -50,7 +62,9 @@ class Scheduler.MixerView extends Backbone.View
     project = _.find @projects, (project)-> project.id == id
     if project
       $a.closest('.mixer-inactive-project').remove()
-      @appendToActiveProjects(project)
+      @throttleByProjectId[id] = 0
+      @appendToActiveProjects(project, 0)
+      @trigger 'change', @throttleByProjectId
   
   removeFromActiveProjects: (e)->
     e.preventDefault()
@@ -62,6 +76,7 @@ class Scheduler.MixerView extends Backbone.View
       $a.closest('.mixer-active-project').remove()
       delete @throttleByProjectId[id]
       @appendToInactiveProjects(project)
+      @trigger 'change', @throttleByProjectId
   
   
   
@@ -88,6 +103,8 @@ class Scheduler.MixerView extends Backbone.View
     @throttleByProjectId[id] = value
     
     $project.find('.mixer-throttle-percentage').html(value)
+    
+    @trigger 'change', @throttleByProjectId
     !coerced
   
   coercePercentOnChange: (e, ui)->

@@ -5,13 +5,15 @@ module Houston
       
       
       def index
-        @projects = Project.all.map do |project|
+        @monday = Date.today.beginning_of_week
+        @weeks = 3.weeks.ago(@monday)...12.weeks.since(@monday) # 15 weeks
+        @mixes = {}
+        @weeks.step(7) { |week| @mixes[week] = {} }
+        @projects = Project.all.map { |project|
           { id: project.id,
             name: project.name,
             color: project.color,
-            active: false,
-            throttle: 0 }
-        end
+            hex: "##{Houston.config.colors[project.color]}" } }
       end
       
       

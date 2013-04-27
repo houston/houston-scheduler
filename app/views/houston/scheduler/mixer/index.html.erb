@@ -2,17 +2,20 @@
   Mixer
 </h1>
 
-<div id="mixer_view">
-  <div id="active_projects"></div>
-  
-  <h6>Inactive Projects</h6>
-  <div id="inactive_projects"></div>
-</div>
+<div id="mixes_graph"></div>
+<div id="mixes_by_week"></div>
+
+<h3 id="selected_week"></h3>
+<div id="mixer_view"></div>
 
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
-    new Scheduler.MixerView({projects: <%=raw @projects.to_json %>});
+    new Scheduler.MixPlannerView({
+      mixes: <%=raw @mixes.to_json %>,
+      defaultMix: <%=raw @monday.to_json %>,
+      projects: <%=raw @projects.to_json %>
+    });
   });
 </script>
 <% end %>
