@@ -14,7 +14,11 @@ module Houston
       return [] if projects.empty?
       
       menu_items = projects.map { |project| ProjectMenuItem.new(project, Engine.routes.url_helpers.project_path(project)) }
-      menu_items = [ MenuItem.new("Demo", Engine.routes.url_helpers.demo_path), MenuItemDivider.new ] + menu_items if user.administrator?
+      menu_items = [
+        MenuItem.new("Demo", Engine.routes.url_helpers.demo_path),
+        MenuItem.new("Mixer", Engine.routes.url_helpers.mixer_path),
+        MenuItemDivider.new
+      ] + menu_items if user.administrator?
       menu_items
     end
     

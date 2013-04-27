@@ -1,0 +1,18 @@
+<h1>
+  Mixer
+</h1>
+
+<div id="mixer_view">
+  <div id="active_projects"></div>
+  
+  <h6>Inactive Projects</h6>
+  <div id="inactive_projects"></div>
+</div>
+
+<% content_for :javascripts do %>
+<script type="text/javascript">
+  $(function() {
+    new Scheduler.MixerView({projects: <%=raw @projects.to_json %>});
+  });
+</script>
+<% end %>

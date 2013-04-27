@@ -1,0 +1,67 @@
+#mixer_view {
+  h6 { 
+    text-transform: uppercase;
+    color: #666;
+    font-weight: 500;
+    margin: 2em 0 0.25em;
+  }
+}
+
+.mixer-active-project {
+  h4 { display: inline-block; margin: 6px 0; }
+  .mixer-project-name { width: 200px; white-space: nowrap; }
+  .mixer-throttle { display: inline-block; width: 40%; font-size: 10px; margin-left: 8px; }
+  .ui-slider-horizontal .ui-slider-handle { font-size: 13px; top: -5px; }
+  .mixer-throttle-percentage {
+    font-weight: 100;
+    margin-left: 8px;
+    
+    &:after { content: '%'; }
+  }
+}
+
+.mixer-inactive-project {
+  display: block;
+  text-decoration: none !important;
+  color: #b4b4b4;
+  cursor: pointer;
+  font-size: 0.92em;
+  font-weight: 500;
+  
+  &:hover {
+    color: #333;
+    
+    .add-to-active-projects { color: #0088cc; }
+    .add-to-active-projects:after { color: #0088cc; }
+  }
+}
+
+.add-to-active-projects, .remove-from-active-projects {
+  font-family: 'FontAwesome';
+  font-size: 11px;
+  font-style: normal;
+  text-align: center;
+  line-height: 1em;
+  
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border-style: solid;
+  border-radius: 1em;
+  border-width: 2px;
+  padding: 2px 0 0 2px;
+  white-space: nowrap;
+  
+  color: #efefef;
+}
+
+.add-to-active-projects:after { 
+  content: 'Add to the mix';
+  display: inline-block;
+  margin-left: 8px;
+  color: transparent;
+}
+
+.remove-from-active-projects:hover {
+  color: #b40000;
+}
