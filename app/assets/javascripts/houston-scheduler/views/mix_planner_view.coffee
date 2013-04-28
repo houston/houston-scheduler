@@ -2,6 +2,7 @@ class Scheduler.MixPlannerView extends Backbone.View
   
   initialize: ->
     @projects = @options.projects
+    @readonly = @options.readonly
     @mixes = @options.mixes
     @formatDate = d3.time.format('%Y-%m-%d')
     @parseDate = @formatDate.parse
@@ -11,7 +12,7 @@ class Scheduler.MixPlannerView extends Backbone.View
     @weeks = _.map(@unparsedWeeks, (week)=> @parseDate(week))
     @currentWeek = null
     
-    @mixerView = new Scheduler.MixerView(projects: @projects)
+    @mixerView = new Scheduler.MixerView(projects: @projects, readonly: @readonly)
     @mixerView.bind 'change', _.bind(@refreshMix, @)
     
     $('#reset_mixes').click _.bind(@reset, @)
@@ -146,10 +147,11 @@ class Scheduler.MixPlannerView extends Backbone.View
     $.put('/scheduler/mixer', {mixes: @mixes})
       .success =>
         $('.alert').remove()
-        $('#body').prepend('<div class="alert alert-success">Changes saved <a class="close" data-dismiss="alert" href="#">&times;</a></div>')
-      .error =>
-        console.log(arguments) if console?.log
+        $('#body').prepend '<div class="alert alert-success">Changes saved <a class="close" data-dismiss="alert" href="#">&times;</a></div>'
+      .error (jqXhr)=>
+        console.log(jqXhr) if console?.log
         $('.alert').remove()
-        $('#body').prepend('<div class="alert alert-error">An error occurred <a class="close" data-dismiss="alert" href="#">&times;</a></div>')
+        messsage = if jqXhr.status is 401 then "You are not authorized to make changes to project quotas" else "An error occurred"
+        $('#body').prepend "<div class=\"alert alert-error\">#{messsage} <a class=\"close\" data-dismiss=\"alert\" href=\"#\">&times;</a></div>"
       .complete =>
         $save.removeAttr('disabled').html('Save')

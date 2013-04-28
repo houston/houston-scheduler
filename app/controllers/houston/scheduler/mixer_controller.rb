@@ -3,6 +3,7 @@ module Houston
     class MixerController < ApplicationController
       layout "houston/scheduler/application"
       before_filter :get_week_range
+      load_and_authorize_resource :class => Houston::Scheduler::ProjectQuota
       
       
       def index
@@ -14,6 +15,8 @@ module Houston
             .find_all { |quota| quota.week == week }
             .each_with_object({}) { |quota, mix| mix[quota.project_id] = quota.value }
         end
+        
+        @readonly = !can?(:manage, Houston::Scheduler::ProjectQuota)
         
         @projects = Project.scoped.map { |project|
           { id: project.id,

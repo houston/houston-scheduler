@@ -6,6 +6,7 @@ class Scheduler.MixerView extends Backbone.View
   
   initialize: ->
     @projects = @options.projects
+    @readonly = @options.readonly
     @$el = $('#mixer_view')
     @el = @$el[0]
     @renderActiveProject = HandlebarsTemplates['houston-scheduler/mixer/active_project']
