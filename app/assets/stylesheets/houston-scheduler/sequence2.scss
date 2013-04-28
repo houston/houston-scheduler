@@ -65,13 +65,6 @@
   background: -moz-linear-gradient(90deg, #e6e6e6, #f6f6f6) repeat scroll 0 0 transparent;
   box-shadow: 0 0 3px #d4d4d4;
   
-  &.hover { // steel blue
-    border-color: rgb(169, 215, 226);
-    background: -webkit-linear-gradient(90deg, rgb(229, 238, 240), rgb(250, 251, 252)) repeat scroll 0 0 transparent;
-    background: -moz-linear-gradient(90deg, rgb(229, 238, 240), rgb(250, 251, 252)) repeat scroll 0 0 transparent;
-    box-shadow: 0 0 3px rgb(193, 228, 236);
-  }
-  
   &.sequence2-ticket-no-effort {
     height: 10em;
     border-color: rgb(218, 205, 154);
@@ -149,11 +142,23 @@
     .warning { width: 240px; }
   }
   
-  &.selected {
-    border-color: rgb(158, 212, 224);
-    background: -webkit-linear-gradient(90deg, rgb(212, 235, 240), rgb(247, 249, 250)) repeat scroll 0 0 transparent;
-    background: -moz-linear-gradient(90deg, rgb(212, 235, 240), rgb(247, 249, 250)) repeat scroll 0 0 transparent;
-    box-shadow: 0 0 3px rgb(193, 228, 236);
+}
+
+.ui-sortable {
+  .sequence2-ticket {
+    &.hover { // steel blue
+      border-color: rgb(169, 215, 226);
+      background: -webkit-linear-gradient(90deg, rgb(229, 238, 240), rgb(250, 251, 252)) repeat scroll 0 0 transparent;
+      background: -moz-linear-gradient(90deg, rgb(229, 238, 240), rgb(250, 251, 252)) repeat scroll 0 0 transparent;
+      box-shadow: 0 0 3px rgb(193, 228, 236);
+    }
+    
+    &.selected {
+      border-color: rgb(158, 212, 224);
+      background: -webkit-linear-gradient(90deg, rgb(212, 235, 240), rgb(247, 249, 250)) repeat scroll 0 0 transparent;
+      background: -moz-linear-gradient(90deg, rgb(212, 235, 240), rgb(247, 249, 250)) repeat scroll 0 0 transparent;
+      box-shadow: 0 0 3px rgb(193, 228, 236);
+    }
   }
 }
 
