@@ -4,11 +4,16 @@ h1.sequence2-title { position: relative; }
 
 #project_velocity { position: absolute; top: 0; right: 0; font-size: 13px; }
 
-.sequence2-instructions { padding-left: 8px; }
+.sequence2-instructions { padding-left: 8px; margin-bottom: 8px; }
 
 .sequence2-explanation { color: #005580; font-weight: bold; cursor: pointer; }
 
 #houston_scheduler_view .popover-title { margin: 0; }
+
+#sequence2_settings {
+  float: right;
+  padding: 10px 0;
+}
 
 .alert .popover { color: #333; }
 

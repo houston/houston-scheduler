@@ -6,6 +6,7 @@ class Scheduler.Sequence2View extends Backbone.View
     @tickets = @options.tickets
     @readonly = @options.readonly
     @velocity = @options.velocity
+    @showEffort = true
     
     # To cut down on network traffic, send the 
     # send the sort order 800ms after the user has
@@ -27,6 +28,16 @@ class Scheduler.Sequence2View extends Backbone.View
       velocity: @velocity
       showInstuctions: !@readonly
     @$el.html(html)
+    
+    $('#sequence2_settings').html '''
+      <label for="sequence2_show_effort">
+        <input type="checkbox" id="sequence2_show_effort" checked="checked" />
+        Show Effort
+      </label>
+    '''
+    $('#sequence2_show_effort').click (e)=>
+      @showEffort = $(e.target).is(':checked')
+      @showOrHideEffort()
     
     $unsortedTickets = @$el.find('#sequence2_unsorted')
     $sortedTickets = @$el.find('#sequence2_sorted')
@@ -62,8 +73,9 @@ class Scheduler.Sequence2View extends Backbone.View
       title: 'Velocity'
       content: 'This bar indicates this project\'s velocity. Any tickets that fit within its height should fit within one week of development.'
     
-    
     @
+  
+  
   
   updateOrder: ->
     $tickets = $('#sequence2_sorted .sequence2-ticket')
@@ -99,11 +111,35 @@ class Scheduler.Sequence2View extends Backbone.View
     velocity = @velocity
     totalEffort = 0
     totalPadding = if velocity > 0 then 0.75 else 0
+    ticketsThatFit = 0
     $('#sequence2_sorted .sequence2-ticket').each (i)->
       effort = $(@).attr('data-effort')
       effort = if effort then +effort else 10
       totalEffort += effort
       return false if totalEffort >= velocity
       totalPadding += 1.5
+      ticketsThatFit += 1
     
-    $('#sequence2_velocity_indicator').css('paddingTop', "#{totalPadding}em")
+    if @showEffort
+      $('#sequence2_velocity_indicator').css
+        paddingTop: "#{totalPadding}em"
+        height: "#{velocity}em"
+    else
+      $('#sequence2_velocity_indicator').css
+        paddingTop: "#{ticketsThatFit * 1.5}em"
+        height: "#{ticketsThatFit * 2}em"
+  
+  
+  
+  showOrHideEffort: ->
+    if @showEffort
+      $('.sequence2-ticket').each ->
+        $ticket = $(@)
+        effort = $ticket.attr('data-effort')
+        effort = if effort then +effort else 10
+        $ticket.css('height', "#{effort}em")
+    else
+      $('.sequence2-ticket').each ->
+        $(@).css('height', '2em')
+    
+    @adjustVelocityIndicatorHeight()

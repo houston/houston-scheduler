@@ -29,6 +29,7 @@ class Scheduler.ProjectView extends Backbone.View
   
   
   showTab: (view)->
+    $('#sequence2_settings').empty()
     $(@el).empty().appendView(view)
   
   
