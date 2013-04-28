@@ -23,6 +23,7 @@ class Scheduler.Sequence2View extends Backbone.View
     template = HandlebarsTemplates['houston-scheduler/tickets/sequence2']
     html = template
       projectName: @project.name
+      showInstuctions: !@readonly
     @$el.html(html)
     
     $unsortedTickets = @$el.find('#sequence2_unsorted')
