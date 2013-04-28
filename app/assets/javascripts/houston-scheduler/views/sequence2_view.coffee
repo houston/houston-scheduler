@@ -5,6 +5,7 @@ class Scheduler.Sequence2View extends Backbone.View
     @project = @options.project
     @tickets = @options.tickets
     @readonly = @options.readonly
+    @velocity = @options.velocity
     
     # To cut down on network traffic, send the 
     # send the sort order 800ms after the user has
@@ -23,6 +24,7 @@ class Scheduler.Sequence2View extends Backbone.View
     template = HandlebarsTemplates['houston-scheduler/tickets/sequence2']
     html = template
       projectName: @project.name
+      velocity: @velocity
       showInstuctions: !@readonly
     @$el.html(html)
     
@@ -49,6 +51,18 @@ class Scheduler.Sequence2View extends Backbone.View
       
       @$el.find('#sequence2_sorted').on 'sortupdate', (event, ui)=>
         @delayedNotifier.trigger()
+        @adjustVelocityIndicatorHeight()
+    
+    @adjustVelocityIndicatorHeight()
+    
+    $indicator = $('#sequence2_velocity_help')
+    $indicator.popover
+      placement: 'left'
+      trigger: 'hover'
+      title: 'Velocity'
+      content: 'This bar indicates this project\'s velocity. Any tickets that fit within its height should fit within one week of development.'
+    
+    
     @
   
   updateOrder: ->
@@ -71,4 +85,25 @@ class Scheduler.Sequence2View extends Backbone.View
     $ticket = $(e.target).closest('.sequence2-ticket')
     $next = $ticket.next()
     $ticket.remove().insertAfter($next).pseudoHover() if $next.length > 0
+  
+  
+  
+  adjustVelocityIndicatorHeight: ->
+    # The height of the velocity indicator is {{points}em just like the height of tickets;
+    # but tickets have borders and padding and margins and those skew the perspective.
+    # 
+    # So we'll add that padding into the height of the velocity indicator: 0.75em for every
+    # ticket that can be begun this week and another 0.75em of every ticket that can be
+    # complete.
     
+    velocity = @velocity
+    totalEffort = 0
+    totalPadding = if velocity > 0 then 0.75 else 0
+    $('#sequence2_sorted .sequence2-ticket').each (i)->
+      effort = $(@).attr('data-effort')
+      effort = if effort then +effort else 10
+      totalEffort += effort
+      return false if totalEffort >= velocity
+      totalPadding += 1.5
+    
+    $('#sequence2_velocity_indicator').css('paddingTop', "#{totalPadding}em")

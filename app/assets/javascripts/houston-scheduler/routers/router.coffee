@@ -24,6 +24,7 @@ class Scheduler.Router extends Backbone.Router
     @show new Scheduler.Sequence2View
       project: @parent.project
       tickets: @parent.tickets
+      velocity: @parent.velocity
       readonly: !@parent.canPrioritize
   
   showUnableToEstimate: ->

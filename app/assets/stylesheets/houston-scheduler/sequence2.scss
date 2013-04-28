@@ -22,7 +22,7 @@ h1.sequence2-title { position: relative; }
     
     &::after {
       position: fixed;
-      font-family: FontAwesome;
+      font-family: 'FontAwesome';
       content: '\f0ab';
       font-size: 180px;
       left: 75%;
@@ -41,8 +41,28 @@ h1.sequence2-title { position: relative; }
 }
 
 .sequence2-column {
-  width: 50%;
+  width: 49%;
   vertical-align: top;
+  text-align: left;
+  
+  &.sequence2-velocity {
+    width: 2%;
+    text-align: right;
+  }
+}
+
+th.sequence2-velocity {
+  vertical-align: bottom;
+  
+  h4 {
+    margin: 0;
+    font-family: 'FontAwesome';
+    text-align: left;
+    cursor: default;
+    color: #005580;
+  }
+  
+  .popover { font-weight: normal; }
 }
 
 #houston_scheduler_view h3.sequence2-title {
@@ -52,6 +72,12 @@ h1.sequence2-title { position: relative; }
   font-weight: 500;
   line-height: 1em;
   margin: 1em 0 0.25em;
+}
+
+#sequence2_velocity_indicator {
+  background: #0088cc;
+  max-width: 8px;
+  margin: 4px 0 4px 4px; // 8px (padding on .sequence2-list) - 4px to off-center
 }
 
 .sequence2-list {

@@ -14,16 +14,22 @@
 
 <table class="sequence2-columns">
   <tr>
-    <td class="sequence2-column">
+    <th class="sequence2-column">
       <h3 class="sequence2-title sequence2-title-unsorted">Backlog</h3>
-    </td>
-    <td class="sequence2-column">
+    </th>
+    <th class="sequence2-column">
       <h3 class="sequence2-title sequence2-title-sorted">Work Queue</h3>
-    </td>
+    </th>
+    <th class="sequence2-column sequence2-velocity">
+      <h4 id="sequence2_velocity_help" unselectable="true">&#xf059;</h4>
+    </th>
   </tr>
   
   <tr>
     <td id="sequence2_unsorted" class="sequence2-column sequence2-list"></td>
     <td id="sequence2_sorted" class="sequence2-column sequence2-list"></td>
+    <td class="sequence2-column sequence2-velocity">
+      <div id="sequence2_velocity_indicator" style="height: {{velocity}}em;"></div>
+    </td>
   </tr>
 </div>

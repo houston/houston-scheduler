@@ -53,6 +53,7 @@
     new Scheduler.ProjectView({
       project: { name: <%=raw @project.name.to_json %> },
       tickets: Scheduler.tickets,
+      velocity: <%= @velocity %>,
       canEstimate: <%= can?(:estimate, @project) %>,
       canPrioritize: <%= can?(:prioritize, @project) %>,
       el: $('#houston_scheduler_view')

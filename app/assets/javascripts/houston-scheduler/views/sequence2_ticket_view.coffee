@@ -20,5 +20,6 @@ class Scheduler.Sequence2TicketView extends Backbone.View
     else
       height = ticket.estimatedEffort
       height = 1 if height < 1.0
+      @$el.attr('data-effort', height)
       @$el.css('height', "#{height}em")
     @
