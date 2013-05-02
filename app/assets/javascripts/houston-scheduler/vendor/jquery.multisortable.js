@@ -14,11 +14,11 @@
 		options = $.extend({}, $.fn.multiselectable.defaults, options)
 		
 		return this.each(function() {
-			var list_children = $(this).children();
+		  var $this = $(this);
 			
-			if (!list_children.data('multiselectable')) {
-				list_children.data('multiselectable', true);
-				list_children.click(function(e) {
+			if (!$this.data('multiselectable')) {
+				$this.data('multiselectable', true);
+				$this.delegate('> *', 'click', function(e) {
 					var item = $(this),
 						parent = item.parent(),
 						myIndex = parent.children().index(item),
@@ -48,7 +48,8 @@
 					item.addClass('multiselectable-previous')
 					
 					options.click(e, item)
-				}).disableSelection()
+				});
+				$this.children().disableSelection();
 			}
 		})
 	}

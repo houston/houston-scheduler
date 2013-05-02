@@ -18,8 +18,14 @@ class Scheduler.Sequence2View extends Backbone.View
       if $(e.target).closest('.sequence2-list').length == 0
         $('.sequence2-list .selected').removeClass('selected')
     
+    @__onKeyUp = _.bind(@onKeyUp, @)
+    $('body').on 'keyup', @__onKeyUp
+    
     @sortedTickets = @tickets.sorted()
     @unsortedTickets = @tickets.unsorted()
+  
+  cleanup: ->
+    $('body').off 'keyup', @__onKeyUp
   
   render: ->
     template = HandlebarsTemplates['houston-scheduler/tickets/sequence2']
@@ -56,9 +62,18 @@ class Scheduler.Sequence2View extends Backbone.View
         activate: (event, ui)-> $(@).addClass('sort-active')
         deactivate: (event, ui)-> $(@).removeClass('sort-active')
         
+        start: (event, ui)->
+          $e = ui.item
+          $('.sequence2-list').not($e.parent())
+            .find('.selected, .multiselectable-previous')
+            .removeClass('selected multiselectable-previous')
+        
         # unselect items in the opposite list
-        click: (event, e)->
-          $('.sequence2-list').not(e.parent()).find('.selected').removeClass('selected')
+        click: (event, $e)->
+          return unless $e.is('.sequence2-ticket')
+          $('.sequence2-list').not($e.parent())
+            .find('.selected, .multiselectable-previous')
+            .removeClass('selected multiselectable-previous')
       
       @$el.find('#sequence2_sorted').on 'sortupdate', (event, ui)=>
         @delayedNotifier.trigger()
@@ -83,20 +98,90 @@ class Scheduler.Sequence2View extends Backbone.View
     ids = "empty" if $tickets.length == 0
     url = window.location.pathname + '/ticket_order'
     $.put url, {order: ids}
-    
-  moveUp: (e)->
-    e.preventDefault()
-    e.stopImmediatePropagation()
-    $ticket = $(e.target).closest('.sequence2-ticket')
-    $prev = $ticket.prev()
-    $ticket.remove().insertBefore($prev).pseudoHover() if $prev.length > 0
   
-  moveDown: (e)->
-    e.preventDefault()
-    e.stopImmediatePropagation()
-    $ticket = $(e.target).closest('.sequence2-ticket')
+  
+  
+  onKeyUp: (e)->
+    if e.shiftKey
+      @moveLeft() if e.keyCode == 37
+      @moveUp() if e.keyCode == 38
+      @moveRight() if e.keyCode == 39
+      @moveDown() if e.keyCode == 40
+    else
+      @moveSelectionLeft() if e.keyCode == 37
+      @moveSelectionUp() if e.keyCode == 38
+      @moveSelectionRight() if e.keyCode == 39
+      @moveSelectionDown() if e.keyCode == 40
+  
+  
+  moveLeft: ->
+    $ticket = $('#sequence2_sorted .sequence2-ticket.selected')
+    if $ticket.length > 0
+      index = $ticket.index()
+      $target = $("#sequence2_unsorted .sequence2-ticket:eq(#{index})")
+      if $target.length == 0
+        $ticket.remove().appendTo('#sequence2_unsorted').data('multiselectable', true).pseudoHover()
+      else
+        $ticket.remove().insertBefore($target).data('multiselectable', true).pseudoHover()
+  
+  moveUp: ->
+    $ticket = $('.sequence2-ticket.selected')
+    $prev = $ticket.prev()
+    $ticket.remove().insertBefore($prev).data('multiselectable', true).pseudoHover() if $prev.length > 0
+  
+  moveRight: ->
+    $ticket = $('#sequence2_unsorted .sequence2-ticket.selected')
+    if $ticket.length > 0
+      index = $ticket.index()
+      $target = $("#sequence2_sorted .sequence2-ticket:eq(#{index})")
+      if $target.length == 0
+        $ticket.remove().appendTo('#sequence2_sorted').data('multiselectable', true).pseudoHover()
+      else
+        $ticket.remove().insertBefore($target).data('multiselectable', true).pseudoHover()
+  
+  moveDown: ->
+    $ticket = $('.sequence2-ticket.selected')
     $next = $ticket.next()
-    $ticket.remove().insertAfter($next).pseudoHover() if $next.length > 0
+    $ticket.remove().insertAfter($next).data('multiselectable', true).pseudoHover() if $next.length > 0
+  
+  
+  moveSelectionLeft: ->
+    $ticket = $('#sequence2_sorted .sequence2-ticket.selected')
+    if $ticket.length > 0
+      index = $ticket.index()
+      $target = $("#sequence2_unsorted .sequence2-ticket:eq(#{index})")
+      $target = $("#sequence2_unsorted .sequence2-ticket:last") if $target.length == 0
+      if $target.length > 0
+        $('.multiselectable-previous').removeClass('multiselectable-previous')
+        $ticket.removeClass('selected')
+        $target.addClass('selected multiselectable-previous')
+  
+  moveSelectionUp: ->
+    $ticket = $('.sequence2-ticket.selected')
+    $prev = $ticket.prev()
+    if $prev.length > 0
+      $('.multiselectable-previous').removeClass('multiselectable-previous')
+      $ticket.removeClass('selected')
+      $prev.addClass('selected multiselectable-previous')
+  
+  moveSelectionRight: ->
+    $ticket = $('#sequence2_unsorted .sequence2-ticket.selected')
+    if $ticket.length > 0
+      index = $ticket.index()
+      $target = $("#sequence2_sorted .sequence2-ticket:eq(#{index})")
+      $target = $("#sequence2_sorted .sequence2-ticket:last") if $target.length == 0
+      if $target.length > 0
+        $('.multiselectable-previous').removeClass('multiselectable-previous')
+        $ticket.removeClass('selected')
+        $target.addClass('selected multiselectable-previous')
+  
+  moveSelectionDown: ->
+    $ticket = $('.sequence2-ticket.selected')
+    $next = $ticket.next()
+    if $next.length > 0
+      $('.multiselectable-previous').removeClass('multiselectable-previous')
+      $ticket.removeClass('selected')
+      $next.addClass('selected multiselectable-previous')
   
   
   
