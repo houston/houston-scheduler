@@ -22,7 +22,7 @@ module Houston
           { id: project.id,
             name: project.name,
             color: project.color,
-            hex: "##{Houston.config.colors[project.color]}" } }
+            hex: "##{Houston.config.project_colors[project.color]}" } }
       end
       
       
