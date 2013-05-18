@@ -104,6 +104,14 @@ th.sequence2-velocity {
   background: -moz-linear-gradient(90deg, #e6e6e6, #f6f6f6) repeat scroll 0 0 transparent;
   box-shadow: 0 0 3px #d4d4d4;
   
+  .ticket-type-icon {
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    margin-top: -24px;
+    opacity: 0.1;
+  }
+  
   &.sequence2-ticket-no-effort {
     height: 10em;
     border-color: rgb(218, 205, 154);
@@ -202,10 +210,8 @@ th.sequence2-velocity {
 }
 
 .sequence2-ticket-summary {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  margin-top: -0.5em;
   line-height: 1em;
   cursor: default;
+  height: 100%;
+  margin-left: 40px;
 }
