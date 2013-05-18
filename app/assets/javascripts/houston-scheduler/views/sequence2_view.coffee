@@ -68,6 +68,12 @@ class Scheduler.Sequence2View extends Backbone.View
             .find('.selected, .multiselectable-previous')
             .removeClass('selected multiselectable-previous')
         
+        receive: (event, ui)=>
+          if ui.item.closest('#sequence2_unsorted').length > 0
+            @clearSequenceOfTicketFor(ui.item)
+            @delayedNotifier.trigger()
+            @adjustVelocityIndicatorHeight()
+        
         # unselect items in the opposite list
         click: (event, $e)->
           return unless $e.is('.sequence2-ticket')
@@ -92,9 +98,22 @@ class Scheduler.Sequence2View extends Backbone.View
   
   
   
+  clearSequenceOfTicketFor: ($el)->
+    id = $el.attr('data-ticket-id')
+    @setTicketSequence(id, null)
+  
+  setTicketSequence: (id, value)->
+    return console.log("id was undefined") unless id
+    ticket = @tickets.get(id)
+    return console.log("ticket #{id} was not found") unless ticket
+    ticket.set('sequence': value)
+  
+  
+  
   updateOrder: ->
     $tickets = $('#sequence2_sorted .sequence2-ticket')
     ids = _.map $tickets, (el)-> $(el).attr('data-ticket-id')
+    @setTicketSequence(ids[i], i + 1) for i in [0...ids.length]
     ids = "empty" if $tickets.length == 0
     url = window.location.pathname + '/ticket_order'
     $.put url, {order: ids}
@@ -120,10 +139,11 @@ class Scheduler.Sequence2View extends Backbone.View
       index = $ticket.index()
       $target = $("#sequence2_unsorted .sequence2-ticket:eq(#{index})")
       if $target.length == 0
-        $ticket.remove().appendTo('#sequence2_unsorted').data('multiselectable', true).pseudoHover()
+        $ticket = $ticket.remove().appendTo('#sequence2_unsorted').data('multiselectable', true).pseudoHover()
       else
-        $ticket.remove().insertBefore($target).data('multiselectable', true).pseudoHover()
+        $ticket = $ticket.remove().insertBefore($target).data('multiselectable', true).pseudoHover()
       
+      @clearSequenceOfTicketFor($ticket)
       @delayedNotifier.trigger()
       @adjustVelocityIndicatorHeight()
   
@@ -157,6 +177,8 @@ class Scheduler.Sequence2View extends Backbone.View
       
       @delayedNotifier.trigger()
       @adjustVelocityIndicatorHeight()
+  
+  
   
   moveSelectionLeft: ->
     $ticket = $('#sequence2_sorted .sequence2-ticket.selected')
