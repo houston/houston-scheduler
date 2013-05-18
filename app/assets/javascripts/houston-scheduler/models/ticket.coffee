@@ -8,9 +8,6 @@ class Scheduler.Ticket extends Backbone.Model
 class Scheduler.Tickets extends Backbone.Collection
   model: Scheduler.Ticket
   
-  sortBy: (field)->
-    super (ticket)-> ticket.get(field)
-  
   sorted: -> _.sortBy @withSequence(), (ticket)-> +ticket.get('sequence')
   withSequence: ->
     @select (ticket)-> !!ticket.get('sequence')

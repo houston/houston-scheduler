@@ -34,13 +34,18 @@ class Scheduler.EditTicketsView extends Backbone.View
     $(@el).html @pageTemplate()
     
     $list = $('#tickets').empty()
-    @tickets.sortBy(@attribute).each (ticket)=>
-      view = new Scheduler.EditTicketView
-        ticket: ticket
-        template: @ticketTemplate
-        isValid: _.bind(@isValid, @)
-        attribute: @attribute
-      $list.appendView(view)
+    @tickets
+      .sortBy (ticket)=>
+        [ !!ticket.get(@attribute),     # put tickets _with_ estimates at the bottom
+          !ticket.get('sequence'),      # then sort the remaining tickets by their
+          +ticket.get('sequence') ]     # priority
+      .each (ticket)=>
+        view = new Scheduler.EditTicketView
+          ticket: ticket
+          template: @ticketTemplate
+          isValid: _.bind(@isValid, @)
+          attribute: @attribute
+        $list.appendView(view)
     
     $('.table-sortable').tablesorter
       headers: {0: {sorter: 'inputs'}}
