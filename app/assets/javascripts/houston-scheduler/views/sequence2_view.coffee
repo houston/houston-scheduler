@@ -123,11 +123,18 @@ class Scheduler.Sequence2View extends Backbone.View
         $ticket.remove().appendTo('#sequence2_unsorted').data('multiselectable', true).pseudoHover()
       else
         $ticket.remove().insertBefore($target).data('multiselectable', true).pseudoHover()
+      
+      @delayedNotifier.trigger()
+      @adjustVelocityIndicatorHeight()
   
   moveUp: ->
     $ticket = $('.sequence2-ticket.selected')
     $prev = $ticket.prev()
-    $ticket.remove().insertBefore($prev).data('multiselectable', true).pseudoHover() if $prev.length > 0
+    if $prev.length > 0
+      $ticket.remove().insertBefore($prev).data('multiselectable', true).pseudoHover()
+      
+      @delayedNotifier.trigger()
+      @adjustVelocityIndicatorHeight()
   
   moveRight: ->
     $ticket = $('#sequence2_unsorted .sequence2-ticket.selected')
@@ -138,12 +145,18 @@ class Scheduler.Sequence2View extends Backbone.View
         $ticket.remove().appendTo('#sequence2_sorted').data('multiselectable', true).pseudoHover()
       else
         $ticket.remove().insertBefore($target).data('multiselectable', true).pseudoHover()
+      
+      @delayedNotifier.trigger()
+      @adjustVelocityIndicatorHeight()
   
   moveDown: ->
     $ticket = $('.sequence2-ticket.selected')
     $next = $ticket.next()
-    $ticket.remove().insertAfter($next).data('multiselectable', true).pseudoHover() if $next.length > 0
-  
+    if $next.length > 0
+      $ticket.remove().insertAfter($next).data('multiselectable', true).pseudoHover()
+      
+      @delayedNotifier.trigger()
+      @adjustVelocityIndicatorHeight()
   
   moveSelectionLeft: ->
     $ticket = $('#sequence2_sorted .sequence2-ticket.selected')
