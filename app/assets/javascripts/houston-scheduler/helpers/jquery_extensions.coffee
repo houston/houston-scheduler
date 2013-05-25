@@ -1,10 +1,5 @@
 $.fn.extend
   
-  appendView: (view)->
-    @.append(view.el)
-    view.render()
-    @
-  
   cssHover: (selector)->
     if arguments.length == 0
       @hover(
