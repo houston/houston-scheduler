@@ -1,6 +1,10 @@
 class Scheduler.Sequence2View extends Backbone.View
   
   
+  events:
+    'click #add_unsorted_ticket': 'addUnsortedTicket'
+  
+  
   initialize: ->
     @project = @options.project
     @tickets = @options.tickets
@@ -263,3 +267,22 @@ class Scheduler.Sequence2View extends Backbone.View
         $(@).css('height', '2em')
     
     @adjustVelocityIndicatorHeight()
+  
+  
+  
+  addUnsortedTicket: ->
+    @addTicket
+      onCreated: (ticket)=>
+        $ticket = @prependTicketTo ticket, @$el.find('#sequence2_unsorted')
+        $ticket.pseudoHover()
+    
+  addTicket: (options)->
+    newTicketView = new Scheduler.NewTicketView(project: @project)
+    newTicketView.on('created', options.onCreated) if options.onCreated
+    newTicketView.show()
+  
+  prependTicketTo: (ticket, $el)->
+    view = new Scheduler.Sequence2TicketView(ticket: ticket)
+    $el.prependView(view)
+    view.$el
+  

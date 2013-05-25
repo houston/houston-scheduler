@@ -55,7 +55,10 @@
     Scheduler.tickets = new Scheduler.Tickets(tickets);
     
     new Scheduler.ProjectView({
-      project: { name: <%=raw @project.name.to_json %> },
+      project: {
+        slug: <%=raw @project.slug.to_json %>,
+        name: <%=raw @project.name.to_json %>,
+        ticketTrackerName: <%=raw @project.ticket_tracker_name.to_json %> },
       tickets: Scheduler.tickets,
       velocity: <%= @velocity %>,
       canEstimate: <%= can?(:estimate, @project) %>,
