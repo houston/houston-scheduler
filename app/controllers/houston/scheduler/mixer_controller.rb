@@ -7,6 +7,8 @@ module Houston
       
       
       def index
+        @title = "Mixer"
+        
         quotas = ProjectQuota.in_range(@weeks)
         
         @mixes = {}

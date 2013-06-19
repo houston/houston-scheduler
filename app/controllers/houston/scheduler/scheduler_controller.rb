@@ -11,6 +11,8 @@ module Houston
       
       def project
         @project = Project.find_by_slug!(params[:slug])
+        @title = "#{@project.name}: Scheduler"
+        
         velocity = Setting["Velocity"].to_i
         quota = ProjectQuota.where(project_id: @project.id).order(:week).where(["week <= ?", Date.today]).first
         value = quota ? quota.value : 0
