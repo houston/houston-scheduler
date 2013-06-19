@@ -36,9 +36,9 @@ class Scheduler.EditTicketsView extends Backbone.View
     $list = $('#tickets').empty()
     @tickets
       .sortBy (ticket)=>
-        [ !!ticket.get(@attribute),     # put tickets _with_ estimates at the bottom
-          !ticket.get('sequence'),      # then sort the remaining tickets by their
-          +ticket.get('sequence') ]     # priority
+        [ +ticket.get(@attribute) > 0,  # put tickets _with_ estimates at the bottom,
+          +ticket.get('sequence') <= 0, # then tickets with no priority,
+          +ticket.get('sequence') ]     # finally sort by priority
       .each (ticket)=>
         view = new Scheduler.EditTicketView
           ticket: ticket
