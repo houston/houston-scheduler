@@ -9,14 +9,10 @@
     background: white;
     border: 1px solid #d1d1d1;
     box-shadow: 0 0 3px #d4d4d4;
-
+    
     #ticket_summary {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
       margin: 0;
-      height: 2em;
+      height: 2.5em;
       font-size: 1.125em;
       width: auto;
       padding: 0.33em 1em;
@@ -25,20 +21,32 @@
       border: none;
       box-shadow: none;
       
+      width: 100%;
+              box-sizing: border-box; /* For IE and modern versions of Chrome */
+         -moz-box-sizing: border-box; /* For Firefox                          */
+      -webkit-box-sizing: border-box; /* For Safari                           */
+      
       &:focus { outline: 0; }
     }
-  
+    
     .sequence2-new-ticket-full {
       background: #f4f4f4;
       border-width: 1px 0 0 0;
       border-top: 1px solid #aaa;
-      margin-top: 3em;
+      border-bottom-left-radius: 0.4em;
+      border-bottom-right-radius: 0.4em;
       
       textarea {
         background: transparent;
         border: none;
         box-shadow: none;
         padding: 0.75em 1em;
+        margin: 0;
+        
+        width: 100%;
+                box-sizing: border-box; /* For IE and modern versions of Chrome */
+           -moz-box-sizing: border-box; /* For Firefox                          */
+        -webkit-box-sizing: border-box; /* For Safari                           */
         
         &:focus { outline: 0; }
       }
