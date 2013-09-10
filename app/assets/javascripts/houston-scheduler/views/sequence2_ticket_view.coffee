@@ -12,6 +12,7 @@ class Scheduler.Sequence2TicketView extends Backbone.View
     html = @template(ticket)
     @$el.html(html)
     @$el.attr('data-ticket-id', ticket.id)
+        .delegate('.ticket-details', 'click', _.bind(@showTicketDetails, @))
     
     if ticket.unableToSetEstimatedEffort
       @$el.addClass('sequence2-ticket-cant-estimate')
@@ -23,3 +24,21 @@ class Scheduler.Sequence2TicketView extends Backbone.View
       @$el.attr('data-effort', height)
       @$el.css('height', "#{height}em")
     @
+
+  showTicketDetails: (e)->
+    e.preventDefault()
+    e.stopImmediatePropagation()
+    url = $(e.target).attr('href')
+    $.get url, (ticket)->
+      html = """
+      <div class="modal hide fade">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h3>Description</h3>
+        </div>
+        <div class="modal-body">
+          #{ticket.description}
+        </div>
+      </div>
+      """
+      $(html).modal()
