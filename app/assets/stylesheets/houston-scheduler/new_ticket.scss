@@ -1,7 +1,9 @@
 #new_ticket_form {
   padding: 0 8px;
   margin: 0 0 0.33em 0;
-  
+}
+
+.sequence2-ticket-form {
   .sequence2-new-ticket-wrap {
     position: relative;
     min-height: 3em;
@@ -29,7 +31,7 @@
       &:focus { outline: 0; }
     }
     
-    .sequence2-new-ticket-full {
+    .sequence2-ticket-description {
       background: #f4f4f4;
       border-width: 1px 0 0 0;
       border-top: 1px solid #aaa;
@@ -55,6 +57,10 @@
   
   .sequence2-new-ticket-full {
     display: none;
+  }
+  
+  .sequence2-edit-ticket-full textarea {
+    height: 438px;
   }
   
   .sequence2-new-ticket-buttons {

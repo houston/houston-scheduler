@@ -22,11 +22,15 @@ class Scheduler.Sequence2View extends Backbone.View
     @__onKeyUp = _.bind(@onKeyUp, @)
     $('body').on 'keyup', @__onKeyUp
     
+    @__onKeyDown = _.bind(@onKeyDown, @)
+    $('body').on 'keydown', @__onKeyDown
+    
     @sortedTickets = @tickets.sorted()
     @unsortedTickets = @tickets.unsorted()
   
   cleanup: ->
     $('body').off 'keyup', @__onKeyUp
+    $('body').off 'keydown', @__onKeyDown
   
   render: ->
     template = HandlebarsTemplates['houston-scheduler/tickets/sequence2']
@@ -61,6 +65,8 @@ class Scheduler.Sequence2View extends Backbone.View
     
     $unsortedTickets.appendView(new Scheduler.Sequence2TicketView(ticket: ticket)) for ticket in @unsortedTickets
     $sortedTickets.appendView(new Scheduler.Sequence2TicketView(ticket: ticket)) for ticket in @sortedTickets
+    
+    @$el.delegate '.sequence2-ticket', 'edit', _.bind(@beginEdit, @)
     
     @$el.find('.sequence2-ticket').pseudoHover()
     
@@ -136,10 +142,25 @@ class Scheduler.Sequence2View extends Backbone.View
       @moveRight() if e.keyCode == 39
       @moveDown() if e.keyCode == 40
     else
+      @cancelEdit() if e.keyCode == 27
       @moveSelectionLeft() if e.keyCode == 37
       @moveSelectionUp() if e.keyCode == 38
       @moveSelectionRight() if e.keyCode == 39
       @moveSelectionDown() if e.keyCode == 40
+  
+  onKeyDown: (e)->
+    if e.keyCode == 32 and @anyTicketsSelected()
+      @triggerEdit()
+      e.preventDefault()
+  
+  
+  
+  anyTicketsSelected: ->
+    @ticketSelection().length > 0
+  
+  ticketSelection: ->
+    $('.sequence2-ticket.selected')
+  
   
   
   moveLeft: ->
@@ -280,3 +301,15 @@ class Scheduler.Sequence2View extends Backbone.View
     $el.prependView(view)
     view.$el
   
+  
+  
+  triggerEdit: ->
+    @ticketSelection().first().trigger('edit:begin')
+  
+  cancelEdit: ->
+    @viewInEdit.cancelEdit() if @viewInEdit
+    @viewInEdit = null
+  
+  beginEdit: (e, view)->
+    @cancelEdit() if @viewInEdit isnt view
+    @viewInEdit = view
