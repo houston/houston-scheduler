@@ -15,7 +15,6 @@ module Houston
       
       menu_items = []
       menu_items << MenuItem.new("Mixer", Engine.routes.url_helpers.mixer_path)
-      menu_items << MenuItem.new("Demo", Engine.routes.url_helpers.demo_path) if user.administrator?
       menu_items << MenuItemDivider.new
       menu_items.concat projects.map { |project| ProjectMenuItem.new(project, Engine.routes.url_helpers.project_path(project)) }
       menu_items

@@ -1,7 +1,5 @@
 Houston::Scheduler::Engine.routes.draw do
   
-  root :to => "scheduler#index", :as => :demo
-  
   get "mixer", :to => "mixer#index", :as => :mixer
   put "mixer", :to => "mixer#update"
   
