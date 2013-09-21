@@ -1,8 +1,8 @@
 class Scheduler.Router extends Backbone.Router
   
   routes:
-    '':                   'showSequence2'
-    'sequence2':          'showSequence2'
+    '':                   'showSequence'
+    'sequence':           'showSequence'
     'unable-to-estimate': 'showUnableToEstimate'
     'estimate-effort':    'showTicketsWithNoEffort'
   
@@ -11,9 +11,9 @@ class Scheduler.Router extends Backbone.Router
     @parent = options.parent
   
   
-  showSequence2: ->
-    @activateTab('#sequence2')
-    @show new Scheduler.Sequence2View
+  showSequence: ->
+    @activateTab('#sequence')
+    @show new Scheduler.SequenceView
       project: @parent.project
       tickets: @parent.tickets
       velocity: @parent.velocity

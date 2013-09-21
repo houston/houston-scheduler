@@ -1,4 +1,4 @@
-class Scheduler.Sequence2View extends Backbone.View
+class Scheduler.SequenceView extends Backbone.View
   
   
   
@@ -16,8 +16,8 @@ class Scheduler.Sequence2View extends Backbone.View
     @delayedNotifier = new Lail.DelayedAction(_.bind(@updateOrder, @), delay: 800)
     
     $('body').click (e)->
-      if $(e.target).closest('.sequence2-list').length == 0
-        $('.sequence2-list .selected').removeClass('selected')
+      if $(e.target).closest('.sequence-list').length == 0
+        $('.sequence-list .selected').removeClass('selected')
     
     @__onKeyUp = _.bind(@onKeyUp, @)
     $('body').on 'keyup', @__onKeyUp
@@ -33,7 +33,7 @@ class Scheduler.Sequence2View extends Backbone.View
     $('body').off 'keydown', @__onKeyDown
   
   render: ->
-    template = HandlebarsTemplates['houston-scheduler/tickets/sequence2']
+    template = HandlebarsTemplates['houston-scheduler/tickets/sequence']
     html = template
       projectName: @project.name
       velocity: @velocity
@@ -45,64 +45,64 @@ class Scheduler.Sequence2View extends Backbone.View
       el: $('#new_ticket_form')[0]
     @newTicketView.render()
     @newTicketView.bind 'create', (ticket)=>
-      $ticket = @prependTicketTo ticket, @$el.find('#sequence2_unsorted')
+      $ticket = @prependTicketTo ticket, @$el.find('#sequence_unsorted')
       $ticket.pseudoHover()
     
-    $('#sequence2_settings').html '''
-      <label for="sequence2_show_effort">
-        <input type="checkbox" id="sequence2_show_effort" checked="checked" />
+    $('#sequence_settings').html '''
+      <label for="sequence_show_effort">
+        <input type="checkbox" id="sequence_show_effort" checked="checked" />
         Show Effort
       </label>
     '''
-    $('#sequence2_show_effort').click (e)=>
+    $('#sequence_show_effort').click (e)=>
       @showEffort = $(e.target).is(':checked')
       @showOrHideEffort()
     
-    $unsortedTickets = @$el.find('#sequence2_unsorted')
-    $sortedTickets = @$el.find('#sequence2_sorted')
+    $unsortedTickets = @$el.find('#sequence_unsorted')
+    $sortedTickets = @$el.find('#sequence_sorted')
     
-    @$el.find('.sequence2-explanation').popover()
+    @$el.find('.sequence-explanation').popover()
     
-    $unsortedTickets.appendView(new Scheduler.Sequence2TicketView(ticket: ticket)) for ticket in @unsortedTickets
-    $sortedTickets.appendView(new Scheduler.Sequence2TicketView(ticket: ticket)) for ticket in @sortedTickets
+    $unsortedTickets.appendView(new Scheduler.SequenceTicketView(ticket: ticket)) for ticket in @unsortedTickets
+    $sortedTickets.appendView(new Scheduler.SequenceTicketView(ticket: ticket)) for ticket in @sortedTickets
     
-    @$el.delegate '.sequence2-ticket', 'edit', _.bind(@beginEdit, @)
+    @$el.delegate '.sequence-ticket', 'edit', _.bind(@beginEdit, @)
     
-    @$el.find('.sequence2-ticket').pseudoHover()
+    @$el.find('.sequence-ticket').pseudoHover()
     
     unless @readonly
       view = @
-      @$el.find('.sequence2-list').multisortable
-        connectWith: '.sequence2-list'
+      @$el.find('.sequence-list').multisortable
+        connectWith: '.sequence-list'
         activate: (event, ui)-> $(@).addClass('sort-active')
         deactivate: (event, ui)-> $(@).removeClass('sort-active')
         
         start: (event, ui)->
           $e = ui.item
-          $('.sequence2-list').not($e.parent())
+          $('.sequence-list').not($e.parent())
             .find('.selected, .multiselectable-previous')
             .removeClass('selected multiselectable-previous')
         
         receive: (event, ui)=>
-          if ui.item.closest('#sequence2_unsorted').length > 0
+          if ui.item.closest('#sequence_unsorted').length > 0
             @clearSequenceOfTicketFor(ui.item)
             @delayedNotifier.trigger()
             @adjustVelocityIndicatorHeight()
         
         # unselect items in the opposite list
         click: (event, $e)->
-          return unless $e.is('.sequence2-ticket')
-          $('.sequence2-list').not($e.parent())
+          return unless $e.is('.sequence-ticket')
+          $('.sequence-list').not($e.parent())
             .find('.selected, .multiselectable-previous')
             .removeClass('selected multiselectable-previous')
       
-      @$el.find('#sequence2_sorted').on 'sortupdate', (event, ui)=>
+      @$el.find('#sequence_sorted').on 'sortupdate', (event, ui)=>
         @delayedNotifier.trigger()
         @adjustVelocityIndicatorHeight()
     
     @adjustVelocityIndicatorHeight()
     
-    $indicator = $('#sequence2_velocity_help')
+    $indicator = $('#sequence_velocity_help')
     $indicator.popover
       placement: 'left'
       trigger: 'hover'
@@ -126,7 +126,7 @@ class Scheduler.Sequence2View extends Backbone.View
   
   
   updateOrder: ->
-    $tickets = $('#sequence2_sorted .sequence2-ticket')
+    $tickets = $('#sequence_sorted .sequence-ticket')
     ids = _.map $tickets, (el)-> $(el).attr('data-ticket-id')
     @setTicketSequence(ids[i], i + 1) for i in [0...ids.length]
     ids = "empty" if $tickets.length == 0
@@ -159,17 +159,17 @@ class Scheduler.Sequence2View extends Backbone.View
     @ticketSelection().length > 0
   
   ticketSelection: ->
-    $('.sequence2-ticket.selected')
+    $('.sequence-ticket.selected')
   
   
   
   moveLeft: ->
-    $ticket = $('#sequence2_sorted .sequence2-ticket.selected')
+    $ticket = $('#sequence_sorted .sequence-ticket.selected')
     if $ticket.length > 0
       index = $ticket.index()
-      $target = $("#sequence2_unsorted .sequence2-ticket:eq(#{index})")
+      $target = $("#sequence_unsorted .sequence-ticket:eq(#{index})")
       if $target.length == 0
-        $ticket = $ticket.remove().appendTo('#sequence2_unsorted').data('multiselectable', true).pseudoHover()
+        $ticket = $ticket.remove().appendTo('#sequence_unsorted').data('multiselectable', true).pseudoHover()
       else
         $ticket = $ticket.remove().insertBefore($target).data('multiselectable', true).pseudoHover()
       
@@ -178,7 +178,7 @@ class Scheduler.Sequence2View extends Backbone.View
       @adjustVelocityIndicatorHeight()
   
   moveUp: ->
-    $ticket = $('.sequence2-ticket.selected')
+    $ticket = $('.sequence-ticket.selected')
     $prev = $ticket.prev()
     if $prev.length > 0
       $ticket.remove().insertBefore($prev).data('multiselectable', true).pseudoHover()
@@ -187,12 +187,12 @@ class Scheduler.Sequence2View extends Backbone.View
       @adjustVelocityIndicatorHeight()
   
   moveRight: ->
-    $ticket = $('#sequence2_unsorted .sequence2-ticket.selected')
+    $ticket = $('#sequence_unsorted .sequence-ticket.selected')
     if $ticket.length > 0
       index = $ticket.index()
-      $target = $("#sequence2_sorted .sequence2-ticket:eq(#{index})")
+      $target = $("#sequence_sorted .sequence-ticket:eq(#{index})")
       if $target.length == 0
-        $ticket.remove().appendTo('#sequence2_sorted').data('multiselectable', true).pseudoHover()
+        $ticket.remove().appendTo('#sequence_sorted').data('multiselectable', true).pseudoHover()
       else
         $ticket.remove().insertBefore($target).data('multiselectable', true).pseudoHover()
       
@@ -200,7 +200,7 @@ class Scheduler.Sequence2View extends Backbone.View
       @adjustVelocityIndicatorHeight()
   
   moveDown: ->
-    $ticket = $('.sequence2-ticket.selected')
+    $ticket = $('.sequence-ticket.selected')
     $next = $ticket.next()
     if $next.length > 0
       $ticket.remove().insertAfter($next).data('multiselectable', true).pseudoHover()
@@ -211,18 +211,18 @@ class Scheduler.Sequence2View extends Backbone.View
   
   
   moveSelectionLeft: ->
-    $ticket = $('#sequence2_sorted .sequence2-ticket.selected')
+    $ticket = $('#sequence_sorted .sequence-ticket.selected')
     if $ticket.length > 0
       index = $ticket.index()
-      $target = $("#sequence2_unsorted .sequence2-ticket:eq(#{index})")
-      $target = $("#sequence2_unsorted .sequence2-ticket:last") if $target.length == 0
+      $target = $("#sequence_unsorted .sequence-ticket:eq(#{index})")
+      $target = $("#sequence_unsorted .sequence-ticket:last") if $target.length == 0
       if $target.length > 0
         $('.multiselectable-previous').removeClass('multiselectable-previous')
         $ticket.removeClass('selected')
         $target.addClass('selected multiselectable-previous')
   
   moveSelectionUp: ->
-    $ticket = $('.sequence2-ticket.selected')
+    $ticket = $('.sequence-ticket.selected')
     $prev = $ticket.prev()
     if $prev.length > 0
       $('.multiselectable-previous').removeClass('multiselectable-previous')
@@ -230,18 +230,18 @@ class Scheduler.Sequence2View extends Backbone.View
       $prev.addClass('selected multiselectable-previous')
   
   moveSelectionRight: ->
-    $ticket = $('#sequence2_unsorted .sequence2-ticket.selected')
+    $ticket = $('#sequence_unsorted .sequence-ticket.selected')
     if $ticket.length > 0
       index = $ticket.index()
-      $target = $("#sequence2_sorted .sequence2-ticket:eq(#{index})")
-      $target = $("#sequence2_sorted .sequence2-ticket:last") if $target.length == 0
+      $target = $("#sequence_sorted .sequence-ticket:eq(#{index})")
+      $target = $("#sequence_sorted .sequence-ticket:last") if $target.length == 0
       if $target.length > 0
         $('.multiselectable-previous').removeClass('multiselectable-previous')
         $ticket.removeClass('selected')
         $target.addClass('selected multiselectable-previous')
   
   moveSelectionDown: ->
-    $ticket = $('.sequence2-ticket.selected')
+    $ticket = $('.sequence-ticket.selected')
     $next = $ticket.next()
     if $next.length > 0
       $('.multiselectable-previous').removeClass('multiselectable-previous')
@@ -262,7 +262,7 @@ class Scheduler.Sequence2View extends Backbone.View
     totalEffort = 0
     totalPadding = if velocity > 0 then 0.75 else 0
     ticketsThatFit = 0
-    $('#sequence2_sorted .sequence2-ticket').each (i)->
+    $('#sequence_sorted .sequence-ticket').each (i)->
       effort = $(@).attr('data-effort')
       effort = if effort then +effort else 10
       totalEffort += effort
@@ -271,11 +271,11 @@ class Scheduler.Sequence2View extends Backbone.View
       ticketsThatFit += 1
     
     if @showEffort
-      $('#sequence2_velocity_indicator').css
+      $('#sequence_velocity_indicator').css
         paddingTop: "#{totalPadding}em"
         height: "#{velocity}em"
     else
-      $('#sequence2_velocity_indicator').css
+      $('#sequence_velocity_indicator').css
         paddingTop: "#{ticketsThatFit * 1.5}em"
         height: "#{ticketsThatFit * 2}em"
   
@@ -283,13 +283,13 @@ class Scheduler.Sequence2View extends Backbone.View
   
   showOrHideEffort: ->
     if @showEffort
-      $('.sequence2-ticket').each ->
+      $('.sequence-ticket').each ->
         $ticket = $(@)
         effort = $ticket.attr('data-effort')
         effort = if effort then +effort else 10
         $ticket.css('height', "#{effort}em")
     else
-      $('.sequence2-ticket').each ->
+      $('.sequence-ticket').each ->
         $(@).css('height', '2em')
     
     @adjustVelocityIndicatorHeight()
@@ -297,7 +297,7 @@ class Scheduler.Sequence2View extends Backbone.View
   
   
   prependTicketTo: (ticket, $el)->
-    view = new Scheduler.Sequence2TicketView(ticket: ticket)
+    view = new Scheduler.SequenceTicketView(ticket: ticket)
     $el.prependView(view)
     view.$el
   

@@ -31,7 +31,7 @@ class Scheduler.ProjectView extends Backbone.View
   showTab: (view)->
     @currentView.cleanup() if @currentView?.cleanup
     @currentView = view
-    $('#sequence2_settings').empty()
+    $('#sequence_settings').empty()
     $(@el).empty().appendView(view)
   
   

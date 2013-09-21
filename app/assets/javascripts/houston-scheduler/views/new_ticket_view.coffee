@@ -110,12 +110,12 @@ class Scheduler.NewTicketView extends Backbone.View
 
 
   showNewTicket: ->
-    $('.sequence2-new-ticket-full').slideDown 200, ->
+    $('.sequence-new-ticket-full').slideDown 200, ->
       $('#ticket_description').autosize()
-    $('.sequence2-list .selected').removeClass('selected')
+    $('.sequence-list .selected').removeClass('selected')
 
   hideNewTicket: ->
-    $('.sequence2-new-ticket-full').slideUp 200
+    $('.sequence-new-ticket-full').slideUp 200
 
   autocompleteDescriptionFor: (type)->
     $('#ticket_description')

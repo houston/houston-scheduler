@@ -1,10 +1,10 @@
-class Scheduler.Sequence2TicketView extends Backbone.View
+class Scheduler.SequenceTicketView extends Backbone.View
   tagName: 'div'
-  className: 'sequence2-ticket'
+  className: 'sequence-ticket'
   
   initialize: ->
     @ticket = @options.ticket
-    @template = HandlebarsTemplates['houston-scheduler/tickets/sequence2_ticket']
+    @template = HandlebarsTemplates['houston-scheduler/tickets/sequence_ticket']
   
   render: ->
     ticket = @ticket.toJSON()
@@ -14,16 +14,16 @@ class Scheduler.Sequence2TicketView extends Backbone.View
     @$el.attr('data-ticket-id', ticket.id)
     
     if ticket.unableToSetEstimatedEffort
-      @$el.addClass('sequence2-ticket-cant-estimate')
+      @$el.addClass('sequence-ticket-cant-estimate')
     else if !ticket.estimatedEffort
-      @$el.addClass('sequence2-ticket-no-effort')
+      @$el.addClass('sequence-ticket-no-effort')
     else
       height = ticket.estimatedEffort
       height = 1 if height < 1.0
       @$el.attr('data-effort', height)
       @$el.css('height', "#{height}em")
     
-    @$el.delegate '.sequence2-ticket-edit', 'click', => @edit()
+    @$el.delegate '.sequence-ticket-edit', 'click', => @edit()
     @$el.bind 'edit:begin', => @edit()
     @
   
@@ -41,17 +41,17 @@ class Scheduler.Sequence2TicketView extends Backbone.View
     @addDropCloth()
   
   removeDropCloth: ->
-    $('.sequence2-dropcloth').remove()
+    $('.sequence-dropcloth').remove()
   
   addDropCloth: ->
-    $dropCloth = $('<div class="sequence2-dropcloth"></div>')
+    $dropCloth = $('<div class="sequence-dropcloth"></div>')
       .appendTo(document.body)
       .addClass('filled') # (background: 'rgba(0,0,0,0.33)')
   
   
   renderEdit: ->
-    return if @$el.find('.sequence2-ticket-back').length > 0
-    template = HandlebarsTemplates['houston-scheduler/tickets/sequence2_ticket_edit']
+    return if @$el.find('.sequence-ticket-back').length > 0
+    template = HandlebarsTemplates['houston-scheduler/tickets/sequence_ticket_edit']
     html = template(@ticket.toJSON())
     @$el.find('.flippable').append html
   

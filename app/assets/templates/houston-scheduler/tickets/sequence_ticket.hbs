@@ -1,7 +1,7 @@
 <div class="flippable">
-  <div class="sequence2-ticket-front">
+  <div class="sequence-ticket-front">
     <i class="ticket-type-icon ticket-type-{{type}}"></i>
-    <table class="sequence2-ticket-summary"><tr><td>
+    <table class="sequence-ticket-summary"><tr><td>
       {{summary}}
       {{{formatPrerequisites prerequisites}}}
       <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a>
@@ -11,6 +11,6 @@
     </td></tr></table>
     {{#unableToSetEstimatedEffort}}<div class="warning">As it is, we can't give an estimate for this ticket.<br />More detail or incubation is needed.</div>{{/unableToSetEstimatedEffort}}
     {{#noEstimate}}<div class="warning">We haven't estimated this ticket yet.<br />Its size is not an indicator of how long it will take.</div>{{/noEstimate}}
-    <a class="sequence2-ticket-edit"><i class="icon-th-large"></i></a>
+    <a class="sequence-ticket-edit"><i class="icon-th-large"></i></a>
   </div>
 </div>
