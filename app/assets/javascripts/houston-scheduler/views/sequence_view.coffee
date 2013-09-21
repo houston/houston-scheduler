@@ -15,6 +15,7 @@ class Scheduler.SequenceView extends Backbone.View
     #
     @delayedNotifier = new Lail.DelayedAction(_.bind(@updateOrder, @), delay: 800)
     
+    # Unselect tickets when clicking away from the lists
     $('body').click (e)->
       if $(e.target).closest('.sequence-list').length == 0
         $('.sequence-list .selected').removeClass('selected')
@@ -40,6 +41,13 @@ class Scheduler.SequenceView extends Backbone.View
       showInstuctions: !@readonly
     @$el.html(html)
     
+    @renderNewTicketView()
+    @renderShowEffortOption()
+    @renderTickets()
+    @renderHelp()
+    @
+  
+  renderNewTicketView: ->
     @newTicketView = new Scheduler.NewTicketView
       project: @project
       el: $('#new_ticket_form')[0]
@@ -47,7 +55,8 @@ class Scheduler.SequenceView extends Backbone.View
     @newTicketView.bind 'create', (ticket)=>
       $ticket = @prependTicketTo ticket, @$el.find('#sequence_unsorted')
       $ticket.pseudoHover()
-    
+  
+  renderShowEffortOption: ->
     $('#sequence_settings').html '''
       <label for="sequence_show_effort">
         <input type="checkbox" id="sequence_show_effort" checked="checked" />
@@ -58,10 +67,9 @@ class Scheduler.SequenceView extends Backbone.View
       @showEffort = $(e.target).is(':checked')
       @showOrHideEffort()
     
+  renderTickets: ->
     $unsortedTickets = @$el.find('#sequence_unsorted')
     $sortedTickets = @$el.find('#sequence_sorted')
-    
-    @$el.find('.sequence-explanation').popover()
     
     $unsortedTickets.appendView(new Scheduler.SequenceTicketView(ticket: ticket)) for ticket in @unsortedTickets
     $sortedTickets.appendView(new Scheduler.SequenceTicketView(ticket: ticket)) for ticket in @sortedTickets
@@ -70,37 +78,42 @@ class Scheduler.SequenceView extends Backbone.View
     
     @$el.find('.sequence-ticket').pseudoHover()
     
-    unless @readonly
-      view = @
-      @$el.find('.sequence-list').multisortable
-        connectWith: '.sequence-list'
-        activate: (event, ui)-> $(@).addClass('sort-active')
-        deactivate: (event, ui)-> $(@).removeClass('sort-active')
-        
-        start: (event, ui)->
-          $e = ui.item
-          $('.sequence-list').not($e.parent())
-            .find('.selected, .multiselectable-previous')
-            .removeClass('selected multiselectable-previous')
-        
-        receive: (event, ui)=>
-          if ui.item.closest('#sequence_unsorted').length > 0
-            @clearSequenceOfTicketFor(ui.item)
-            @delayedNotifier.trigger()
-            @adjustVelocityIndicatorHeight()
-        
-        # unselect items in the opposite list
-        click: (event, $e)->
-          return unless $e.is('.sequence-ticket')
-          $('.sequence-list').not($e.parent())
-            .find('.selected, .multiselectable-previous')
-            .removeClass('selected multiselectable-previous')
+    @makeTicketsSortable() unless @readonly
+    
+  makeTicketsSortable: ->
+    view = @
+    @$el.find('.sequence-list').multisortable
+      connectWith: '.sequence-list'
+      activate: (event, ui)-> $(@).addClass('sort-active')
+      deactivate: (event, ui)-> $(@).removeClass('sort-active')
       
-      @$el.find('#sequence_sorted').on 'sortupdate', (event, ui)=>
-        @delayedNotifier.trigger()
-        @adjustVelocityIndicatorHeight()
+      start: (event, ui)->
+        $e = ui.item
+        $('.sequence-list').not($e.parent())
+          .find('.selected, .multiselectable-previous')
+          .removeClass('selected multiselectable-previous')
+      
+      receive: (event, ui)=>
+        if ui.item.closest('#sequence_unsorted').length > 0
+          @clearSequenceOfTicketFor(ui.item)
+          @delayedNotifier.trigger()
+          @adjustVelocityIndicatorHeight()
+      
+      # unselect items in the opposite list
+      click: (event, $e)->
+        return unless $e.is('.sequence-ticket')
+        $('.sequence-list').not($e.parent())
+          .find('.selected, .multiselectable-previous')
+          .removeClass('selected multiselectable-previous')
+    
+    @$el.find('#sequence_sorted').on 'sortupdate', (event, ui)=>
+      @delayedNotifier.trigger()
+      @adjustVelocityIndicatorHeight()
     
     @adjustVelocityIndicatorHeight()
+    
+  renderHelp: ->
+    @$el.find('.sequence-explanation').popover()
     
     $indicator = $('#sequence_velocity_help')
     $indicator.popover
@@ -108,8 +121,6 @@ class Scheduler.SequenceView extends Backbone.View
       trigger: 'hover'
       title: 'Velocity'
       content: 'This bar indicates this project\'s velocity. Any tickets that fit within its height should fit within one week of development.'
-    
-    @
   
   
   
