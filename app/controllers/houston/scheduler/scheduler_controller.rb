@@ -20,6 +20,7 @@ module Houston
         
         if @project.has_ticket_tracker?
           @tickets = @project.open_tickets
+          @milestones = @project.open_milestones
         else
           render template: "houston/scheduler/scheduler/no_ticket_tracker"
         end

@@ -8,4 +8,6 @@ Houston::Scheduler::Engine.routes.draw do
   
   put "tickets/:id", :to => "tickets#update", constraints: {id: /\d+/}
   
+  post "milestones", :to => "milestones#create"
+  
 end

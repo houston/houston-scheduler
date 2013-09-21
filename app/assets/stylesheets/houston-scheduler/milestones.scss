@@ -1,0 +1,49 @@
+.milestone {
+  display: block;
+  border-radius: 0.4em;
+  overflow: hidden;
+  padding: 8px;
+
+  background: white;
+  border: 1px solid #d1d1d1;
+  box-shadow: 0 0 3px #d4d4d4;
+  
+  margin-bottom: 4px;
+}
+
+.new-milestone {
+  color: #efefef;
+  cursor: pointer;
+  padding: 0 8px;
+  
+  i {
+    font-family: 'FontAwesome';
+    font-size: 11px;
+    font-style: normal;
+    text-align: center;
+    line-height: 1em;
+
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-style: solid;
+    border-radius: 1em;
+    border-width: 2px;
+    padding: 2px 1px 0 1px;
+    white-space: nowrap;
+  }
+  
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+#new_milestone_form {
+  display: none;
+  padding: 0 8px;
+}
+
+#new_milestone_name {
+  float: left;
+  margin-right: 8px;
+}

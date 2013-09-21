@@ -3,6 +3,7 @@ class Scheduler.Router extends Backbone.Router
   routes:
     '':                   'showSequence'
     'sequence':           'showSequence'
+    'milestones':         'showMilestones'
     'unable-to-estimate': 'showUnableToEstimate'
     'estimate-effort':    'showTicketsWithNoEffort'
   
@@ -19,6 +20,12 @@ class Scheduler.Router extends Backbone.Router
       velocity: @parent.velocity
       readonly: !@parent.canPrioritize
   
+  showMilestones: ->
+    @activateTab('#milestones')
+    @show new Scheduler.MilestonesView
+      project: @parent.project
+      milestones: @parent.milestones
+    
   showUnableToEstimate: ->
     @updateActiveTab()
     @show new Scheduler.UnableToEstimateView

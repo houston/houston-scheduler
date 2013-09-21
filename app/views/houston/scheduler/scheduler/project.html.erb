@@ -18,6 +18,7 @@
   <% if can?(:estimate, @project) %>
     <li><a href="#estimate-effort">Estimate Effort <span class="badge tickets-without-effort-count zero"></span></a></li>
   <% end %>
+  <li><a href="#milestones">Milestones</a></li>
   <% if can?(:estimate, @project) || can?(:prioritize, @project) %>
     <li><a href="#unable-to-estimate">Discussion Needed <span class="badge tickets-unable-to-estimate-count zero"></span></a></li>
   <% end %>
@@ -30,7 +31,7 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
-    tickets = <%=raw @tickets.map { |t| {
+    var tickets = <%=raw @tickets.map { |t| {
       "id" => t.id,
       "number" => t.number,
       "ticketUrl" => t.ticket_tracker_ticket_url,
@@ -47,14 +48,22 @@
       "prerequisites" => t.ticket_prerequisite_ids
     } }.to_json %>;
     
+    var milestones = <%=raw @milestones.map { |t| {
+      "id" => t.id,
+      "name" => t.name
+    } }.to_json %>;
+    
     Scheduler.tickets = new Scheduler.Tickets(tickets);
+    Scheduler.milestones = new Scheduler.Milestones(milestones);
     
     new Scheduler.ProjectView({
       project: {
+        id: <%= @project.id %>,
         slug: <%=raw @project.slug.to_json %>,
         name: <%=raw @project.name.to_json %>,
         ticketTrackerName: <%=raw @project.ticket_tracker_name.to_json %> },
       tickets: Scheduler.tickets,
+      milestones: Scheduler.milestones,
       velocity: <%= @velocity %>,
       canEstimate: <%= can?(:estimate, @project) %>,
       canPrioritize: <%= can?(:prioritize, @project) %>,
