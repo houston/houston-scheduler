@@ -40,18 +40,16 @@
       "tags" => t.tags.map(&:to_h),
       "sequence" => t.extended_attributes["sequence"],
       "estimatedEffort" => t.extended_attributes["estimated_effort"],
-      "estimatedValue" => t.extended_attributes["estimated_value"],
       "unableToSetEstimatedEffort" => t.extended_attributes["unable_to_set_estimated_effort"],
-      "unableToSetEstimatedValue" => t.extended_attributes["unable_to_set_estimated_value"],
       "summary" => t.summary,
       "description" => t.description,
       "milestoneId" => t.milestone_id,
       "prerequisites" => t.ticket_prerequisite_ids
     } }.to_json %>;
     
-    var milestones = <%=raw @milestones.map { |t| {
-      "id" => t.id,
-      "name" => t.name
+    var milestones = <%=raw @milestones.map { |m| {
+      "id" => m.id,
+      "name" => m.name
     } }.to_json %>;
     
     Scheduler.tickets = new Scheduler.Tickets(tickets);

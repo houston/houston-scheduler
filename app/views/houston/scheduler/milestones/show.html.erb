@@ -1,0 +1,46 @@
+<h1 class="sequence-title">
+  <%= @project.name %>
+  <small><%= @milestone.name %></small>
+  
+  <div id="sequence_settings"></div>
+</h1>
+
+<h4><%= @tickets.count %> Tickets</h4>
+
+<div id="houston_scheduler_view">
+  <div id="tickets"></div>
+<div>
+
+<% content_for :javascripts do %>
+<script type="text/javascript">
+  $(function() {
+    var tickets = <%=raw @tickets.map { |t| {
+      "id" => t.id,
+      "number" => t.number,
+      "ticketUrl" => t.ticket_tracker_ticket_url,
+      "ticketSystem" => t.project.ticket_tracker_name,
+      "type" => t.type.to_s.downcase.dasherize,
+      "tags" => t.tags.map(&:to_h),
+      "sequence" => t.extended_attributes["sequence"],
+      "estimatedEffort" => t.extended_attributes["estimated_effort"],
+      "unableToSetEstimatedEffort" => t.extended_attributes["unable_to_set_estimated_effort"],
+      "summary" => t.summary,
+      "description" => t.description,
+      "milestoneId" => t.milestone_id,
+      "prerequisites" => t.ticket_prerequisite_ids
+    } }.to_json %>;
+    
+    Scheduler.tickets = new Scheduler.Tickets(tickets);
+    
+    new Scheduler.ShowMilestoneView({
+      project: {
+        id: <%= @project.id %>,
+        slug: <%=raw @project.slug.to_json %>,
+        name: <%=raw @project.name.to_json %>,
+        ticketTrackerName: <%=raw @project.ticket_tracker_name.to_json %> },
+      tickets: Scheduler.tickets.models,
+      el: $('#houston_scheduler_view')
+    });
+  });
+</script>
+<% end %>

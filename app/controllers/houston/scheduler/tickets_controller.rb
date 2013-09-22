@@ -31,7 +31,14 @@ module Houston
         end
         
         
-        if ticket.update_attributes(extended_attributes: extended_attributes)
+        
+        attributes = {extended_attributes: extended_attributes}
+        
+        if params.key?(:milestoneId)
+          attributes[:milestone_id] = params[:milestoneId]
+        end
+        
+        if ticket.update_attributes(attributes)
           render json: [], :status => :ok
         else
           render json: ticket.errors, :status => :unprocessable_entity

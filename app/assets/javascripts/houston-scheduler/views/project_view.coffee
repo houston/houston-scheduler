@@ -11,6 +11,10 @@ class Scheduler.ProjectView extends Backbone.View
     @tickets.on 'change', _.bind(@render, @)
     @router = new Scheduler.Router(parent: @)
     
+    for ticket in @tickets.models
+      milestoneId = ticket.get('milestoneId')
+      @milestones.get(milestoneId).tickets.push(ticket) if milestoneId
+    
     Backbone.history.start()
     @render()
   

@@ -19,6 +19,11 @@ class Scheduler.MilestonesView extends Scheduler.ShowTicketsView
     @renderShowEffortOption()
     @renderTickets()
     @renderMilestones()
+    
+    @$el.find('.sequence-list').multiselectable()
+    @$el.find('.sequence-ticket').draggable
+      revert: true
+      revertDuration: 200
   
   renderTickets: ->
     $unsortedTickets = @$el.find('#unsorted_tickets')
@@ -28,7 +33,14 @@ class Scheduler.MilestonesView extends Scheduler.ShowTicketsView
   renderMilestones: ->
     $milestones = @$el.find('#milestones')
     $milestones.empty()
-    $milestones.appendView @milestoneView(milestone) for milestone in @milestones.models
+    @milestones.each (milestone)=>
+      view = @milestoneView(milestone)
+      $milestones.appendView(view)
+      view.on 'drop', ($ticket)=>
+        $ticket.remove()
+        ticketId = $ticket.attr('data-ticket-id')
+        ticket = @tickets.get(ticketId)
+        view.addTicket(ticket)
   
   newMilestone: ->
     $('#new_milestone').hide()

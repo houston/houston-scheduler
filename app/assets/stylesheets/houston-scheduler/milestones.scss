@@ -47,3 +47,13 @@
   float: left;
   margin-right: 8px;
 }
+
+.milestone {
+  .milestone-ticket-count::before { content: '| '; color: #ddd; }
+  .milestone-ticket-count::after { content: ' tickets'; }
+  
+  .milestone-complexity::before { content: '| '; color: #ddd; }
+  .milestone-complexity::after { content: ' points'; }
+  
+  .milestone-link::before { content: '| '; color: #ddd; }
+}
