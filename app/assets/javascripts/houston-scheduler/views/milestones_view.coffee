@@ -1,4 +1,4 @@
-class Scheduler.MilestonesView extends Backbone.View
+class Scheduler.MilestonesView extends Scheduler.ShowTicketsView
   
   events:
     'click #new_milestone': 'newMilestone'
@@ -6,16 +6,25 @@ class Scheduler.MilestonesView extends Backbone.View
     'click #cancel_new_milestone_button': 'resetNewMilestone'
   
   initialize: ->
-    @project = @options.project
+    super
     @milestones = @options.milestones
+    
+    @ticketsWithoutMilestones = @tickets.withoutMilestones()
   
   render: ->
     template = HandlebarsTemplates['houston-scheduler/milestones/index']
     html = template()
     @$el.html(html)
     
+    @renderShowEffortOption()
+    @renderTickets()
     @renderMilestones()
   
+  renderTickets: ->
+    $unsortedTickets = @$el.find('#unsorted_tickets')
+    for ticket in @ticketsWithoutMilestones
+      $unsortedTickets.appendView(new Scheduler.SequenceTicketView(ticket: ticket))
+    
   renderMilestones: ->
     $milestones = @$el.find('#milestones')
     $milestones.empty()

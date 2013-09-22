@@ -1,13 +1,10 @@
-class Scheduler.SequenceView extends Backbone.View
+class Scheduler.SequenceView extends Scheduler.ShowTicketsView
   
   
   
   initialize: ->
-    @project = @options.project
-    @tickets = @options.tickets
-    @readonly = @options.readonly
+    super
     @velocity = @options.velocity
-    @showEffort = true
     
     # To cut down on network traffic, send the 
     # send the sort order 800ms after the user has
@@ -20,18 +17,8 @@ class Scheduler.SequenceView extends Backbone.View
       if $(e.target).closest('.sequence-list').length == 0
         $('.sequence-list .selected').removeClass('selected')
     
-    @__onKeyUp = _.bind(@onKeyUp, @)
-    $('body').on 'keyup', @__onKeyUp
-    
-    @__onKeyDown = _.bind(@onKeyDown, @)
-    $('body').on 'keydown', @__onKeyDown
-    
     @sortedTickets = @tickets.sorted()
     @unsortedTickets = @tickets.unsorted()
-  
-  cleanup: ->
-    $('body').off 'keyup', @__onKeyUp
-    $('body').off 'keydown', @__onKeyDown
   
   render: ->
     template = HandlebarsTemplates['houston-scheduler/tickets/sequence']
@@ -56,25 +43,12 @@ class Scheduler.SequenceView extends Backbone.View
       $ticket = @prependTicketTo ticket, @$el.find('#sequence_unsorted')
       $ticket.pseudoHover()
   
-  renderShowEffortOption: ->
-    $('#sequence_settings').html '''
-      <label for="sequence_show_effort">
-        <input type="checkbox" id="sequence_show_effort" checked="checked" />
-        Show Effort
-      </label>
-    '''
-    $('#sequence_show_effort').click (e)=>
-      @showEffort = $(e.target).is(':checked')
-      @showOrHideEffort()
-    
   renderTickets: ->
     $unsortedTickets = @$el.find('#sequence_unsorted')
     $sortedTickets = @$el.find('#sequence_sorted')
     
     $unsortedTickets.appendView(new Scheduler.SequenceTicketView(ticket: ticket)) for ticket in @unsortedTickets
     $sortedTickets.appendView(new Scheduler.SequenceTicketView(ticket: ticket)) for ticket in @sortedTickets
-    
-    @$el.delegate '.sequence-ticket', 'edit', _.bind(@beginEdit, @)
     
     @$el.find('.sequence-ticket').pseudoHover()
     
@@ -147,30 +121,17 @@ class Scheduler.SequenceView extends Backbone.View
   
   
   onKeyUp: (e)->
+    super(e)
     if e.shiftKey
       @moveLeft() if e.keyCode == 37
       @moveUp() if e.keyCode == 38
       @moveRight() if e.keyCode == 39
       @moveDown() if e.keyCode == 40
     else
-      @cancelEdit() if e.keyCode == 27
       @moveSelectionLeft() if e.keyCode == 37
       @moveSelectionUp() if e.keyCode == 38
       @moveSelectionRight() if e.keyCode == 39
       @moveSelectionDown() if e.keyCode == 40
-  
-  onKeyDown: (e)->
-    if e.keyCode == 32 and @anyTicketsSelected()
-      @triggerEdit()
-      e.preventDefault()
-  
-  
-  
-  anyTicketsSelected: ->
-    @ticketSelection().length > 0
-  
-  ticketSelection: ->
-    $('.sequence-ticket.selected')
   
   
   
@@ -293,16 +254,7 @@ class Scheduler.SequenceView extends Backbone.View
   
   
   showOrHideEffort: ->
-    if @showEffort
-      $('.sequence-ticket').each ->
-        $ticket = $(@)
-        effort = $ticket.attr('data-effort')
-        effort = if effort then +effort else 10
-        $ticket.css('height', "#{effort}em")
-    else
-      $('.sequence-ticket').each ->
-        $(@).css('height', '2em')
-    
+    super
     @adjustVelocityIndicatorHeight()
   
   
@@ -311,16 +263,3 @@ class Scheduler.SequenceView extends Backbone.View
     view = new Scheduler.SequenceTicketView(ticket: ticket)
     $el.prependView(view)
     view.$el
-  
-  
-  
-  triggerEdit: ->
-    @ticketSelection().first().trigger('edit:begin')
-  
-  cancelEdit: ->
-    @viewInEdit.cancelEdit() if @viewInEdit
-    @viewInEdit = null
-  
-  beginEdit: (e, view)->
-    @cancelEdit() if @viewInEdit isnt view
-    @viewInEdit = view

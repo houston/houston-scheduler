@@ -16,6 +16,9 @@ class Scheduler.Tickets extends Backbone.Collection
   withoutSequence: ->
     @select (ticket)-> !ticket.get('sequence')
   
+  withoutMilestones: ->
+    @select (ticket)-> !ticket.get('milestoneId')
+  
   unableToEstimate: ->
     @select (ticket)->
       ticket.get('unableToSetEstimatedEffort') or ticket.get('unableToSetEstimatedValue')

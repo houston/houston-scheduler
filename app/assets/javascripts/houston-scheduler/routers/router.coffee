@@ -24,7 +24,9 @@ class Scheduler.Router extends Backbone.Router
     @activateTab('#milestones')
     @show new Scheduler.MilestonesView
       project: @parent.project
+      tickets: @parent.tickets
       milestones: @parent.milestones
+      readonly: !@parent.canPrioritize
     
   showUnableToEstimate: ->
     @updateActiveTab()
