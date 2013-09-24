@@ -58,6 +58,8 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     view = @
     @$el.find('.sequence-list').multisortable
       connectWith: '.sequence-list'
+      containment: '#houston_scheduler_view'
+      
       activate: (event, ui)-> $(@).addClass('sort-active').parent().addClass('sort-active')
       deactivate: (event, ui)-> $(@).removeClass('sort-active').parent().removeClass('sort-active')
       

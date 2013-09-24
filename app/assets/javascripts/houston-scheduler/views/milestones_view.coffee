@@ -24,6 +24,7 @@ class Scheduler.MilestonesView extends Scheduler.ShowTicketsView
     @$el.find('.sequence-ticket').draggable
       revert: true
       revertDuration: 200
+      containment: '#houston_scheduler_view'
   
   renderTickets: ->
     $unsortedTickets = @$el.find('#unsorted_tickets')
