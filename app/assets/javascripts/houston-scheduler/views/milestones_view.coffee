@@ -4,6 +4,7 @@ class Scheduler.MilestonesView extends Scheduler.ShowTicketsView
     'click #new_milestone': 'newMilestone'
     'submit #new_milestone_form': 'createMilestone'
     'click #cancel_new_milestone_button': 'resetNewMilestone'
+    'focus #new_milestone_name' : 'clearSelectedTickets'
   
   initialize: ->
     super
@@ -71,3 +72,6 @@ class Scheduler.MilestonesView extends Scheduler.ShowTicketsView
     $('#new_milestone').show()
     $('#new_milestone_form').enable().hide()
     $('#new_milestone_name').val('')
+  
+  clearSelectedTickets: ->
+    $('.sequence-ticket.selected').removeClass('selected')
