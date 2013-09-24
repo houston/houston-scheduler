@@ -343,3 +343,7 @@ th.sequence-velocity {
   
   &.filled { background: rgba(0,0,0,0.33); }
 }
+
+
+.sequence-ticket-summary { display: table; }
+.sequence-ticket-summary > div { display: table-cell; vertical-align: middle; }
