@@ -2,14 +2,48 @@
   display: block;
   border-radius: 0.4em;
   overflow: hidden;
-  padding: 8px;
+  padding: 1em 0.66em;
 
   background: white;
-  border: 1px solid #d1d1d1;
-  box-shadow: 0 0 3px #d4d4d4;
-  
-  margin-bottom: 4px;
+  box-shadow: 0 0 3px #aaa;
+  background: #fafafa;
+
+  margin-bottom: 8px;
+  position: relative;
+
+  .milestone-name { font-weight: 500; color: #555; }
+  .milestone-link { text-transform: lowercase; display: inline-block; margin-left: 4px; }
+
+  .milestone-ticket-count::after { content: 'tickets'; }
+  .milestone-complexity::after { content: ' points'; }
+
+  .milestone-ticket-count, .milestone-complexity {
+    font-size: 2em;
+    font-weight: 100;
+    text-align: right;
+    line-height: 0.66em;
+
+    position: absolute;
+    top: 9px;
+
+    &::after {
+      display: block;
+      font-size: 11px;
+      font-weight: 200;
+    }
+  }
+
+  .milestone-ticket-count { right: 8px; }
+  .milestone-complexity { right: 60px; }
+
+  &.drag-over {
+    z-index: -1;
+    box-shadow: 0 0 3px #368D0F;
+    background: -webkit-linear-gradient(90deg, #DCF1D4, #f1fced) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(90deg, #DCF1D4, #f1fced) repeat scroll 0 0 transparent;
+  }
 }
+
 
 .new-milestone {
   color: #efefef;
@@ -47,12 +81,17 @@
   margin-right: 8px;
 }
 
-.milestone {
-  .milestone-ticket-count::before { content: '| '; color: #ddd; }
-  .milestone-ticket-count::after { content: ' tickets'; }
+#milestones.drag-activated {
+  border: 2px dashed #8DBB79;
+  border-radius: 0.66em;
+  margin: -6px -6px 2px -6px;
+  padding: 4px;
   
-  .milestone-complexity::before { content: '| '; color: #ddd; }
-  .milestone-complexity::after { content: ' points'; }
+  .milestone:last-child { margin-bottom: 0; }
   
-  .milestone-link::before { content: '| '; color: #ddd; }
+  .milestone {
+    background-color: #f5fdf2;
+    box-shadow: 0 0 3px #79b160;
+    z-index: -1;
+  }
 }

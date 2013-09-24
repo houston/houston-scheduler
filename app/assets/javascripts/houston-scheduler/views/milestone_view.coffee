@@ -17,6 +17,10 @@ class Scheduler.MilestoneView extends Backbone.View
     @$el.html(html)
     @$el.droppable
       accept: '.sequence-ticket'
+      activate: => @$el.parent().addClass('drag-activated')
+      deactivate: => @$el.parent().removeClass('drag-activated'); @$el.removeClass('drag-over')
+      over: => @$el.addClass('drag-over')
+      out: => @$el.removeClass('drag-over')
   
   addTicket: (ticket)->
     @$el.addClass 'working'
