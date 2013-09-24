@@ -17,26 +17,32 @@ h1.sequence-title { position: relative; }
 
 .alert .popover { color: #333; }
 
-#sequence_sorted {
-  min-height: 240px;
+.sequence-list {
   padding-bottom: 80px;
   
-  &.sort-active {
-    box-shadow: 0 0 3px 3px rgb(233, 253, 224);
-    background-color: rgb(250, 255, 249);
-    
-    &::after {
-      position: fixed;
-      font-family: 'FontAwesome';
-      content: '\f0ab';
-      font-size: 180px;
-      left: 75%;
-      top: 50%;
-      margin-left: -90px;
-      margin-top: -90px;
-      color: rgba(74, 199, 18, 0.1);
-      z-index: 1001; // right over the drag helpers
-    }
+  // Cause the sequence-list to fill the table
+  // cell vertically if its height is less then
+  // the height of the call.
+  // (Works on Chrome at least)
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.sequence-sorted-column.sort-active { background-color: #F4FCF2; }
+
+#sequence_sorted.sort-active {
+  &::after {
+    position: fixed;
+    font-family: 'FontAwesome';
+    content: '\f0ab';
+    font-size: 180px;
+    left: 75%;
+    top: 75%;
+    margin-left: -90px;
+    margin-top: -90px;
+    color: rgba(74, 199, 18, 0.1);
+    z-index: 1001; // right over the drag helpers
   }
 }
 
@@ -49,12 +55,15 @@ h1.sequence-title { position: relative; }
   width: 49%;
   vertical-align: top;
   text-align: left;
+  padding: 8px;
   
   &.sequence-velocity {
     width: 2%;
     text-align: right;
   }
 }
+
+th.sequence-column { padding: 0 8px; }
 
 th.sequence-velocity {
   vertical-align: bottom;
@@ -71,22 +80,17 @@ th.sequence-velocity {
 }
 
 #houston_scheduler_view h3.sequence-title {
-  padding: 0 8px;
   text-transform: uppercase;
   font-size: 1.25em;
   font-weight: 500;
   line-height: 1em;
-  margin: 1em 0 0.25em;
+  margin: 1em 0 0 0;
 }
 
 #sequence_velocity_indicator {
   background: #0088cc;
   max-width: 8px;
   margin: 4px 0 4px 4px; // 8px (padding on .sequence-list) - 4px to off-center
-}
-
-.sequence-list {
-  padding: 0 8px;
 }
 
 .sequence-ticket {
