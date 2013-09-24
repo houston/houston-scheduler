@@ -94,14 +94,13 @@ th.sequence-velocity {
   margin: 0 0 0.33em 0;
   
   .sequence-ticket-front {
-    border-radius: 0.4em;
+    border-radius: 0.33em;
     overflow: hidden;
   
     background: white;
     border: 1px solid #d1d1d1;
     background: -webkit-linear-gradient(90deg, #e6e6e6, #f6f6f6) repeat scroll 0 0 transparent;
     background: -moz-linear-gradient(90deg, #e6e6e6, #f6f6f6) repeat scroll 0 0 transparent;
-    box-shadow: 0 0 3px #d4d4d4;
   
     .ticket-type-icon {
       position: absolute;
@@ -170,7 +169,6 @@ th.sequence-velocity {
         opacity: 0.50;
       }
       
-      box-shadow: 0 0 3px rgb(255, 165, 165);
     }
   }
   
@@ -230,14 +228,12 @@ th.sequence-velocity {
     border-color: rgb(169, 215, 226);
     background: -webkit-linear-gradient(90deg, rgb(229, 238, 240), rgb(250, 251, 252)) repeat scroll 0 0 transparent;
     background:    -moz-linear-gradient(90deg, rgb(229, 238, 240), rgb(250, 251, 252)) repeat scroll 0 0 transparent;
-    box-shadow: 0 0 3px rgb(193, 228, 236);
   }
   
   &.selected .sequence-ticket-front {
     border-color: rgb(99, 178, 196);
-    background: -webkit-linear-gradient(90deg, rgb(165, 220, 231), rgb(247, 252, 255)) repeat scroll 0 0 transparent;
-    background:    -moz-linear-gradient(90deg, rgb(165, 220, 231), rgb(247, 252, 255)) repeat scroll 0 0 transparent;
-    box-shadow: 0 0 3px rgb(170, 227, 240);
+    background: -webkit-linear-gradient(90deg, #CDE8EE, rgb(247, 252, 255)) repeat scroll 0 0 transparent;
+    background:    -moz-linear-gradient(90deg, #CDE8EE, rgb(247, 252, 255)) repeat scroll 0 0 transparent;
   }
 }
 
@@ -324,13 +320,9 @@ th.sequence-velocity {
   filter: FlipH;
   -ms-filter: "FlipH";
   
-  border-radius: 0.4em;
+  border-radius: 0.33em;
   padding: 2px;
   background: white;
-//  box-shadow: 0 0 6px #333;
-  .sequence-ticket-form .sequence-new-ticket-wrap {
-    box-shadow: none;
-  }
 }
 
 .sequence-dropcloth {
