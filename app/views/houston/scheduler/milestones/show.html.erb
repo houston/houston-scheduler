@@ -1,15 +1,13 @@
 <h1 class="sequence-title">
   <%= @project.name %>
-  <small><%= @milestone.name %></small>
+  <small>Milestone</small>
   
   <div id="sequence_settings"></div>
 </h1>
 
-<h4><%= @tickets.count %> Tickets</h4>
+<h3><%= @milestone.name%></h3>
 
-<div id="houston_scheduler_view">
-  <div id="tickets"></div>
-<div>
+<div id="houston_scheduler_view"><div>
 
 <% content_for :javascripts do %>
 <script type="text/javascript">

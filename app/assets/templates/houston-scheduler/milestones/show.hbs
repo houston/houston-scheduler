@@ -1,0 +1,33 @@
+{{#if tickets}}
+<table class="table table-sortable table-milestone-tickets">
+  <thead>
+    <tr>
+      <th class="ticket-effort">Effort</th>
+      <th class="ticket-summary sort-desc">Summary</th>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody id="tickets">
+    {{#tickets}}
+      <tr class="ticket" data-ticket-id="{{id}}">
+        <td class="ticket-effort">
+          {{estimatedEffort}}
+        </td>
+        <td class="ticket-summary">
+          {{summary}}
+          <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a>
+          {{#tags}}
+            <span class="ticket-tag" style="background-color: #{{color}}">{{name}}</span>
+          {{/tags}}
+          <a href="/tickets/{{id}}.json" class="ticket-details" tabindex="-1">more</a>
+        </td>
+        <td class="ticket-command">
+          <button tabindex="-1" class="btn btn-remove">Remove</button>
+        </td>
+      </tr>
+    {{/tickets}}
+  </tbody>
+</table>
+{{else}}
+<div class="alert alert-info">There are no tickets in this milestone.</div>
+{{/if}}
