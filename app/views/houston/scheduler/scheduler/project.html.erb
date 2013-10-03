@@ -1,16 +1,8 @@
+<%= render "projects/ticket_tracker_refresh" %>
+
 <h1 class="sequence-title">
   <%= @project.name %>
   <small>Scheduler</small>
-  
-  <%# Experiment %>
-  <% if current_user.try(:administrator?) %>
-  <div id="project_velocity" class="score score-large">
-    <p>
-      <span class="score-count"><%= @velocity %></span>
-      <span class="score-label">points / week</span>
-    </p>
-  </div>
-  <% end %>
 </h1>
 
 <ul id="houston_scheduler_tabs" class="nav nav-pills">
