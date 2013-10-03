@@ -31,7 +31,7 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
-    var tickets = <%=raw @tickets.map { |t| {
+    var tickets = <%=raw MultiJson.dump(@tickets.map { |t| {
       "id" => t.id,
       "number" => t.number,
       "ticketUrl" => t.ticket_tracker_ticket_url,
@@ -45,12 +45,12 @@
       "description" => t.description,
       "milestoneId" => t.milestone_id,
       "prerequisites" => t.ticket_prerequisite_ids
-    } }.to_json %>;
+    } }) %>;
     
-    var milestones = <%=raw @milestones.map { |m| {
+    var milestones = <%=raw MultiJson.dump(@milestones.map { |m| {
       "id" => m.id,
       "name" => m.name
-    } }.to_json %>;
+    } }) %>;
     
     Scheduler.tickets = new Scheduler.Tickets(tickets);
     Scheduler.milestones = new Scheduler.Milestones(milestones);
