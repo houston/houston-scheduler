@@ -19,7 +19,7 @@ module Houston
         @velocity = (velocity * (value / 100.0)).round(1)
         
         if @project.has_ticket_tracker?
-          @tickets = @project.tickets.unclosed.includes(:ticket_prerequisites, :project)
+          @tickets = @project.tickets.unresolved.includes(:ticket_prerequisites, :project)
           @milestones = @project.milestones.uncompleted
         else
           render template: "houston/scheduler/scheduler/no_ticket_tracker"
