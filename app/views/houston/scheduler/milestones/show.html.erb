@@ -7,6 +7,8 @@
 
 <h3><%= @milestone.name%></h3>
 
+<div id="graph" class="burndown-chart"></div>
+
 <div id="houston_scheduler_view"><div>
 
 <% content_for :javascripts do %>
@@ -24,6 +26,7 @@
       "unableToSetEstimatedEffort" => t.extended_attributes["unable_to_set_estimated_effort"],
       "summary" => t.summary,
       "description" => t.description,
+      "firstReleaseAt" => t.first_release_at,
       "milestoneId" => t.milestone_id,
       "prerequisites" => t.ticket_prerequisite_ids
     } }.to_json %>;
