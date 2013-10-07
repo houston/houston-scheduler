@@ -54,30 +54,10 @@ class Scheduler.ShowMilestoneView extends Backbone.View
         effort: remainingEffort
       sprint = @nextSprint(sprint)
     
-    # Compute the linear regression of the points
-    # http://trentrichardson.com/2010/04/06/compute-linear-regressions-in-javascript/
-    # http://dracoblue.net/dev/linear-least-squares-in-javascript/159/
-    [sum_x, sum_y, sum_xx, sum_xy, n] = [0, 0, 0, 0, data.length]
-    for d in data
-      [_x, _y] = [d.sprint, d.effort]
-      sum_x += _x
-      sum_y += _y
-      sum_xx += _x * _x
-      sum_xy += _x * _y
-    m = (n*sum_xy - sum_x*sum_y) / (n*sum_xx - sum_x*sum_x)
-    b = (sum_y - m*sum_x)/n
-    
-    # Find the X intercept
-    [x0, y0] = [((0 - b) / m), 0]
-    
-    # Calculate the regression line
-    lastSprint = @getEndOfSprint(x0)
-    rx1 = firstSprint
-    rx2 = x0
-    ry1 = b + m * rx1
-    ry2 = y0
+    reg = @computeRegression(data)
     
     # Widen the graph so that it includes the X intercept
+    lastSprint = @getEndOfSprint(reg.x2)
     sprints = (d.sprint for d in data).sort()
     sprint = _.last(sprints)
     while sprint < lastSprint
@@ -133,10 +113,10 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     
     svg.append('line')
       .attr('class', 'regression')
-      .attr('x1', rx(rx1))
-      .attr('y1', y(ry1))
-      .attr('x2', rx(rx2))
-      .attr('y2', y(ry2))
+      .attr('x1', rx(reg.x1))
+      .attr('y1', y(reg.y1))
+      .attr('x2', rx(reg.x2))
+      .attr('y2', y(reg.y2))
     
     svg.append('path')
       .attr('class', 'line')
@@ -172,6 +152,29 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     daysUntilFriday = 5 - wday # 5=Friday
     daysUntilFriday += 7 if daysUntilFriday < 0
     daysUntilFriday.days().after(date)
+  
+  computeRegression: (data)->
+    # Compute the linear regression of the points
+    # http://trentrichardson.com/2010/04/06/compute-linear-regressions-in-javascript/
+    # http://dracoblue.net/dev/linear-least-squares-in-javascript/159/
+    [sum_x, sum_y, sum_xx, sum_xy, n] = [0, 0, 0, 0, data.length]
+    for d in data
+      [_x, _y] = [d.sprint, d.effort]
+      sum_x += _x
+      sum_y += _y
+      sum_xx += _x * _x
+      sum_xy += _x * _y
+    m = (n*sum_xy - sum_x*sum_y) / (n*sum_xx - sum_x*sum_x)
+    b = (sum_y - m*sum_x)/n
+    
+    # Find the X intercept
+    [x0, y0] = [((0 - b) / m), 0]
+    
+    # Calculate the regression line
+    x1: data[0].sprint
+    x2: x0
+    y1: b + m * data[0].sprint
+    y2: y0
   
   
   
