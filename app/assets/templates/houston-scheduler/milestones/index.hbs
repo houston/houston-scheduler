@@ -13,14 +13,16 @@
       <div id="unsorted_tickets" class="sequence-list"></div>
     </td>
     <td class="sequence-column">
-      <div id="milestones"></div>
-      <div class="new-milestone-form">
-        <a class="new-milestone" id="new_milestone"><i class="icon-plus"></i> Add Milestone</a>
-        <form id="new_milestone_form">
-          <input name="milestone[name]" placeholder="New Milestone" id="new_milestone_name" class="milestone" />
-          <button id="create_new_milestone_button" class="btn btn-primary" type="submit">Create</button>
-          <button id="cancel_new_milestone_button" class="btn" type="reset">Cancel</button>
-        </form>
+      <div id="milestone_group">
+        <div id="milestones"></div>
+        <div class="new-milestone-form">
+          <a class="new-milestone" id="new_milestone"><i class="icon-plus"></i> Add Milestone</a>
+          <form id="new_milestone_form">
+            <input name="milestone[name]" placeholder="New Milestone" id="new_milestone_name" class="milestone" />
+            <button id="create_new_milestone_button" class="btn btn-primary" type="submit">Create</button>
+            <button id="cancel_new_milestone_button" class="btn" type="reset">Cancel</button>
+          </form>
+        </div>
       </div>
     </td>
   </tr>

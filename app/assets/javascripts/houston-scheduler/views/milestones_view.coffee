@@ -21,6 +21,9 @@ class Scheduler.MilestonesView extends Scheduler.ShowTicketsView
     @renderTickets()
     @renderMilestones()
     
+    @$el.find('#milestone_group').affix
+      offset:
+        top: 100
     @$el.find('.sequence-list').multiselectable()
     @$el.find('.sequence-ticket').draggable
       revert: true
