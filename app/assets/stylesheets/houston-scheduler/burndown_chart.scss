@@ -24,10 +24,21 @@
   .regression {
     fill: none;
     stroke-dasharray: 5px, 4px;
-    stroke: rgb(156, 202, 226);
     stroke-width: 1.5px;
   }
-
+  
+  .regression-all {
+    stroke: #e0e0e0;
+  }
+  
+  .regression-last-3 {
+    stroke: #93C9E5;
+  }
+  
+  .regression-last-2 {
+    stroke: #F8E3BE;
+  }
+  
   .line {
     fill: none;
     stroke: #1f77b4;

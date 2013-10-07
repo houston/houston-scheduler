@@ -54,15 +54,22 @@ class Scheduler.ShowMilestoneView extends Backbone.View
         effort: remainingEffort
       sprint = @nextSprint(sprint)
     
-    reg = @computeRegression(data)
+    regAll   = @computeRegression(data) if data.length >= 5           # all time
+    regLast3 = @computeRegression(data.slice(-4)) if data.length >= 4 # last 3 weeks only
+    regLast2 = @computeRegression(data.slice(-3)) if data.length >= 3 # last 2 weeks only
     
     # Widen the graph so that it includes the X intercept
-    lastSprint = @getEndOfSprint(reg.x2)
-    sprints = (d.sprint for d in data).sort()
-    sprint = _.last(sprints)
-    while sprint < lastSprint
-      sprint = @nextSprint(sprint)
-      sprints.push(sprint)
+    projections = []
+    projections.push regAll.x2 if regAll
+    projections.push regLast2.x2 if regLast2
+    projections.push regLast3.x2 if regLast3
+    if projectedEnd = projections.max()
+      lastSprint = @getEndOfSprint(projectedEnd)
+      sprints = (d.sprint for d in data).sort()
+      sprint = _.last(sprints)
+      while sprint < lastSprint
+        sprint = @nextSprint(sprint)
+        sprints.push(sprint)
     
     margin = {top: 40, right: 80, bottom: 24, left: 50}
     width = 960 - margin.left - margin.right
@@ -111,12 +118,29 @@ class Scheduler.ShowMilestoneView extends Backbone.View
         .style('text-anchor', 'end')
         .text('Points Remaining')
     
-    svg.append('line')
-      .attr('class', 'regression')
-      .attr('x1', rx(reg.x1))
-      .attr('y1', y(reg.y1))
-      .attr('x2', rx(reg.x2))
-      .attr('y2', y(reg.y2))
+    if regAll
+      svg.append('line')
+        .attr('class', 'regression regression-all')
+        .attr('x1', rx(regAll.x1))
+        .attr('y1', y(regAll.y1))
+        .attr('x2', rx(regAll.x2))
+        .attr('y2', y(regAll.y2))
+    
+    if regLast2
+      svg.append('line')
+        .attr('class', 'regression regression-last-2')
+        .attr('x1', rx(regLast2.x1))
+        .attr('y1', y(regLast2.y1))
+        .attr('x2', rx(regLast2.x2))
+        .attr('y2', y(regLast2.y2))
+    
+    if regLast3
+      svg.append('line')
+        .attr('class', 'regression regression-last-3')
+        .attr('x1', rx(regLast3.x1))
+        .attr('y1', y(regLast3.y1))
+        .attr('x2', rx(regLast3.x2))
+        .attr('y2', y(regLast3.y2))
     
     svg.append('path')
       .attr('class', 'line')
