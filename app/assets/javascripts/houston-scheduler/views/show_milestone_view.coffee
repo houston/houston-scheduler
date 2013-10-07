@@ -82,7 +82,7 @@ class Scheduler.ShowMilestoneView extends Backbone.View
         sprint = @nextSprint(sprint)
         sprints.push(sprint)
     
-    margin = {top: 40, right: 80, bottom: 24, left: 50}
+    margin = {top: 40, right: 80, bottom: 32, left: 50}
     width = 960 - margin.left - margin.right
     height = 320 - margin.top - margin.bottom
     formatDate = d3.time.format('%b %e')
@@ -123,7 +123,8 @@ class Scheduler.ShowMilestoneView extends Backbone.View
         .call(yAxis)
       .append('text')
         .attr('transform', 'rotate(-90)')
-        .attr('y', 6)
+        .attr('y', -45)
+        .attr('x', -160)
         .attr('dy', '.71em')
         .attr('class', 'legend')
         .style('text-anchor', 'end')
@@ -165,13 +166,23 @@ class Scheduler.ShowMilestoneView extends Backbone.View
         .attr('cx', (d)-> x(d.sprint))
         .attr('cy', (d)-> y(d.effort))
     
-    svg.selectAll('.label')
+    svg.selectAll('.effort-remaining')
       .data(data)
       .enter()
       .append('text')
         .text((d) -> d.effort)
-        .attr('class', 'label')
+        .attr('class', 'effort-remaining')
         .attr('transform', (d)-> "translate(#{x(d.sprint) + 4.5}, #{y(d.effort) - 11}) rotate(-90)")
+    
+    insertLinebreaks = (d)->
+      el = d3.select(this)
+      words = el.text().split(/\s+/)
+      el.text('')
+      
+      el.append('tspan').text(words[0]).attr('class', 'month')
+      el.append('tspan').text(words[1]).attr('x', 0).attr('dy', '11').attr('class', 'day')
+    
+    svg.selectAll('.x.axis text').each(insertLinebreaks)
   
   prevSprint: (timestamp)->
     1.week().before(new Date(timestamp)).getTime()
