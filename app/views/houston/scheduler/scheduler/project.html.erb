@@ -1,9 +1,11 @@
-<%= render "projects/ticket_tracker_refresh" %>
-
-<h1 class="sequence-title">
+<% content_for :title do %>
+<h1 class="project-banner <%= @project.color %> space-below">
+  <small>Tickets for</small>
   <%= @project.name %>
-  <small>Scheduler</small>
 </h1>
+<% end %>
+
+<%= render "projects/ticket_tracker_refresh" %>
 
 <ul id="houston_scheduler_tabs" class="nav nav-pills">
   <li class="active"><a href="#sequence">Priority <span class="badge tickets-without-sequence zero"></span></a></li>

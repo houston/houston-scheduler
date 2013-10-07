@@ -1,11 +1,10 @@
-<h1 class="sequence-title">
-  <%= @project.name %>
-  <small>Milestone</small>
+<% content_for :title do %>
+<h1 class="project-banner <%= @project.color %> space-below">
+  <%= @project.name %><small> : <%= @milestone.name %></small>
   
   <div id="sequence_settings"></div>
 </h1>
-
-<h3><%= @milestone.name%></h3>
+<% end %>
 
 <div id="graph" class="burndown-chart"></div>
 

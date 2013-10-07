@@ -1,7 +1,9 @@
+<% content_for :title do %>
 <h1 class="space-below">
+  <small>Tickets for</small>
   <%= @project.name %>
-  <small>Scheduler</small>
 </h1>
+<% end %>
 
 <div class="alert">
   This project is not configured to use a ticket tracking system.

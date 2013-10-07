@@ -1,13 +1,15 @@
+<% content_for :title do %>
 <h1>
   Mixer
   
   <% unless @readonly %>
-  <span class="mixer-buttons">
+  <span class="buttons mixer-buttons">
     <button id="reset_mixes" class="btn">Reset</button>
     <button id="save_mixes" class="btn btn-primary">Save</button>
   </span>
   <% end %>
 </h1>
+<% end %>
 
 <div id="mixes_graph"></div>
 <div id="mixes_by_week"></div>
