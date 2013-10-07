@@ -84,12 +84,8 @@ class Scheduler.NewTicketView extends Backbone.View
     $form = $('#new_ticket_form')
     attributes = $form.serializeObject()
     
-    summary = attributes['ticket[summary]']
-    [everything, type, summary] = /^\s*\[(bug|feature|chore|refactor)\]\s*(.*)$/.exec(summary)
-    attributes['ticket[summary]'] = summary
-    attributes['ticket[type]'] = type.capitalize()
-    
     $form.disable()
+    
     xhr = $.post "/projects/#{@project.slug}/tickets", attributes
     xhr.complete -> $form.enable()
     
