@@ -51,7 +51,7 @@ class Scheduler.ShowMilestoneView extends Backbone.View
       remainingEffort -= (progressBySprint[sprint] || 0)
       data.push
         sprint: sprint
-        effort: remainingEffort
+        effort: Math.ceil(remainingEffort)
       sprint = @nextSprint(sprint)
     
     regAll   = @computeRegression(data) if data.length >= 5           # all time
