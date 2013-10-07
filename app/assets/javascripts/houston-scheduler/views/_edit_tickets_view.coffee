@@ -33,6 +33,10 @@ class Scheduler.EditTicketsView extends Backbone.View
   render: ->
     $(@el).html @pageTemplate()
     
+    # Allow scrolling with mousewheel rather than
+    # spinning a ticket's effort estimate up or down
+    $(@el).delegate 'input[type="number"]', 'mousewheel', -> $(@).blur()
+    
     $list = $('#tickets').empty()
     @tickets
       .sortBy (ticket)=>
