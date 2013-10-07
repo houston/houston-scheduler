@@ -28,10 +28,13 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     # Find the total amount of effort to accomplish
     progressBySprint = {}
     totalEffort = 0
+    mostRecentDataPoint = 0
     for ticket in tickets
       effort = +ticket.estimatedEffort
       if ticket.firstReleaseAt
-        sprint = @getEndOfSprint(ticket.firstReleaseAt)
+        firstReleaseAt = new Date(ticket.firstReleaseAt)
+        mostRecentDataPoint = +firstReleaseAt if mostRecentDataPoint < firstReleaseAt
+        sprint = @getEndOfSprint(firstReleaseAt)
         progressBySprint[sprint] = (progressBySprint[sprint] || 0) + effort
       totalEffort += effort
     
@@ -54,9 +57,17 @@ class Scheduler.ShowMilestoneView extends Backbone.View
         effort: Math.ceil(remainingEffort)
       sprint = @nextSprint(sprint)
     
-    regAll   = @computeRegression(data) if data.length >= 5           # all time
-    regLast3 = @computeRegression(data.slice(-4)) if data.length >= 4 # last 3 weeks only
-    regLast2 = @computeRegression(data.slice(-3)) if data.length >= 3 # last 2 weeks only
+    # If the most recent data point is for an incomplete
+    # sprint, disregard it when calculating the regressions
+    lastCompleteSprint = @getEndOfSprint(1.week().before(new Date()))
+    if mostRecentDataPoint > lastCompleteSprint
+      regAll   = @computeRegression(data.slice( 0, -1)) if data.length >= 6  # all time
+      regLast3 = @computeRegression(data.slice(-5, -1)) if data.length >= 5  # last 3 weeks only
+      regLast2 = @computeRegression(data.slice(-4, -1)) if data.length >= 4  # last 2 weeks only
+    else
+      regAll   = @computeRegression(data)               if data.length >= 5  # all time
+      regLast3 = @computeRegression(data.slice(-4))     if data.length >= 4  # last 3 weeks only
+      regLast2 = @computeRegression(data.slice(-3))     if data.length >= 3  # last 2 weeks only
     
     # Widen the graph so that it includes the X intercept
     projections = []
