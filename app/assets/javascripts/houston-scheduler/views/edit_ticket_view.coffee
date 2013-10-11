@@ -67,8 +67,9 @@ class Scheduler.EditTicketView extends Backbone.View
       @$el.toggleClass('saved', @isValid(@ticket))
   
   saveAttributes: (attributes, callback)->
-    @$el.addClass 'working'
     @ticket.save attributes,
+      beforeSend: =>
+        @$el.addClass 'working'
       success: =>
         @$el.removeClass('working')
         callback()
