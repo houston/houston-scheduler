@@ -172,7 +172,7 @@ class Scheduler.ShowMilestoneView extends Backbone.View
       .append('text')
         .text((d) -> d.effort)
         .attr('class', 'effort-remaining')
-        .attr('transform', (d)-> "translate(#{x(d.sprint) + 4.5}, #{y(d.effort) - 11}) rotate(-90)")
+        .attr('transform', (d)-> "translate(#{x(d.sprint) + 5.5}, #{y(d.effort) - 10}) rotate(-75)")
     
     insertLinebreaks = (d)->
       el = d3.select(this)
