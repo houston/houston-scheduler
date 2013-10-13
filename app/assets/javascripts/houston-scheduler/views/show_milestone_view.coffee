@@ -74,6 +74,7 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     projections.push regAll.x2 if regAll
     projections.push regLast2.x2 if regLast2
     projections.push regLast3.x2 if regLast3
+    sprints = []
     if projectedEnd = projections.max()
       lastSprint = @getEndOfSprint(projectedEnd)
       sprints = (d.sprint for d in data).sort()
