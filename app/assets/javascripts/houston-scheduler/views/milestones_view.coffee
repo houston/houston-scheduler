@@ -24,11 +24,8 @@ class Scheduler.MilestonesView extends Scheduler.ShowTicketsView
     @$el.find('#milestone_group').affix
       offset:
         top: 100
-    @$el.find('.sequence-list').multiselectable()
-    @$el.find('.sequence-ticket').draggable
-      revert: true
-      revertDuration: 200
-      containment: '#houston_scheduler_view'
+    
+    @makeTicketsSortable()
   
   renderTickets: ->
     $unsortedTickets = @$el.find('#unsorted_tickets')
@@ -41,11 +38,13 @@ class Scheduler.MilestonesView extends Scheduler.ShowTicketsView
     @milestones.each (milestone)=>
       view = @milestoneView(milestone)
       $milestones.appendView(view)
-      view.on 'drop', ($ticket)=>
-        $ticket.remove()
-        ticketId = $ticket.attr('data-ticket-id')
-        ticket = @tickets.get(ticketId)
-        view.addTicket(ticket)
+      view.on 'drop', =>
+        @$el.find('.sequence-ticket.selected').each (i, el)=>
+          $ticket = $(el)
+          $ticket.remove()
+          ticketId = $ticket.attr('data-ticket-id')
+          ticket = @tickets.get(ticketId)
+          view.addTicket(ticket)
   
   newMilestone: ->
     $('#new_milestone').hide()
