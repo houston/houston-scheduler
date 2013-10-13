@@ -15,4 +15,7 @@ Houston::Scheduler::Engine.routes.draw do
   post "sprints", :to => "sprints#create"
   get "sprints/:id", :to => "sprints#show"
   
+  post "tickets/:id/lock", :to => "ticket_locks#create", constraints: {id: /\d+/}
+  delete "tickets/:id/lock", :to => "ticket_locks#destroy", constraints: {id: /\d+/}
+  
 end

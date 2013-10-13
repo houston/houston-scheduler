@@ -24,8 +24,18 @@ module Houston
           "summary" => t.summary,
           "description" => t.description,
           "firstReleaseAt" => t.first_release_at,
-          "closedAt" => t.closed_at
+          "closedAt" => t.closed_at,
+          "checkedOutAt" => t.checked_out_at,
+          "checkedOutBy" => present_user(t.checked_out_by)
         } }
+      end
+      
+      
+      def present_user(user)
+        return nil unless user
+        { id: user.id,
+          email: user.email,
+          name: user.name }
       end
       
       

@@ -1,10 +1,16 @@
 class Scheduler.ShowSprintView extends Backbone.View
   
+  events:
+    'click .check-out-button': 'toggleCheckOut'
+  
   initialize: ->
     @sprintId = @options.sprintId
     @template = HandlebarsTemplates['houston-scheduler/sprints/show']
     
     $.get "/scheduler/sprints/#{@sprintId}", (tickets)=>
+      for ticket in tickets
+        ticket.checkedOut = ticket.checkedOutBy?
+        ticket.checkedOutByMe = ticket.checkedOutBy && ticket.checkedOutBy.id == window.user.id
       @tickets = tickets
       @render()
     
@@ -120,10 +126,45 @@ class Scheduler.ShowSprintView extends Backbone.View
         .text((d) -> d.effort)
         .attr('class', 'effort-remaining')
         .attr('transform', (d)-> "translate(#{x(d.day) + 5.5}, #{y(d.effort) - 10}) rotate(-75)")
-
+  
   truncateDate: (date)->
     date.setHours(0)
     date.setMinutes(0)
     date.setSeconds(0)
     date.setMilliseconds(0)
     date
+  
+  
+  
+  toggleCheckOut: (e)->
+    $button = $(e.target)
+    $ticket = $button.closest('tr')
+    id = +$ticket.attr('data-ticket-id')
+    ticket = _.find @tickets, (ticket)-> ticket.id == id
+    
+    if $button.hasClass('active')
+      @checkIn($button, $ticket, id, ticket)
+    else
+      @checkOut($button, $ticket, id, ticket)
+  
+  checkIn: ($button, $ticket, id, ticket)->
+    $.destroy("/scheduler/tickets/#{id}/lock")
+      .success =>
+        ticket.checkedOutAt = null
+        ticket.checkedOutBy = null
+      .error (xhr)=>
+        errors = Errors.fromResponse(response)
+        errors.renderToAlert().appendAsAlert()
+  
+  checkOut: ($button, $ticket, id, ticket)->
+    $.post("/scheduler/tickets/#{id}/lock")
+      .success =>
+        ticket.checkedOutAt = new Date()
+        ticket.checkedOutBy =
+          id: window.user.id
+          name: window.user.get('name')
+          email: window.user.get('email')
+      .error (response)=>
+        errors = Errors.fromResponse(response)
+        errors.renderToAlert().appendAsAlert()
+
