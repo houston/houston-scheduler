@@ -12,11 +12,6 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     #
     @delayedNotifier = new Lail.DelayedAction(_.bind(@updateOrder, @), delay: 800)
     
-    # Unselect tickets when clicking away from the lists
-    $('body').click (e)->
-      if $(e.target).closest('.sequence-list').length == 0
-        $('.sequence-list .selected').removeClass('selected')
-    
     @sortedTickets = @tickets.sorted()
     @unsortedTickets = @tickets.unsorted()
   
@@ -55,32 +50,12 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     @makeTicketsSortable() unless @readonly
     
   makeTicketsSortable: ->
-    view = @
-    @$el.find('.sequence-list').multisortable
-      connectWith: '.sequence-list'
-      containment: '#houston_scheduler_view'
-      
-      activate: (event, ui)-> $(@).addClass('sort-active').parent().addClass('sort-active')
-      deactivate: (event, ui)-> $(@).removeClass('sort-active').parent().removeClass('sort-active')
-      
-      start: (event, ui)->
-        $e = ui.item
-        $('.sequence-list').not($e.parent())
-          .find('.selected, .multiselectable-previous')
-          .removeClass('selected multiselectable-previous')
-      
-      receive: (event, ui)=>
-        if ui.item.closest('#sequence_unsorted').length > 0
-          @clearSequenceOfTicketFor(ui.item)
-          @delayedNotifier.trigger()
-          @adjustVelocityIndicatorHeight()
-      
-      # unselect items in the opposite list
-      click: (event, $e)->
-        return unless $e.is('.sequence-ticket')
-        $('.sequence-list').not($e.parent())
-          .find('.selected, .multiselectable-previous')
-          .removeClass('selected multiselectable-previous')
+    super(connected: true)
+    
+    @$el.find('#sequence_unsorted').on 'sortreceive', (event, ui)=>
+      @clearSequenceOfTicketFor(ui.item)
+      @delayedNotifier.trigger()
+      @adjustVelocityIndicatorHeight()
     
     @$el.find('#sequence_sorted').on 'sortupdate', (event, ui)=>
       @delayedNotifier.trigger()

@@ -8,6 +8,11 @@ class Scheduler.ShowTicketsView extends Backbone.View
     @readonly = @options.readonly
     @showEffort = true
     
+    # Unselect tickets when clicking away from the lists
+    $('body').click (e)->
+      if $(e.target).closest('.sequence-list').length == 0
+        $('.sequence-list .selected').removeClass('selected')
+    
     @$el.delegate '.sequence-ticket', 'edit', _.bind(@beginEdit, @)
     
     @__onKeyUp = _.bind(@onKeyUp, @)
@@ -43,6 +48,34 @@ class Scheduler.ShowTicketsView extends Backbone.View
     else
       $('.sequence-ticket').each ->
         $(@).css('height', '2em')
+  
+  
+  
+  makeTicketsSortable: (options={})->
+    view = @
+    
+    if options.connected
+      options = _.extend options,
+        connectWith: '.sequence-list'
+        
+        # unselect items in the opposite list
+        start: (event, ui)->
+          $e = ui.item
+          $('.sequence-list').not($e.parent())
+            .find('.selected, .multiselectable-previous')
+            .removeClass('selected multiselectable-previous')
+        
+        click: (event, $e)->
+          return unless $e.is('.sequence-ticket')
+          $('.sequence-list').not($e.parent())
+            .find('.selected, .multiselectable-previous')
+            .removeClass('selected multiselectable-previous')
+    
+    @$el.find('.sequence-list').multisortable _.extend(options,
+      containment: '#houston_scheduler_view'
+      activate: (event, ui)-> $(@).addClass('sort-active').parent().addClass('sort-active')
+      deactivate: (event, ui)-> $(@).removeClass('sort-active').parent().removeClass('sort-active')
+    )
   
   
   
