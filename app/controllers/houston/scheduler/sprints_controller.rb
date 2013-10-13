@@ -1,0 +1,34 @@
+module Houston
+  module Scheduler
+    class SprintsController < ApplicationController
+      
+      
+      def create
+        project = Project.find(params[:project_id])
+        sprint = project.sprints.create!
+        sprint.ticket_ids = params[:ticket_ids]
+        render json: sprint, status: :created
+      end
+      
+      
+      def show
+        sprint = Sprint.find(params[:id])
+        render json: sprint.tickets.map { |t| {
+          "id" => t.id,
+          "number" => t.number,
+          "ticketUrl" => t.ticket_tracker_ticket_url,
+          "ticketSystem" => t.project.ticket_tracker_name,
+          "type" => t.type.to_s.downcase.dasherize,
+          "tags" => t.tags.map(&:to_h),
+          "estimatedEffort" => t.extended_attributes["estimated_effort"],
+          "summary" => t.summary,
+          "description" => t.description,
+          "firstReleaseAt" => t.first_release_at,
+          "closedAt" => t.closed_at
+        } }
+      end
+      
+      
+    end
+  end
+end

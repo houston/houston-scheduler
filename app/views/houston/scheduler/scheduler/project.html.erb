@@ -12,6 +12,9 @@
   <% if can?(:estimate, @project) %>
     <li><a href="#estimate-effort">Estimate Effort <span class="badge tickets-without-effort-count zero"></span></a></li>
   <% end %>
+  <% if can?(:read, @project.sprints.build) %>
+    <li><a href="#sprint">Sprint</span> <span class="badge tickets-in-sprint-count zero"></span></a></li>
+  <% end %>
   <li><a href="#milestones">Milestones</a></li>
   <% if can?(:estimate, @project) || can?(:prioritize, @project) %>
     <li><a href="#unable-to-estimate">Discussion Needed <span class="badge tickets-unable-to-estimate-count zero"></span></a></li>
@@ -38,6 +41,7 @@
       "summary" => t.summary,
       "description" => t.description,
       "milestoneId" => t.milestone_id,
+      "sprintId" => t.sprint_id,
       "prerequisites" => t.ticket_prerequisite_ids
     } }) %>;
     
@@ -57,6 +61,7 @@
         ticketTrackerName: <%=raw @project.ticket_tracker_name.to_json %> },
       tickets: Scheduler.tickets,
       milestones: Scheduler.milestones,
+      sprintId: <%= @sprint_id.to_json %>,
       velocity: <%= @velocity %>,
       canEstimate: <%= can?(:estimate, @project) %>,
       canPrioritize: <%= can?(:prioritize, @project) %>,

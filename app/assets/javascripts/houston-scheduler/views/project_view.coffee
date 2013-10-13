@@ -6,6 +6,7 @@ class Scheduler.ProjectView extends Backbone.View
     @tickets = @options.tickets
     @milestones = @options.milestones
     @velocity = @options.velocity
+    @sprintId = @options.sprintId
     @canEstimate = @options.canEstimate
     @canPrioritize = @options.canPrioritize
     @tickets.on 'change', _.bind(@render, @)
@@ -23,6 +24,7 @@ class Scheduler.ProjectView extends Backbone.View
   ticketsWithBothEstimates: -> @tickets.withBothEstimates()
   ticketsUnableToEstimate: -> @tickets.unableToEstimate()
   ticketsWithEffortEstimate: -> @tickets.withEffortEstimate()
+  ticketsInSprint: -> if @sprintId then @tickets.inSprint(@sprintId) else []
   
   ticketsWaitingForEffortEstimate: ->
     @tickets.select (ticket)->
@@ -54,3 +56,6 @@ class Scheduler.ProjectView extends Backbone.View
       
       count = @ticketsWaitingForEffortEstimate().length
       $('.tickets-without-effort-count').html(count).toggleClass('zero', count == 0)
+    
+    count = @ticketsInSprint().length
+    $('.tickets-in-sprint-count').html(count).toggleClass('zero', count == 0)

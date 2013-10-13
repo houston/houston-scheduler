@@ -19,6 +19,9 @@ class Scheduler.Tickets extends Backbone.Collection
   withoutMilestones: ->
     @select (ticket)-> !ticket.get('milestoneId')
   
+  inSprint: (sprintId)->
+    @select (ticket)-> ticket.get('sprintId') == sprintId
+  
   unableToEstimate: ->
     @select (ticket)->
       ticket.get('unableToSetEstimatedEffort') or ticket.get('unableToSetEstimatedValue')

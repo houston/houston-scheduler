@@ -12,4 +12,7 @@ Houston::Scheduler::Engine.routes.draw do
   get "milestones/:id", :to => "milestones#show", constraints: {id: /\d+/}
   post "milestones", :to => "milestones#create"
   
+  post "sprints", :to => "sprints#create"
+  get "sprints/:id", :to => "sprints#show"
+  
 end
