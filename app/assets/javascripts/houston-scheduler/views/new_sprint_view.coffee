@@ -5,8 +5,7 @@ class Scheduler.NewSprintView extends Scheduler.EditSprintView
     super
     
     template = HandlebarsTemplates['houston-scheduler/sprints/new']
-    html = template()
-    @$el.prepend(html)
+    @$el.find('#sprint_instructions').html(template)
     
     $('#create_sprint_button').click _.bind(@createSprint, @)
   

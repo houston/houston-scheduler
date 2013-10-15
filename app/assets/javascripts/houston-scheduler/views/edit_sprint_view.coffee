@@ -17,6 +17,8 @@ class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
     html = template()
     @$el.html(html)
     
+    $('#update_sprint_button').click _.bind(@updateSprint, @)
+    
     @renderShowEffortOption()
     @renderTickets()
   
@@ -33,3 +35,16 @@ class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
     
   makeTicketsSortable: ->
     super(connected: true)
+  
+  
+  
+  updateSprint: (e)->
+    e.preventDefault()
+    ticketIds = ($(el).attr('data-ticket-id') for el in $('#tickets_inside_sprint .sequence-ticket'))
+    if ticketIds.length == 0
+      $('#body').prepend '<div class="alert alert-warning">You haven\'t moved any tickets into this sprint'
+    else
+      xhr = $.put "/scheduler/sprints/#{@sprintId}",
+        ticket_ids: ticketIds
+      xhr.success =>
+        window.location.hash = "sprint"

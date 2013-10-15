@@ -11,6 +11,13 @@ module Houston
       end
       
       
+      def update
+        sprint = Sprint.find(params[:id])
+        sprint.ticket_ids = params[:ticket_ids]
+        head :ok
+      end
+      
+      
       def show
         sprint = Sprint.find(params[:id])
         render json: sprint.tickets.map { |t| {

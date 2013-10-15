@@ -5,6 +5,7 @@ class Scheduler.Router extends Backbone.Router
     'sequence':           'showSequence'
     'milestones':         'showMilestones'
     'sprint':             'showSprint'
+    'edit-sprint':        'editSprint'
     'unable-to-estimate': 'showUnableToEstimate'
     'estimate-effort':    'showTicketsWithNoEffort'
   
@@ -42,7 +43,14 @@ class Scheduler.Router extends Backbone.Router
         onCreated: (sprint)=>
           @parent.sprintId = sprint.id
           @showSprint()
-    
+  
+  editSprint: ->
+    @activateTab('#sprint')
+    @show new Scheduler.EditSprintView
+      project: @parent.project
+      tickets: @parent.tickets
+      sprintId: @parent.sprintId
+
   showUnableToEstimate: ->
     @updateActiveTab()
     @show new Scheduler.UnableToEstimateView
