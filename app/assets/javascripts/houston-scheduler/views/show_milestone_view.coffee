@@ -69,6 +69,13 @@ class Scheduler.ShowMilestoneView extends Backbone.View
       regLast3 = @computeRegression(data.slice(-4))     if data.length >= 4  # last 3 weeks only
       regLast2 = @computeRegression(data.slice(-3))     if data.length >= 3  # last 2 weeks only
     
+    console.log 'mostRecentDataPoint', new Date(mostRecentDataPoint)
+    console.log 'lastCompleteSprint', new Date(lastCompleteSprint)
+    
+    console.log 'regAll', new Date(regAll.x2) if regAll
+    console.log 'regLast3', new Date(regLast3.x2) if regLast3
+    console.log 'regLast2', new Date(regLast2.x2) if regLast2
+    
     # Widen the graph so that it includes the X intercept
     projections = []
     projections.push regAll.x2 if regAll
