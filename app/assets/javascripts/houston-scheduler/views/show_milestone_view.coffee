@@ -214,6 +214,9 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     m = (n*sum_xy - sum_x*sum_y) / (n*sum_xx - sum_x*sum_x)
     b = (sum_y - m*sum_x)/n
     
+    # No progress is being made
+    return null if m == 0
+    
     # Find the X intercept
     [x0, y0] = [((0 - b) / m), 0]
     
