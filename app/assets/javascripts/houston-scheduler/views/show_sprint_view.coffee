@@ -52,7 +52,7 @@ class Scheduler.ShowSprintView extends Backbone.View
     # where no progress was made
     remainingEffort = totalEffort - (progressByDay[monday] || 0)
     data = [
-      day: day
+      day: monday
       effort: Math.ceil(remainingEffort)
     ]
     for day in days.slice(1)
