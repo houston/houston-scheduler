@@ -60,7 +60,7 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     # If the most recent data point is for an incomplete
     # sprint, disregard it when calculating the regressions
     lastCompleteSprint = @getEndOfSprint(1.week().before(new Date()))
-    if mostRecentDataPoint > lastCompleteSprint
+    if @truncateDate(mostRecentDataPoint) > lastCompleteSprint
       regAll   = @computeRegression(data.slice( 0, -1)) if data.length >= 6  # all time
       regLast3 = @computeRegression(data.slice(-5, -1)) if data.length >= 5  # last 3 weeks only
       regLast2 = @computeRegression(data.slice(-4, -1)) if data.length >= 4  # last 2 weeks only
@@ -206,6 +206,14 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     daysUntilFriday = 5 - wday # 5=Friday
     daysUntilFriday += 7 if daysUntilFriday < 0
     daysUntilFriday.days().after(date)
+  
+  truncateDate: (date)->
+    date = new Date(date)
+    date.setHours(0)
+    date.setMinutes(0)
+    date.setSeconds(0)
+    date.setMilliseconds(0)
+    +date
   
   computeRegression: (data)->
     # Compute the linear regression of the points
