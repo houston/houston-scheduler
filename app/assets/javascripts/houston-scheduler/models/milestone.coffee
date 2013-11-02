@@ -15,6 +15,7 @@ class Scheduler.Milestone extends Backbone.Model
       else
         indeterminate = true
     
+    complexity = Math.ceil(complexity)
     complexity += '+' if indeterminate
     complexity
 
