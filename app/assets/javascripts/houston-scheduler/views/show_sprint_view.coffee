@@ -23,6 +23,8 @@ class Scheduler.ShowSprintView extends Backbone.View
     
     @renderBurndownChart(@tickets)
     
+    @$el.loadTicketDetailsOnClick()
+    
     $('.table-sortable').tablesorter()
     @
   

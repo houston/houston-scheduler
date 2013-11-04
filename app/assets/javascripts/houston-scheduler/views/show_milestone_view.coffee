@@ -17,6 +17,8 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     
     @renderBurndownChart(tickets)
     
+    @$el.loadTicketDetailsOnClick()
+    
     $('.table-sortable').tablesorter()
     @
   

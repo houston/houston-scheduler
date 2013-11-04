@@ -24,7 +24,6 @@ class Scheduler.EditTicketView extends Backbone.View
       .attr('id', "ticket_#{@ticket.get('id')}")
       .html(@template @ticket.toJSON())
       .toggleClass('saved', @isValid(@ticket))
-      .delegate('.ticket-details', 'click', _.bind(@showTicketDetails, @))
     @unableToEstimate() if @ticket.get(@unableToSetAttribute)
     @
   
@@ -38,26 +37,6 @@ class Scheduler.EditTicketView extends Backbone.View
   
   loseFocus: ->
     @$el.removeClass('focus')
-  
-  
-  
-  showTicketDetails: (e)->
-    e.preventDefault()
-    e.stopImmediatePropagation()
-    url = $(e.target).attr('href')
-    $.get url, (ticket)->
-      html = """
-      <div class="modal hide fade">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h3>Description</h3>
-        </div>
-        <div class="modal-body">
-          #{ticket.description}
-        </div>
-      </div>
-      """
-      $(html).modal()
   
   
   

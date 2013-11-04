@@ -51,6 +51,8 @@ class Scheduler.EditTicketsView extends Backbone.View
           attribute: @attribute
         $list.appendView(view)
     
+    @$el.loadTicketDetailsOnClick()
+    
     $('.table-sortable').tablesorter
       headers: {0: {sorter: 'inputs'}}
     @

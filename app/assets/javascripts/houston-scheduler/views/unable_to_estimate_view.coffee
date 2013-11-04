@@ -14,6 +14,8 @@ class Scheduler.UnableToEstimateView extends Backbone.View
     html = template(tickets: tickets)
     $(@el).html html
     
+    @$el.loadTicketDetailsOnClick()
+    
     $('.table-sortable').tablesorter()
     @
   
