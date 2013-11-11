@@ -1,7 +1,9 @@
 class Scheduler.ShowSprintView extends Backbone.View
+  className: 'hide-completed'
   
   events:
     'click .check-out-button': 'toggleCheckOut'
+    'click #show_completed_tickets': 'toggleShowCompleted'
   
   initialize: ->
     @sprintId = @options.sprintId
@@ -172,3 +174,12 @@ class Scheduler.ShowSprintView extends Backbone.View
         errors = Errors.fromResponse(response)
         errors.renderToAlert().appendAsAlert()
 
+
+  toggleShowCompleted: (e)->
+    $button = $(e.target)
+    if $button.hasClass('active')
+      $button.removeClass('btn-success')
+      @$el.addClass('hide-completed')
+    else
+      $button.addClass('btn-success')
+      @$el.removeClass('hide-completed')
