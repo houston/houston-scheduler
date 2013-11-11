@@ -25,7 +25,7 @@
       <td class="ticket-worker">
         {{#if checkedOut}}
           {{#if checkedOutByMe}}
-            <button class="btn btn-info check-out-button active" data-toggle="button">Check out</button>
+            <button class="btn btn-danger check-out-button active" data-toggle="button">Check in</button>
           {{else}}
             Checked out by
             {{{avatar checkedOutBy/email 24 checkedOutBy/name}}}

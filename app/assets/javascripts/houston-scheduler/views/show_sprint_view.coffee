@@ -154,6 +154,7 @@ class Scheduler.ShowSprintView extends Backbone.View
       .success =>
         ticket.checkedOutAt = null
         ticket.checkedOutBy = null
+        $button.removeClass('btn-danger').addClass('btn-info').html('Check out')
       .error (xhr)=>
         errors = Errors.fromResponse(response)
         errors.renderToAlert().appendAsAlert()
@@ -166,6 +167,7 @@ class Scheduler.ShowSprintView extends Backbone.View
           id: window.user.id
           name: window.user.get('name')
           email: window.user.get('email')
+        $button.removeClass('btn-info').addClass('btn-danger').html('Check in')
       .error (response)=>
         errors = Errors.fromResponse(response)
         errors.renderToAlert().appendAsAlert()
