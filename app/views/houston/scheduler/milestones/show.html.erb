@@ -6,8 +6,6 @@
 </h1>
 <% end %>
 
-<div id="graph" class="burndown-chart"></div>
-
 <div id="houston_scheduler_view"><div>
 
 <% content_for :javascripts do %>
@@ -33,15 +31,16 @@
     
     Scheduler.tickets = new Scheduler.Tickets(tickets);
     
-    new Scheduler.ShowMilestoneView({
-      project: {
-        id: <%= @project.id %>,
-        slug: <%=raw @project.slug.to_json %>,
-        name: <%=raw @project.name.to_json %>,
-        ticketTrackerName: <%=raw @project.ticket_tracker_name.to_json %> },
-      tickets: Scheduler.tickets.models,
-      el: $('#houston_scheduler_view')
-    });
+    $('#houston_scheduler_view').appendView(
+      new Scheduler.ShowMilestoneView({
+        project: {
+          id: <%= @project.id %>,
+          slug: <%=raw @project.slug.to_json %>,
+          name: <%=raw @project.name.to_json %>,
+          ticketTrackerName: <%=raw @project.ticket_tracker_name.to_json %> },
+        tickets: Scheduler.tickets.models
+      })
+    );
   });
 </script>
 <% end %>

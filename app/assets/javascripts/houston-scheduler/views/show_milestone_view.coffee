@@ -1,7 +1,9 @@
 class Scheduler.ShowMilestoneView extends Backbone.View
+  className: 'hide-completed'
   
   events:
     'click .btn-remove': 'removeTicket'
+    'click #show_completed_tickets': 'toggleShowCompleted'
   
   initialize: ->
     @tickets = @options.tickets
@@ -265,3 +267,13 @@ class Scheduler.ShowMilestoneView extends Backbone.View
         console.log arguments
         $ticket.removeClass 'working'
         $button.removeAttr('disabled', 'disabled')
+
+
+  toggleShowCompleted: (e)->
+    $button = $(e.target)
+    if $button.hasClass('active')
+      $button.removeClass('btn-success')
+      @$el.addClass('hide-completed')
+    else
+      $button.addClass('btn-success')
+      @$el.removeClass('hide-completed')
