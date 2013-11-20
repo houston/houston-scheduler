@@ -18,6 +18,9 @@
     <tr class="ticket {{#firstReleaseAt}}ticket-released{{/firstReleaseAt}} {{#resolved}}ticket-resolved{{/resolved}} {{#closedAt}}ticket-closed{{/closedAt}}" data-ticket-id="{{id}}">
       <td class="ticket-effort">
         {{estimatedEffort}}
+        {{#firstReleaseAt}}
+          <i class="icon-ok-sign" rel="tooltip" title="Released {{formatDate this}}"></i>
+        {{/firstReleaseAt}}
       </td>
       <td class="ticket-summary">
         {{summary}}
