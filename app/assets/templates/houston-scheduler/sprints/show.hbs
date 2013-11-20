@@ -15,7 +15,7 @@
   </thead>
   <tbody id="tickets">
     {{#tickets}}
-    <tr class="ticket {{#firstReleaseAt}}ticket-released{{/firstReleaseAt}} {{#closedAt}}ticket-closed{{/closedAt}}" data-ticket-id="{{id}}">
+    <tr class="ticket {{#firstReleaseAt}}ticket-released{{/firstReleaseAt}} {{#resolved}}ticket-resolved{{/resolved}} {{#closedAt}}ticket-closed{{/closedAt}}" data-ticket-id="{{id}}">
       <td class="ticket-effort">
         {{estimatedEffort}}
       </td>

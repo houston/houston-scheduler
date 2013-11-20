@@ -32,6 +32,7 @@ module Houston
           "description" => t.description,
           "firstReleaseAt" => t.first_release_at,
           "closedAt" => t.closed_at,
+          "resolved" => !t.resolution.blank?,
           "checkedOutAt" => t.checked_out_at,
           "checkedOutBy" => present_user(t.checked_out_by)
         } }
