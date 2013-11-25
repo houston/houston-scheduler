@@ -24,6 +24,7 @@ class Scheduler.ShowSprintView extends Backbone.View
     @$el.html html
     
     @renderBurndownChart(@tickets)
+    @updateTotalEffort()
     
     @$el.loadTicketDetailsOnClick()
     
@@ -157,6 +158,7 @@ class Scheduler.ShowSprintView extends Backbone.View
         ticket.checkedOutAt = null
         ticket.checkedOutBy = null
         $button.removeClass('btn-danger').addClass('btn-info').html('Check out')
+        @updateTotalEffort()
       .error (xhr)=>
         errors = Errors.fromResponse(response)
         errors.renderToAlert().appendAsAlert()
@@ -170,9 +172,16 @@ class Scheduler.ShowSprintView extends Backbone.View
           name: window.user.get('name')
           email: window.user.get('email')
         $button.removeClass('btn-info').addClass('btn-danger').html('Check in')
+        @updateTotalEffort()
       .error (response)=>
         errors = Errors.fromResponse(response)
         errors.renderToAlert().appendAsAlert()
+
+  updateTotalEffort: ->
+    effort = 0
+    for ticket in @tickets when ticket.checkedOutBy?.id == window.user.id
+      effort += +ticket.estimatedEffort
+    $('#total_effort').html(effort)
 
 
   toggleShowCompleted: (e)->
