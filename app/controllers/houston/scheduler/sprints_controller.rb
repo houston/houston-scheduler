@@ -28,6 +28,7 @@ module Houston
           "type" => t.type.to_s.downcase.dasherize,
           "tags" => t.tags.map(&:to_h),
           "estimatedEffort" => t.extended_attributes["estimated_effort"],
+          "sequence" => t.extended_attributes["sequence"],
           "summary" => t.summary,
           "description" => t.description,
           "firstReleaseAt" => t.first_release_at,

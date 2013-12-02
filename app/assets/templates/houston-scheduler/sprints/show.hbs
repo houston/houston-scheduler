@@ -15,6 +15,7 @@
 <table class="table table-sortable table-milestone-tickets">
   <thead>
     <tr>
+      <th class="ticket-sequence">Sequence</th>
       <th class="ticket-effort">Effort</th>
       <th class="ticket-summary sort-desc">Summary</th>
       <th class="ticket-worker">Worker</th>
@@ -23,6 +24,9 @@
   <tbody id="tickets">
     {{#tickets}}
     <tr class="ticket {{#firstReleaseAt}}ticket-released{{/firstReleaseAt}} {{#resolved}}ticket-resolved{{/resolved}} {{#closedAt}}ticket-closed{{/closedAt}}" data-ticket-id="{{id}}">
+      <td class="ticket-sequence">
+        {{sequence}}
+      </td>
       <td class="ticket-effort">
         {{estimatedEffort}}
         {{#firstReleaseAt}}
