@@ -37,7 +37,6 @@ class Scheduler.ShowSprintView extends Backbone.View
         +s
       type: 'numeric'
     $('.table-sortable').tablesorter
-      debug: true
       headers:
         0:
           sorter: 'integerBlankLast'
