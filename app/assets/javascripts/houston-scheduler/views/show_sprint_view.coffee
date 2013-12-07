@@ -59,7 +59,7 @@ class Scheduler.ShowSprintView extends Backbone.View
     
     thisWeek = []
     today = new Date()
-    daysSinceMonday = 1 - today.getWeekday() 
+    daysSinceMonday = 1 - today.getWeekday()
     monday = @truncateDate daysSinceMonday.days().after(today)
     days = (i.days().after(monday) for i in [0..4])
     
