@@ -46,6 +46,12 @@ class Scheduler.ShowSprintView extends Backbone.View
   
   renderBurndownChart: (tickets)->
     
+    # The time range of the Sprint
+    today = new Date()
+    daysSinceMonday = 1 - today.getWeekday()
+    monday = @truncateDate daysSinceMonday.days().after(today)
+    days = (i.days().after(monday) for i in [0..4])
+    
     # Sum progress by day;
     # Find the total amount of effort to accomplish
     progressByDay = {}
@@ -54,14 +60,12 @@ class Scheduler.ShowSprintView extends Backbone.View
       effort = +ticket.estimatedEffort
       if ticket.firstReleaseAt
         day = @truncateDate App.parseDate(ticket.firstReleaseAt)
+        effort = 0 if day < monday # this ticket was released before this sprint started!
         progressByDay[day] = (progressByDay[day] || 0) + effort
       totalEffort += effort
     
-    thisWeek = []
-    today = new Date()
-    daysSinceMonday = 1 - today.getWeekday()
-    monday = @truncateDate daysSinceMonday.days().after(today)
-    days = (i.days().after(monday) for i in [0..4])
+    # for debugging
+    window.progressByDay = progressByDay
     
     # Transform into remaining effort by day:
     # Iterate by day in case there are some days
