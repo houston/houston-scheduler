@@ -5,7 +5,7 @@ module Houston
       
       
       def show
-        @milestone = Milestone.find(params[:id])
+        @milestone = Milestone.unscoped.find(params[:id])
         @project = @milestone.project
         @tickets = @milestone.tickets
       end
