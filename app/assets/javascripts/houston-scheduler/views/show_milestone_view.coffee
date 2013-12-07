@@ -36,7 +36,7 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     for ticket in tickets
       effort = +ticket.estimatedEffort
       if ticket.firstReleaseAt
-        firstReleaseAt = new Date(ticket.firstReleaseAt)
+        firstReleaseAt = App.parseDate(ticket.firstReleaseAt)
         mostRecentDataPoint = +firstReleaseAt if mostRecentDataPoint < firstReleaseAt
         sprint = @getEndOfSprint(firstReleaseAt)
         progressBySprint[sprint] = (progressBySprint[sprint] || 0) + effort

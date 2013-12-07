@@ -53,7 +53,7 @@ class Scheduler.ShowSprintView extends Backbone.View
     for ticket in tickets
       effort = +ticket.estimatedEffort
       if ticket.firstReleaseAt
-        day = @truncateDate new Date(ticket.firstReleaseAt)
+        day = @truncateDate App.parseDate(ticket.firstReleaseAt)
         progressByDay[day] = (progressByDay[day] || 0) + effort
       totalEffort += effort
     
