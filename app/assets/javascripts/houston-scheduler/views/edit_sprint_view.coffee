@@ -6,7 +6,7 @@ class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
     @sprintId = @options.sprintId
     @ticketsOutsideSprint = []
     @ticketsInsideSprint = []
-    @tickets.each (ticket)=>
+    @tickets.sortedBySequence().each (ticket)=>
       if ticket.get('sprintId') == @sprintId
         @ticketsInsideSprint.push ticket
       else

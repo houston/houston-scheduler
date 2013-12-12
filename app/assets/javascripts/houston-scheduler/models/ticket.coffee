@@ -8,6 +8,11 @@ class Scheduler.Ticket extends Backbone.Model
 class Scheduler.Tickets extends Backbone.Collection
   model: Scheduler.Ticket
   
+  sortedBySequence: ->
+    @sortBy (ticket)=>
+      (+ticket.get('sequence') <= 0) * 9999999 + # then tickets with no priority,
+       +ticket.get('sequence')                   # finally sort by priority
+  
   sorted: -> _.sortBy @withSequence(), (ticket)-> +ticket.get('sequence')
   withSequence: ->
     @select (ticket)-> !!ticket.get('sequence')
