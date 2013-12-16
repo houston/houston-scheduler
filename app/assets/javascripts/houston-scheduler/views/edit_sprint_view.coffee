@@ -21,6 +21,7 @@ class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
     
     @renderShowEffortOption()
     @renderTickets()
+    @updateTotalEffort()
   
   renderTickets: ->
     $ticketsOutsideSprint = @$el.find('#tickets_outside_sprint')
@@ -33,6 +34,9 @@ class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
     
     @makeTicketsSortable()
     
+    $ticketsInsideSprint.on 'sortreceive', (event, ui)=> @updateTotalEffort()
+    $ticketsInsideSprint.on 'sortremove', (event, ui)=> @updateTotalEffort()
+    
   makeTicketsSortable: ->
     super(connected: true)
   
@@ -40,7 +44,7 @@ class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
   
   updateSprint: (e)->
     e.preventDefault()
-    ticketIds = ($(el).attr('data-ticket-id') for el in $('#tickets_inside_sprint .sequence-ticket'))
+    ticketIds = @selectedTicketIds()
     if ticketIds.length == 0
       $('#body').prepend '<div class="alert alert-warning">You haven\'t moved any tickets into this sprint'
     else
@@ -48,3 +52,13 @@ class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
         ticket_ids: ticketIds
       xhr.success =>
         window.location.hash = "sprint"
+
+  selectedTicketIds: ->
+    (+$(el).attr('data-ticket-id') for el in $('#tickets_inside_sprint .sequence-ticket'))
+
+  updateTotalEffort: ->
+    ids = @selectedTicketIds()
+    effort = 0
+    for ticket in @tickets.toJSON() when _.contains(ids, ticket.id)
+      effort += +ticket.estimatedEffort
+    $('#total_effort').html(effort)
