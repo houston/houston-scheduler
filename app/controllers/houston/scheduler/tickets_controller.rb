@@ -15,6 +15,11 @@ module Houston
           extended_attributes["estimated_effort"] = params[:estimatedEffort]
         end
         
+        params.keys.grep(/estimatedEffort\[\d+\]/).each do |key|
+          authorize! :estimate, project
+          extended_attributes[key.gsub(/estimatedEffort/, "estimated_effort")] = params[key]
+        end
+        
         if params.key?(:estimatedValue)
           authorize! :prioritize, project
           extended_attributes["estimated_value"] = params[:estimatedValue]

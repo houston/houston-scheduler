@@ -5,6 +5,7 @@ class Scheduler.ProjectView extends Backbone.View
     @project = @options.project
     @tickets = @options.tickets
     @milestones = @options.milestones
+    @maintainers = @options.maintainers
     @velocity = @options.velocity
     @sprintId = @options.sprintId
     @canEstimate = @options.canEstimate

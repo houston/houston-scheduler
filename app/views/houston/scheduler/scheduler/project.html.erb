@@ -12,6 +12,9 @@
   <% if can?(:estimate, @project) %>
     <li><a href="#estimate-effort">Estimate Effort <span class="badge tickets-without-effort-count zero"></span></a></li>
   <% end %>
+  <% if can?(:estimate, @project) %>
+    <li><a href="#estimate-effort-2">Estimate Effort 2 <span class="badge tickets-without-effort-count zero"></span></a></li>
+  <% end %>
   <% if can?(:read, @project.sprints.build) %>
     <li><a href="#sprint">Sprint</span> <span class="badge tickets-in-sprint-count zero"></span></a></li>
   <% end %>
@@ -43,10 +46,18 @@
       "milestoneId" => t.milestone_id,
       "sprintId" => t.sprint_id,
       "prerequisites" => t.ticket_prerequisite_ids
-    } }) %>;
+    }.merge(t.extended_attributes.keys.grep(/estimated_effort\[\d+\]/).each_with_object({}) { |key, attrs| 
+      attrs[key.gsub(/estimated_effort/, "estimatedEffort")] = t.extended_attributes[key]
+    }) }) %>;
     
     var milestones = <%=raw MultiJson.dump(@milestones.map { |m| {
       "id" => m.id,
+      "name" => m.name
+    } }) %>;
+    
+    var maintainers = <%=raw MultiJson.dump(@maintainers.map { |m| {
+      "id" => m.id,
+      "email" => m.email,
       "name" => m.name
     } }) %>;
     
@@ -61,6 +72,7 @@
         ticketTrackerName: <%=raw @project.ticket_tracker_name.to_json %> },
       tickets: Scheduler.tickets,
       milestones: Scheduler.milestones,
+      maintainers: maintainers,
       sprintId: <%= @sprint_id.to_json %>,
       velocity: <%= @velocity %>,
       canEstimate: <%= can?(:estimate, @project) %>,

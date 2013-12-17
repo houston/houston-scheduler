@@ -2,6 +2,9 @@
 Handlebars.registerHelper 'projectColor', (project)->
   window.projects[project]
 
+Handlebars.registerHelper 'ticketEstimateBy', (ticket, maintainerId)->
+  (ticket["estimatedEffort[#{maintainerId}]"] ? "none").toLowerCase()
+
 Handlebars.registerHelper 'formatPrerequisites', (prerequisites)->
   return '' unless prerequisites.length
   
