@@ -9,7 +9,7 @@ class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
     @tickets.sortedBySequence().each (ticket)=>
       if ticket.get('sprintId') == @sprintId
         @ticketsInsideSprint.push ticket
-      else
+      else if !ticket.get('resolved')
         @ticketsOutsideSprint.push ticket
   
   render: ->
