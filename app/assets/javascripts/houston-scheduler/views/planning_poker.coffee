@@ -14,7 +14,11 @@ class Scheduler.PlanningPoker extends Backbone.View
     tickets = @tickets.map (ticket)=>
       ticket = ticket.toJSON()
       ticket.myEstimate = ticket[@myEstimateKey]
-      ticket.estimates = (ticket[key] for key in @allEstimateKeys when ticket[key])
+      ticket.estimates = for key in @allEstimateKeys when ticket[key]
+        estimate = ticket[key]
+        estimate = '—' if estimate is 'Pass'
+        estimate = 'Ø' if estimate is 'Unestimatable Ticket'
+        estimate
       ticket.complete = @isComplete(ticket)
       ticket
     @$el.html @template
@@ -35,7 +39,11 @@ class Scheduler.PlanningPoker extends Backbone.View
     ticketId = $a.closest('.ticket').data('ticket-id')
     estimate = $a.html()
     
-    $a.closest('.dropdown').find('.estimate').removeClass('no-estimate').html(estimate)
+    if estimate is 'No Estimate'
+      estimate = ''
+      $a.closest('.dropdown').find('.estimate').addClass('no-estimate').html(estimate)
+    else
+      $a.closest('.dropdown').find('.estimate').removeClass('no-estimate').html(estimate)
     ticket = @tickets.get(ticketId)
     attributes = {}
     attributes[@myEstimateKey] = estimate

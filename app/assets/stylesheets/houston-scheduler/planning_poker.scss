@@ -30,6 +30,7 @@
   
   &[data-estimate="none"] img { opacity: 0.15; margin: 2px; border: none; }
   &[data-estimate="pass"] img { opacity: 0.60; border: solid 2px #777777; }
+  &[data-estimate="unestimatable ticket"] img { border-color: #ff3030; }
 }
 
 .planning-poker th.ticket-effort {
