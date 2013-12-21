@@ -35,7 +35,7 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     mostRecentDataPoint = 0
     for ticket in tickets
       effort = +ticket.estimatedEffort
-      if ticket.firstReleaseAt
+      if effort and ticket.firstReleaseAt
         firstReleaseAt = App.parseDate(ticket.firstReleaseAt)
         mostRecentDataPoint = +firstReleaseAt if mostRecentDataPoint < firstReleaseAt
         sprint = @getEndOfSprint(firstReleaseAt)
@@ -85,10 +85,9 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     projections.push regAll.x2 if regAll
     projections.push regLast2.x2 if regLast2
     projections.push regLast3.x2 if regLast3
-    sprints = []
+    sprints = (d.sprint for d in data).sort()
     if projectedEnd = projections.max()
       lastSprint = @getEndOfSprint(projectedEnd)
-      sprints = (d.sprint for d in data).sort()
       sprint = _.last(sprints)
       while sprint < lastSprint
         sprint = @nextSprint(sprint)
