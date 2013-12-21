@@ -13,7 +13,7 @@
     <li><a href="#estimate-effort">Estimate Effort <span class="badge tickets-without-effort-count zero"></span></a></li>
   <% end %>
   <% if can?(:estimate, @project) %>
-    <li><a href="#planning-poker">Planning Poker <span class="badge tickets-without-effort-count zero"></span></a></li>
+    <li><a href="#planning-poker">Planning Poker <span class="badge tickets-without-my-effort-estimate-count zero"></span></a></li>
   <% end %>
   <% if can?(:read, @project.sprints.build) %>
     <li><a href="#sprint">Sprint</span> <span class="badge tickets-in-sprint-count zero"></span></a></li>

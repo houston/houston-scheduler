@@ -30,6 +30,10 @@ class Scheduler.ProjectView extends Backbone.View
     @tickets.unresolved().select (ticket)->
       (+ticket.get('estimatedEffort') == 0) && !ticket.get('unableToSetEstimatedEffort')
   
+  ticketsWaitingForMyEffortEstimate: ->
+    myEstimateKey = "estimatedEffort[#{window.user.id}]"
+    @tickets.unresolved().select (ticket)-> !ticket.get(myEstimateKey)
+  
   
   showTab: (view)->
     @currentView.cleanup() if @currentView?.cleanup
@@ -49,6 +53,9 @@ class Scheduler.ProjectView extends Backbone.View
       
       count = @ticketsWaitingForEffortEstimate().length
       $('.tickets-without-effort-count').html(count).toggleClass('zero', count == 0)
+      
+      count = @ticketsWaitingForMyEffortEstimate().length
+      $('.tickets-without-my-effort-estimate-count').html(count).toggleClass('zero', count == 0)
     
     count = @ticketsInSprint().length
     $('.tickets-in-sprint-count').html(count).toggleClass('zero', count == 0)
