@@ -196,7 +196,7 @@ class Scheduler.ShowSprintView extends Backbone.View
     effort = 0
     for ticket in @tickets when ticket.checkedOutBy?.id == window.user.id
       effort += +ticket.estimatedEffort
-    $('#total_effort').html(effort)
+    $('#total_effort').html(effort.toFixed(1))
 
 
   toggleShowCompleted: (e)->

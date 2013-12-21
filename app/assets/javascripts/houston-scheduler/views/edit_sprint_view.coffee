@@ -61,4 +61,4 @@ class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
     effort = 0
     for ticket in @tickets.toJSON() when _.contains(ids, ticket.id)
       effort += +ticket.estimatedEffort
-    $('#total_effort').html(effort)
+    $('#total_effort').html(effort.toFixed(1))
