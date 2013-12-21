@@ -21,19 +21,14 @@ class Scheduler.ProjectView extends Backbone.View
     @render()
   
   
-  ticketsWithoutSequence: -> @tickets.withoutSequence()
-  ticketsWithBothEstimates: -> @tickets.withBothEstimates()
+  ticketsWaitingForSequence: -> @tickets.unresolved().withoutSequence()
   ticketsUnableToEstimate: -> @tickets.unableToEstimate()
   ticketsWithEffortEstimate: -> @tickets.withEffortEstimate()
   ticketsInSprint: -> if @sprintId then @tickets.inSprint(@sprintId) else []
   
   ticketsWaitingForEffortEstimate: ->
-    @tickets.select (ticket)->
+    @tickets.unresolved().select (ticket)->
       (+ticket.get('estimatedEffort') == 0) && !ticket.get('unableToSetEstimatedEffort')
-  
-  ticketsWaitingForValueEstimate: ->
-    @tickets.select (ticket)->
-      (+ticket.get('estimatedValue') == 0) && !ticket.get('unableToSetEstimatedValue')
   
   
   showTab: (view)->
@@ -45,11 +40,8 @@ class Scheduler.ProjectView extends Backbone.View
   
   render: ->
     if @canPrioritize
-      count = @ticketsWithoutSequence().length
+      count = @ticketsWaitingForSequence().length
       $('.tickets-without-sequence').html(count).toggleClass('zero', count == 0)
-      
-      count = @ticketsWaitingForValueEstimate().length
-      $('.tickets-without-value-count').html(count).toggleClass('zero', count == 0)
     
     if @canEstimate
       count = @ticketsUnableToEstimate().length

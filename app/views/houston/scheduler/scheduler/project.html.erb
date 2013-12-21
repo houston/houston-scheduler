@@ -45,6 +45,7 @@
       "description" => t.description,
       "milestoneId" => t.milestone_id,
       "sprintId" => t.sprint_id,
+      "resolved" => t.resolved?,
       "prerequisites" => t.ticket_prerequisite_ids
     }.merge(t.extended_attributes.keys.grep(/estimated_effort\[\d+\]/).each_with_object({}) { |key, attrs| 
       attrs[key.gsub(/estimated_effort/, "estimatedEffort")] = t.extended_attributes[key]

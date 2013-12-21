@@ -57,6 +57,7 @@ class Scheduler.ShowTicketsView extends Backbone.View
     if options.connected
       options = _.extend options,
         connectWith: '.sequence-list'
+        cancel: '.disabled'
         
         # unselect items in the opposite list
         start: (event, ui)->

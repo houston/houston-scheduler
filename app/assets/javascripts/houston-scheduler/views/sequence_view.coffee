@@ -13,7 +13,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     @delayedNotifier = new Lail.DelayedAction(_.bind(@updateOrder, @), delay: 800)
     
     @sortedTickets = @tickets.sorted()
-    @unsortedTickets = @tickets.unsorted()
+    @unsortedTickets = @tickets.unresolved().unsorted()
   
   render: ->
     template = HandlebarsTemplates['houston-scheduler/tickets/sequence']

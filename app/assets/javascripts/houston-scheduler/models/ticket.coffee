@@ -17,6 +17,8 @@ class Scheduler.Tickets extends Backbone.Collection
   withSequence: ->
     @select (ticket)-> !!ticket.get('sequence')
   
+  unresolved: -> new Scheduler.Tickets(@select (ticket)-> !ticket.get('resolved'))
+  
   unsorted: -> @withoutSequence()
   withoutSequence: ->
     @select (ticket)-> !ticket.get('sequence')

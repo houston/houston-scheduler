@@ -224,7 +224,16 @@ th.sequence-velocity {
   }
 }
 
-.sequence-ticket {
+.sequence-ticket.resolved {
+  .sequence-ticket-front {
+    background: #e8f5ef;
+    border-color: #8dd6b4;
+    
+    &::before { background: transparent !important; }
+  }
+}
+
+.sequence-ticket.unresolved {
   &.hover .sequence-ticket-front { // steel blue
     border-color: rgb(169, 215, 226);
     background: -webkit-linear-gradient(90deg, rgb(229, 238, 240), rgb(250, 251, 252)) repeat scroll 0 0 transparent;
