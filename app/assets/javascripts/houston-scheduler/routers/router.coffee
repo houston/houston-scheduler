@@ -8,7 +8,7 @@ class Scheduler.Router extends Backbone.Router
     'edit-sprint':        'editSprint'
     'unable-to-estimate': 'showUnableToEstimate'
     'estimate-effort':    'showTicketsWithNoEffort'
-    'estimate-effort-2':  'showTicketsWithNoEffort2'
+    'planning-poker':     'showPlanningPoker'
   
   
   initialize: (options)->
@@ -62,9 +62,9 @@ class Scheduler.Router extends Backbone.Router
     @updateActiveTab()
     @show new Scheduler.EditTicketEffortView(tickets: @parent.tickets)
   
-  showTicketsWithNoEffort2: ->
+  showPlanningPoker: ->
     @updateActiveTab()
-    @show new Scheduler.EditTicketEffortView2
+    @show new Scheduler.PlanningPoker
       tickets: @parent.tickets
       maintainers: @parent.maintainers
   

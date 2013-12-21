@@ -1,8 +1,8 @@
-class Scheduler.EditTicketEffortView2 extends Backbone.View
-  className: 'edit-estimates-view2'
+class Scheduler.PlanningPoker extends Backbone.View
+  className: 'planning-poker'
   
   initialize: ->
-    @template = HandlebarsTemplates['houston-scheduler/tickets/edit_tickets_effort2']
+    @template = HandlebarsTemplates['houston-scheduler/tickets/planning_poker']
     @tickets = @options.tickets
     @maintainers = @options.maintainers
     @myEstimateKey = "estimatedEffort[#{window.user.id}]"
