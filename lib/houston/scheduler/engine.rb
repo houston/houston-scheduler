@@ -1,3 +1,5 @@
+require 'houston/scheduler/railtie'
+
 module Houston
   module Scheduler
     class Engine < ::Rails::Engine

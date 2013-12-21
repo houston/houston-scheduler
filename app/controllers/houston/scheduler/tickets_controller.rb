@@ -4,7 +4,7 @@ module Houston
       
       
       def update
-        @ticket = Ticket.find(params[:id])
+        @ticket = ::Ticket.find(params[:id])
         @project = ticket.project
         
         
@@ -56,12 +56,12 @@ module Houston
         ids = Array.wrap(params[:order]).map(&:to_i).reject(&:zero?)
         
         if ids.length > 0
-          Ticket.transaction do
-            project.tickets.where(Ticket.arel_table[:id].not_in(ids))
+          ::Ticket.transaction do
+            project.tickets.where(::Ticket.arel_table[:id].not_in(ids))
               .update_all("extended_attributes = extended_attributes || 'sequence=>NULL'::hstore")
             
             ids.each_with_index do |id, i|
-              Ticket.where(id: id).update_all("extended_attributes = extended_attributes || 'sequence=>#{i+1}'::hstore")
+              ::Ticket.where(id: id).update_all("extended_attributes = extended_attributes || 'sequence=>#{i+1}'::hstore")
             end
           end
         elsif params[:order] == "empty"
