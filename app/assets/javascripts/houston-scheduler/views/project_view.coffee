@@ -32,7 +32,7 @@ class Scheduler.ProjectView extends Backbone.View
   
   ticketsWaitingForMyEffortEstimate: ->
     myEstimateKey = "estimatedEffort[#{window.user.id}]"
-    @tickets.unresolved().select (ticket)-> !ticket.get(myEstimateKey)
+    _.select @ticketsWaitingForEffortEstimate(), (ticket)-> !ticket.get(myEstimateKey)
   
   
   showTab: (view)->
