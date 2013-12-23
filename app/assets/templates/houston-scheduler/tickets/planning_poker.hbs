@@ -3,7 +3,8 @@
     <thead>
       <tr>
         <td class="table-margin"></td>
-        <th class="ticket-effort sort-desc">Effort <small>(Points)</small></th>
+        <th class="ticket-sequence sort-desc"><i class="icon icon-reorder"></i></th>
+        <th class="ticket-effort">Effort <small>(Points)</small></th>
         <th class="ticket-summary">Ticket</th>
         {{#maintainers}}
           <th class="ticket-participants vertical maintainer" data-maintainer-id="{{id}}"><span class="participant-name">{{name}}</span></th>
@@ -16,6 +17,7 @@
       {{#tickets}}
         <tr id="ticket_{{id}}" class="ticket {{#complete}}complete {{#unanimous}}unanimous{{/unanimous}}{{/complete}}" data-ticket-id="{{id}}">
           <td class="table-margin"></td>
+          <td class="ticket-sequence">{{sequence}}</td>
           <td class="ticket-effort">
             <div class="dropdown">
               {{#if myEstimate}}

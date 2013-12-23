@@ -1,0 +1,72 @@
+.edit-estimates-view {
+  
+  table {
+    border-collapse: separate;
+    border-spacing: 0 2px;
+    border: none;
+  }
+  
+  th { white-space: nowrap; }
+  
+  .ticket, .headings {
+    line-height: 34px;
+    padding: 1px 0;
+    
+    &.saved {
+      background-color: #E6FFDF;
+      color: #709E62;
+    }
+    &.focus { background-color: #ffc; }
+    &.unable-to-estimate {
+      background-color: #efefef;
+      color: #999;
+    }
+    
+    > td {
+      position: relative;
+      border: none;
+    
+      &.ticket-effort { min-width: 17em; }
+      &.ticket-summary { width: 72%; overflow: hidden; text-overflow: ellipsis; }
+    }
+  }
+  
+  .headings div {
+    height: auto;
+    font-weight: bold;
+  
+    small { font-weight: normal; }
+  }
+  
+  #tickets {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    line-height: 34px;
+  
+    .output, input {
+      text-align: right;
+      font-size: 1.08em;
+      padding: .33em .75em;
+      position: absolute;
+      left: .33em;
+      top: .166em;
+      bottom: .166em;
+      right: 136px;
+      width: auto;
+      margin: 0;
+    }
+    
+    button {
+      position: absolute;
+      top: .166em;
+      right: .5em;
+      font-size: 14px;
+      
+      &.active {
+        background-color: #d6d6d6;
+        color: #888;
+      }
+    }
+  }
+}

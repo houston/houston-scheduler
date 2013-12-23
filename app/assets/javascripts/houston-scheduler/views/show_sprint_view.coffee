@@ -28,18 +28,9 @@ class Scheduler.ShowSprintView extends Backbone.View
     
     @$el.loadTicketDetailsOnClick()
     
-    $.tablesorter.addParser
-      id: 'integerBlankLast'
-      is: (s)-> false # return false so this parser is not auto detected 
-      format: (s)->
-        s = $.trim(s)
-        return Number.POSITIVE_INFINITY if s.length == 0
-        +s
-      type: 'numeric'
     $('.table-sortable').tablesorter
       headers:
-        0:
-          sorter: 'integerBlankLast'
+        0: {sorter: 'sequence'}
     @
   
   

@@ -21,13 +21,6 @@ class Scheduler.EditTicketsView extends Backbone.View
   initialize: ->
     @ticketTemplate = HandlebarsTemplates[@templatePath]
     @tickets = @options.tickets
-    
-    $.tablesorter.addParser
-      id: 'inputs'
-      is: (s)-> false # don't auto-detect
-      format: (text, table, td)->
-        $(td).find('input').val()
-      type: 'numeric'
   
   
   render: ->
@@ -54,7 +47,9 @@ class Scheduler.EditTicketsView extends Backbone.View
     @$el.loadTicketDetailsOnClick()
     
     $('.table-sortable').tablesorter
-      headers: {0: {sorter: 'inputs'}}
+      headers:
+        0: {sorter: 'sequence'}
+        1: {sorter: 'inputs'}
     @
   
   

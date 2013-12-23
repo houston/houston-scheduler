@@ -28,7 +28,9 @@ class Scheduler.PlanningPoker extends Backbone.View
     
     @$el.loadTicketDetailsOnClick()
     
-    $('.table-sortable').tablesorter()
+    $('.table-sortable').tablesorter
+      headers:
+        1: {sorter: 'sequence'}
     @
   
   isComplete: (ticket)->
