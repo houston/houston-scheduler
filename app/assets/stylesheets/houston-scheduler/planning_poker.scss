@@ -13,7 +13,17 @@
   right: 6px;
 }
 
-.planning-poker .ticket.complete td { background-color: #cfc; }
+.planning-poker .ticket {
+  &.complete td { 
+    background: #ECF8FD;
+    color: #62889E;
+  }
+  
+  &.unanimous td {
+    background: #E6FFDF;
+    color: #709E62;
+  }
+}
 
 .ticket-participant-estimate {
   display: block;

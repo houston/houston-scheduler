@@ -10,7 +10,10 @@
     line-height: 34px;
     padding: 1px 0;
     
-    &.saved { background-color: #cfc; }
+    &.saved {
+      background-color: #E6FFDF;
+      color: #709E62;
+    }
     &.focus { background-color: #ffc; }
     &.unable-to-estimate {
       background-color: #efefef;

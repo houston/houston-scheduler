@@ -20,6 +20,7 @@ class Scheduler.PlanningPoker extends Backbone.View
         estimate = 'Ø' if estimate is 'Unestimatable Ticket'
         estimate
       ticket.complete = @isComplete(ticket)
+      ticket.unanimous = @isUnanimous(ticket)
       ticket
     @$el.html @template
       tickets: tickets
@@ -33,6 +34,12 @@ class Scheduler.PlanningPoker extends Backbone.View
   isComplete: (ticket)->
     _.intersection(_.keys(ticket), @allEstimateKeys).length == @allEstimateKeys.length
   
+  estimates: (ticket)->
+    _.map(@allEstimateKeys, (key)-> ticket[key])
+  
+  isUnanimous: (ticket)->
+    _.uniq(@estimates(ticket)).length is 1
+  
   setEstimate: (e)->
     e.preventDefault()
     $a = $(e.target)
@@ -45,8 +52,25 @@ class Scheduler.PlanningPoker extends Backbone.View
     else
       $a.closest('.dropdown').find('.estimate').removeClass('no-estimate').html(estimate)
     ticket = @tickets.get(ticketId)
+    
     attributes = {}
     attributes[@myEstimateKey] = estimate
+    
+    allAttributes = ticket.toJSON()
+    allAttributes[@myEstimateKey] = estimate
+    if @isUnanimous(allAttributes)
+      switch estimate
+        when 'Unestimatable Ticket'
+          attributes['estimatedEffort'] = ''
+          attributes['unableToSetEstimatedEffort'] = true
+        when 'Pass'
+          # do nothing
+        else
+          attributes['estimatedEffort'] = estimate
+          attributes['unableToSetEstimatedEffort'] = false
+    else
+      attributes['estimatedEffort'] = ''
+    
     ticket.save attributes, patch: true
     @render() # <-- maybe render just the ticket in the future
 
