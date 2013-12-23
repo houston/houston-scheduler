@@ -34,6 +34,7 @@ class Scheduler.UnableToEstimateView extends Backbone.View
     $ticket.addClass 'working'
     $button.attr('disabled', 'disabled')
     ticket.save attributes,
+      patch: true
       success: =>
         $ticket.remove()
       error: =>

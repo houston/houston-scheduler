@@ -47,10 +47,11 @@ class Scheduler.EditTicketView extends Backbone.View
   
   saveAttributes: (attributes, callback)->
     @ticket.save attributes,
+      patch: true
       beforeSend: =>
         @$el.addClass 'working'
       success: =>
-        @$el.removeClass('working')
+        @$el.removeClass 'working'
         callback()
       error: =>
         console.log arguments
