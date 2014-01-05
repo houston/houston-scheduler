@@ -17,7 +17,8 @@ class Scheduler.Tickets extends Backbone.Collection
   withSequence: ->
     @select (ticket)-> !!ticket.get('sequence')
   
-  unresolved: -> new Scheduler.Tickets(@select (ticket)-> !ticket.get('resolved'))
+  unresolved: ->
+    new Scheduler.Tickets(@select (ticket)-> !ticket.get('resolved'))
   
   unsorted: -> @withoutSequence()
   withoutSequence: ->
@@ -26,8 +27,14 @@ class Scheduler.Tickets extends Backbone.Collection
   withoutMilestones: ->
     @select (ticket)-> !ticket.get('milestoneId')
   
+  withoutEffortEstimate: ->
+    new Scheduler.Tickets(@select (ticket)-> +ticket.get('estimatedEffort') == 0)
+  
   inSprint: (sprintId)->
     @select (ticket)-> ticket.get('sprintId') == sprintId
+  
+  ableToEstimate: ->
+    new Scheduler.Tickets(@select (ticket)-> !ticket.get('unableToSetEstimatedEffort'))
   
   unableToEstimate: ->
     @select (ticket)->
@@ -35,6 +42,3 @@ class Scheduler.Tickets extends Backbone.Collection
   
   withBothEstimates: ->
     @select (ticket)-> (+ticket.get('estimatedValue') > 0) && (+ticket.get('estimatedEffort') > 0)
-  
-  withEffortEstimate: ->
-    @select (ticket)-> +ticket.get('estimatedValue') > 0

@@ -24,16 +24,11 @@ class Scheduler.ProjectView extends Backbone.View
   ticketsWaitingForSequence: -> @openTickets().withoutSequence()
   openTickets: -> @tickets.unresolved()
   ticketsUnableToEstimate: -> @tickets.unableToEstimate()
-  ticketsWithEffortEstimate: -> @tickets.withEffortEstimate()
   ticketsInSprint: -> if @sprintId then @tickets.inSprint(@sprintId) else []
-  
-  ticketsWaitingForEffortEstimate: ->
-    @tickets.unresolved().select (ticket)->
-      (+ticket.get('estimatedEffort') == 0) && !ticket.get('unableToSetEstimatedEffort')
-  
+  ticketsWaitingForEffortEstimate: -> @openTickets().withoutEffortEstimate().ableToEstimate()
   ticketsWaitingForMyEffortEstimate: ->
     myEstimateKey = "estimatedEffort[#{window.user.id}]"
-    _.select @ticketsWaitingForEffortEstimate(), (ticket)-> !ticket.get(myEstimateKey)
+    @ticketsWaitingForEffortEstimate().select (ticket)-> !ticket.get(myEstimateKey)
   
   
   showTab: (view)->

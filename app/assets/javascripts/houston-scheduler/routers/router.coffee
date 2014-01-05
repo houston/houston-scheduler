@@ -66,7 +66,7 @@ class Scheduler.Router extends Backbone.Router
   showPlanningPoker: ->
     @updateActiveTab()
     @show new Scheduler.PlanningPoker
-      tickets: @parent.openTickets()
+      tickets: @parent.openTickets().withoutEffortEstimate()
       maintainers: @parent.maintainers
   
   
