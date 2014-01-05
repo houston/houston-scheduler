@@ -21,7 +21,8 @@ class Scheduler.ProjectView extends Backbone.View
     @render()
   
   
-  ticketsWaitingForSequence: -> @tickets.unresolved().withoutSequence()
+  ticketsWaitingForSequence: -> @openTickets().withoutSequence()
+  openTickets: -> @tickets.unresolved()
   ticketsUnableToEstimate: -> @tickets.unableToEstimate()
   ticketsWithEffortEstimate: -> @tickets.withEffortEstimate()
   ticketsInSprint: -> if @sprintId then @tickets.inSprint(@sprintId) else []

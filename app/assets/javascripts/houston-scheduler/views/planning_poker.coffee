@@ -3,7 +3,7 @@ class Scheduler.PlanningPoker extends Backbone.View
   
   initialize: ->
     @template = HandlebarsTemplates['houston-scheduler/tickets/planning_poker']
-    @tickets = @options.tickets.unresolved()
+    @tickets = @options.tickets
     @maintainers = @options.maintainers
     @myEstimateKey = "estimatedEffort[#{window.user.id}]"
     @allEstimateKeys = ("estimatedEffort[#{maintainer.id}]" for maintainer in @maintainers)
