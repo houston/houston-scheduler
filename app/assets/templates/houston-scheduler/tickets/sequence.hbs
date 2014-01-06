@@ -23,6 +23,7 @@
     <th class="sequence-column sequence-velocity">
       <h4 id="sequence_velocity_help" unselectable="true">&#xf059;</h4>
     </th>
+    <th class="sequence-column sequence-commands"></th>
   </tr>
   
   <tr>
@@ -35,6 +36,18 @@
     </td>
     <td class="sequence-column sequence-velocity">
       <div id="sequence_velocity_indicator" style="height: {{velocity}}em;"></div>
+    </td>
+    <td class="sequence-column sequence-commands">
+      <div id="sequence_commands">
+        <div class="score score-medium sequence-ticket-count">
+          <p class="positive">
+            <span class="score-count" id="ticket_count"></span>
+            <span class="score-label">selected</span>
+          </p>
+        </div>
+        
+        <button id="discuss_tickets_button" class="btn btn-danger">Discuss</button>
+      </div>
     </td>
   </tr>
 </div>

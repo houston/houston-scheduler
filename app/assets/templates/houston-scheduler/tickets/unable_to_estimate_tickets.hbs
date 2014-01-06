@@ -22,7 +22,12 @@
           <a href="/tickets/{{id}}.json" class="ticket-details" tabindex="-1">more</a>
         </td>
         <td class="ticket-command">
-          <button tabindex="-1" class="btn btn-success btn-can-estimate">Can Estimate!</button>
+          {{#if unableToSetEstimatedEffort}}{{#if ../../canEstimate}}
+            <button tabindex="-1" class="btn btn-success btn-can-estimate">Can Estimate!</button>
+          {{/if}}{{/if}}
+          {{#if unableToSetPriority}}{{#if ../../canPrioritize}}
+            <button tabindex="-1" class="btn btn-success btn-can-prioritize">Can Prioritize!</button>
+          {{/if}}{{/if}}
         </td>
       </tr>
     {{/tickets}}

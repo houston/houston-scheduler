@@ -49,14 +49,28 @@
 }
 
 .sequence-column {
-  width: 49%;
+  width: 50%;
   vertical-align: top;
   text-align: left;
   padding: 8px;
   
   &.sequence-velocity {
-    width: 2%;
+    width: 12px;
     text-align: right;
+  }
+  
+  &.sequence-commands {
+    width: 76px;
+    text-align: right;
+  }
+}
+
+#sequence_commands {
+  display: none;
+  
+  &.affix {
+    top: 140px;
+    width: 76px;
   }
 }
 

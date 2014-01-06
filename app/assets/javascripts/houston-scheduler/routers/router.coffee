@@ -19,7 +19,7 @@ class Scheduler.Router extends Backbone.Router
     @activateTab('#sequence')
     @show new Scheduler.SequenceView
       project: @parent.project
-      tickets: @parent.tickets
+      tickets: @parent.ticketsReadyToPrioritize()
       velocity: @parent.velocity
       readonly: !@parent.canPrioritize
   
@@ -55,8 +55,9 @@ class Scheduler.Router extends Backbone.Router
   showUnableToEstimate: ->
     @updateActiveTab()
     @show new Scheduler.UnableToEstimateView
-      tickets: @parent.ticketsUnableToEstimate()
-      readonly: !@parent.canEstimate
+      tickets: @parent.ticketsWaitingForDiscussion()
+      canEstimate: @parent.canEstimate
+      canPrioritize: @parent.canPrioritize
   
   showTicketsWithNoEffort: ->
     @updateActiveTab()

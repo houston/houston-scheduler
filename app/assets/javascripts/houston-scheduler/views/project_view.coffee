@@ -21,9 +21,10 @@ class Scheduler.ProjectView extends Backbone.View
     @render()
   
   
-  ticketsWaitingForSequence: -> @openTickets().withoutSequence()
+  ticketsReadyToPrioritize: -> @tickets.ableToPrioritize()
+  ticketsWaitingForSequence: -> @openTickets().ableToPrioritize().withoutSequence()
   openTickets: -> @tickets.unresolved()
-  ticketsUnableToEstimate: -> @tickets.unableToEstimate()
+  ticketsWaitingForDiscussion: -> @tickets.waitingForDiscussion()
   ticketsInSprint: -> if @sprintId then @tickets.inSprint(@sprintId) else []
   ticketsWaitingForEffortEstimate: -> @openTickets().withoutEffortEstimate().ableToEstimate()
   ticketsWaitingForMyEffortEstimate: ->
@@ -44,14 +45,14 @@ class Scheduler.ProjectView extends Backbone.View
       $('.tickets-without-sequence').html(count).toggleClass('zero', count == 0)
     
     if @canEstimate
-      count = @ticketsUnableToEstimate().length
-      $('.tickets-unable-to-estimate-count').html(count).toggleClass('zero', count == 0)
-      
       count = @ticketsWaitingForEffortEstimate().length
       $('.tickets-without-effort-count').html(count).toggleClass('zero', count == 0)
       
       count = @ticketsWaitingForMyEffortEstimate().length
       $('.tickets-without-my-effort-estimate-count').html(count).toggleClass('zero', count == 0)
+    
+    count = @ticketsWaitingForDiscussion().length
+    $('.tickets-discussion-needed-count').html(count).toggleClass('zero', count == 0)
     
     count = @ticketsInSprint().length
     $('.tickets-in-sprint-count').html(count).toggleClass('zero', count == 0)

@@ -27,6 +27,12 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     @renderTickets()
     @renderShowEffortOption()
     @renderHelp()
+    
+    @$el.find('#discuss_tickets_button').click _.bind(@unableToEstimate, @)
+    
+    @$el.find('#sequence_commands').affix
+      offset:
+        top: 100
     @
   
   renderNewTicketView: ->
@@ -112,6 +118,16 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
   
   
   
+  onSelectionChanged: ->
+    count = @ticketSelection().length
+    if count > 0
+      $('#sequence_commands').show()
+      $('#ticket_count').html(count)
+    else
+      $('#sequence_commands').hide()
+  
+  
+  
   moveLeft: ->
     $ticket = $('#sequence_sorted .sequence-ticket.selected')
     if $ticket.length > 0
@@ -169,6 +185,8 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
         $('.multiselectable-previous').removeClass('multiselectable-previous')
         $ticket.removeClass('selected')
         $target.addClass('selected multiselectable-previous')
+        @onSelectionChanged()
+    
   
   moveSelectionUp: ->
     $ticket = $('.sequence-ticket.selected')
@@ -177,6 +195,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
       $('.multiselectable-previous').removeClass('multiselectable-previous')
       $ticket.removeClass('selected')
       $prev.addClass('selected multiselectable-previous')
+      @onSelectionChanged()
   
   moveSelectionRight: ->
     $ticket = $('#sequence_unsorted .sequence-ticket.selected')
@@ -188,6 +207,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
         $('.multiselectable-previous').removeClass('multiselectable-previous')
         $ticket.removeClass('selected')
         $target.addClass('selected multiselectable-previous')
+        @onSelectionChanged()
   
   moveSelectionDown: ->
     $ticket = $('.sequence-ticket.selected')
@@ -196,6 +216,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
       $('.multiselectable-previous').removeClass('multiselectable-previous')
       $ticket.removeClass('selected')
       $next.addClass('selected multiselectable-previous')
+      @onSelectionChanged()
   
   
   
@@ -240,3 +261,23 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     view = new Scheduler.SequenceTicketView(ticket: ticket)
     $el.prependView(view)
     view.$el
+  
+  
+  
+  unableToEstimate: ->
+    _.each @ticketSelection(), (ticket)=>
+      $ticket = $(ticket)
+      id = $ticket.attr('data-ticket-id')
+      ticket = @tickets.get(id)
+      ticket.save {unableToSetPriority: true},
+        patch: true
+        beforeSend: =>
+          # @$el.addClass 'working'
+        success: =>
+          # @$el.removeClass 'working'
+          $ticket.remove()
+        error: =>
+          console.log arguments
+          # @$el.removeClass 'working'
+        complete: =>
+          # @$el.removeClass 'working'

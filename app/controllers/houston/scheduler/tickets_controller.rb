@@ -30,9 +30,9 @@ module Houston
           extended_attributes["unable_to_set_estimated_effort"] = params[:unableToSetEstimatedEffort]
         end
         
-        if params.key?(:unableToSetEstimatedValue)
+        if params.key?(:unableToSetPriority)
           authorize! :prioritize, project
-          extended_attributes["unable_to_set_estimated_value"] = params[:unableToSetEstimatedValue]
+          extended_attributes["unable_to_set_priority"] = params[:unableToSetPriority]
         end
         
         

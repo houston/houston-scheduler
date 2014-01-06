@@ -8,9 +8,10 @@ class Scheduler.ShowTicketsView extends Backbone.View
     @readonly = @options.readonly
     
     # Unselect tickets when clicking away from the lists
-    $('body').click (e)->
+    $('body').click (e)=>
       if $(e.target).closest('.sequence-list').length == 0
         $('.sequence-list .selected').removeClass('selected')
+        @onSelectionChanged() if @onSelectionChanged
     
     @$el.delegate '.sequence-ticket', 'edit', _.bind(@beginEdit, @)
     
@@ -69,11 +70,15 @@ class Scheduler.ShowTicketsView extends Backbone.View
             .find('.selected, .multiselectable-previous')
             .removeClass('selected multiselectable-previous')
         
-        click: (event, $e)->
+        stop: (event, $e)=>
+          @onSelectionChanged() if @onSelectionChanged
+        
+        click: (event, $e)=>
           return unless $e.is('.sequence-ticket')
           $('.sequence-list').not($e.parent())
             .find('.selected, .multiselectable-previous')
             .removeClass('selected multiselectable-previous')
+          @onSelectionChanged() if @onSelectionChanged
     
     @$el.find('.sequence-list').multisortable _.extend(options,
       containment: '#houston_scheduler_view'
