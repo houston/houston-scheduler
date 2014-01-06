@@ -65,6 +65,9 @@
     Scheduler.tickets = new Scheduler.Tickets(tickets);
     Scheduler.milestones = new Scheduler.Milestones(milestones);
     
+    window.options = window.options || {};
+    window.options.showEffort = <%= current_user.view_options.fetch("scheduler.showEffort", "true") == "true" %>;
+    
     new Scheduler.ProjectView({
       project: {
         id: <%= @project.id %>,

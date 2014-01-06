@@ -19,8 +19,8 @@ class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
     
     $('#update_sprint_button').click _.bind(@updateSprint, @)
     
-    @renderShowEffortOption()
     @renderTickets()
+    @renderShowEffortOption()
     @updateTotalEffort()
   
   renderTickets: ->

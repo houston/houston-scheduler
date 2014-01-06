@@ -17,8 +17,8 @@ class Scheduler.MilestonesView extends Scheduler.ShowTicketsView
     html = template()
     @$el.html(html)
     
-    @renderShowEffortOption()
     @renderTickets()
+    @renderShowEffortOption()
     @renderMilestones()
     
     @$el.find('#milestone_group').affix

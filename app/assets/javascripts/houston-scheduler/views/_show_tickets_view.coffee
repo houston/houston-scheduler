@@ -6,7 +6,6 @@ class Scheduler.ShowTicketsView extends Backbone.View
     @project = @options.project
     @tickets = @options.tickets
     @readonly = @options.readonly
-    @showEffort = true
     
     # Unselect tickets when clicking away from the lists
     $('body').click (e)->
@@ -28,18 +27,22 @@ class Scheduler.ShowTicketsView extends Backbone.View
   
   
   renderShowEffortOption: ->
-    $('#sequence_settings').html '''
+    $('#sequence_settings').html """
       <label for="sequence_show_effort">
-        <input type="checkbox" id="sequence_show_effort" checked="checked" />
+        <input type="checkbox" id="sequence_show_effort" #{'checked="checked"' if window.options.showEffort} />
         Show Effort
       </label>
-    '''
+    """
+    
     $('#sequence_show_effort').click (e)=>
-      @showEffort = $(e.target).is(':checked')
+      window.options.showEffort = $(e.target).is(':checked')
+      $.put '/options', {options: {'scheduler.showEffort': window.options.showEffort}}
       @showOrHideEffort()
+    
+    @showOrHideEffort()
   
   showOrHideEffort: ->
-    if @showEffort
+    if window.options.showEffort
       $('.sequence-ticket').each ->
         $ticket = $(@)
         effort = $ticket.attr('data-effort')

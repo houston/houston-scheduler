@@ -24,8 +24,8 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     @$el.html(html)
     
     @renderNewTicketView()
-    @renderShowEffortOption()
     @renderTickets()
+    @renderShowEffortOption()
     @renderHelp()
     @
   
