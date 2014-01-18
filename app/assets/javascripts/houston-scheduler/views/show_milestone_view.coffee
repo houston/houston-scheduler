@@ -13,7 +13,6 @@ class Scheduler.ShowMilestoneView extends Backbone.View
   
   render: ->
     tickets = (ticket.toJSON() for ticket in @tickets)
-    tickets = _.sortBy tickets, (ticket)-> ticket.summary
     html = @template(tickets: tickets)
     @$el.html html
     
@@ -21,7 +20,9 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     
     @$el.loadTicketDetailsOnClick()
     
-    $('.table-sortable').tablesorter()
+    $('.table-sortable').tablesorter
+      headers:
+        0: {sorter: 'sequence'}
     @
   
   

@@ -2,13 +2,17 @@
 <table class="table table-sortable table-unable-to-estimate-tickets">
   <thead>
     <tr>
-      <th class="ticket-effort sort-desc">Summary</th>
+      <th class="ticket-sequence sort-desc"><i class="icon icon-reorder"></i></th>
+      <th class="ticket-effort">Summary</th>
       <td></td>
     </tr>
   </thead>
   <tbody id="tickets">
     {{#tickets}}
       <tr class="ticket" data-ticket-id="{{id}}">
+        <td class="ticket-sequence">
+          {{sequence}}
+        </td>
         <td class="ticket-summary">
           {{summary}}
           <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a>

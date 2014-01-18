@@ -13,7 +13,6 @@ class Scheduler.UnableToEstimateView extends Backbone.View
   render: ->
     template = HandlebarsTemplates['houston-scheduler/tickets/unable_to_estimate_tickets']
     tickets = @tickets.toJSON()
-    tickets = _.sortBy tickets, (ticket)-> ticket.summary
     html = template
       canEstimate: @canEstimate
       canPrioritize: @canPrioritize
@@ -23,7 +22,9 @@ class Scheduler.UnableToEstimateView extends Backbone.View
     
     @$el.loadTicketDetailsOnClick()
     
-    $('.table-sortable').tablesorter()
+    $('.table-sortable').tablesorter
+      headers:
+        0: {sorter: 'sequence'}
     @
   
   clearUnableToPrioritize: (e)->
