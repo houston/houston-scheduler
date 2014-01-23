@@ -2,6 +2,7 @@ module Houston
   module Scheduler
     class SchedulerController < ApplicationController
       layout "houston/scheduler/application"
+      before_filter :authenticate_user!
       
       
       def index
