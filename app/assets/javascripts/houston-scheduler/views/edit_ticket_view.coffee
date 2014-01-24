@@ -3,9 +3,6 @@ class Scheduler.EditTicketView extends Backbone.View
   className: 'ticket'
   
   events:
-    'click': 'putFocusInFirstInput'
-    'focus input': 'takeFocus'
-    'blur input': 'loseFocus'
     'change input': 'saveValue'
     'click .btn-unable-to-estimate': 'onToggleUnableToEstimate'
   
@@ -17,7 +14,6 @@ class Scheduler.EditTicketView extends Backbone.View
     @isValid = @options.isValid
     @attribute = @options.attribute
     @unableToSetAttribute = "unableToSet#{@attribute[0].toUpperCase()}#{@attribute.substr(1)}"
-    @$el.cssHover()
   
   render: ->
     @$el
@@ -26,17 +22,6 @@ class Scheduler.EditTicketView extends Backbone.View
       .toggleClass('saved', @isValid(@ticket))
     @unableToEstimate() if @ticket.get(@unableToSetAttribute)
     @
-  
-  
-  
-  putFocusInFirstInput: ->
-    @$el.find('input:first').focus()
-  
-  takeFocus: ->
-    @$el.addClass('focus')
-  
-  loseFocus: ->
-    @$el.removeClass('focus')
   
   
   

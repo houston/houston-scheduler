@@ -28,7 +28,10 @@ class Scheduler.EditTicketsView extends Backbone.View
     
     # Allow scrolling with mousewheel rather than
     # spinning a ticket's effort estimate up or down
-    $(@el).delegate 'input[type="number"]', 'mousewheel', -> $(@).blur()
+    @$el.delegate 'input[type="number"]', 'mousewheel', -> $(@).blur()
+    @$el.delegate '.ticket', 'click', -> $(@).find('input:first').focus()
+    @$el.delegate 'input', 'focus', -> $(@).closest('.ticket').addClass('focus')
+    @$el.delegate 'input', 'blur', -> $(@).closest('.ticket').removeClass('focus')
     
     $list = $('#tickets').empty()
     @tickets
