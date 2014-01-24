@@ -75,10 +75,14 @@ class Scheduler.EditTicketsView extends Backbone.View
     $line.find('input:first').focus()
   
   prevLine: ->
-    @thisLine().prev()
+    $prev = @thisLine().prev()
+    $prev = $prev.prev() while $prev.is('.unable-to-estimate')
+    $prev
     
   nextLine: ->
-    @thisLine().next()
+    $next = @thisLine().next()
+    $next = $next.next() while $next.is('.unable-to-estimate')
+    $next
     
   thisLine: ->
     $('input:focus').closest('.ticket')
