@@ -52,7 +52,8 @@ class Scheduler.NewTicketView extends Backbone.View
     $('#ticket_summary')
       .attr('autocomplete', 'off')
       .typeahead
-        source: ["[bug]", "[feature]", "[chore]", "[refactor]"]
+        # !todo: get these from Houston::TMI::TICKET_TYPES
+        source: ["[bug]", "[feature]", "[chore]", "[enhancement]"]
         updater: (item)->
           view.autocompleteDescriptionFor(item)
           console.log 'selected', item
