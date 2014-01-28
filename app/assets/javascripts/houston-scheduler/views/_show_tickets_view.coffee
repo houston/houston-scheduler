@@ -51,7 +51,7 @@ class Scheduler.ShowTicketsView extends Backbone.View
         $ticket.css('height', "#{effort}em")
     else
       $('.sequence-ticket').each ->
-        $(@).css('height', '2em')
+        $(@).css('height', '2.5em')
   
   
   

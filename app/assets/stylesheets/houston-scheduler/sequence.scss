@@ -106,44 +106,49 @@ th.sequence-velocity {
 
 .sequence-ticket {
   display: block;
-  margin: 0 0 0.33em 0;
+  margin: 0 0 5px 0;
   
   .sequence-ticket-front {
-    border-radius: 0.33em;
+    position: relative;
     overflow: hidden;
-  
+    border: 1px solid transparent;
+    padding: 1px;
     background: white;
-    border: 1px solid #d1d1d1;
-    background: -webkit-linear-gradient(90deg, #e6e6e6, #f6f6f6) repeat scroll 0 0 transparent;
-    background: -moz-linear-gradient(90deg, #e6e6e6, #f6f6f6) repeat scroll 0 0 transparent;
-  
-    .ticket-type-icon {
-      position: absolute;
-      left: 6px;
-      top: 50%;
-      margin-top: -24px;
-      opacity: 0.1;
-    }
-  }
-  
-  .sequence-ticket-edit {
-    position: absolute;
-    top: 5px;
-    right: 6px;
-    z-index: 100;
-    font-size: 18px;
-    color: rgba(0,0,0,0.15);
     
-    &:hover {
-      color: #005580;
-      text-decoration: none;
+    .ticket-type {
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      bottom: 1px;
+      width: 6px;
+      z-index: 1;
+    }
+    
+    .sequence-ticket-summary {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      bottom: 1px;
+      left: 1px;
+      background: #f0f0f0;
+      padding: 0 1.66em 0 12px;
+    }
+    
+    .sequence-ticket-edit {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      bottom: 1px;
+      width: 1.25em;
+      color: #bbb;
       cursor: pointer;
+      z-index: 2;
       
-      &::before {
-        content: 'More ';
-        font-size: 13px;
-        line-height: 20px;
-        vertical-align: bottom;
+      i { font-size: 1.5em; }
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.4);
+        text-decoration: none;
       }
     }
   }
@@ -151,64 +156,45 @@ th.sequence-velocity {
   &.sequence-ticket-no-effort {
     height: 10em;
     
-    .sequence-ticket-front {
-      border-color: rgb(218, 205, 154);
-      &::before {
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAVElEQVR42rXMIREAIADAwOWgBv2LUATLIbhpxMTbZ6/xa/5ocpHmV5Y/Ua4oV5QryhXlinJFuaJcUS6SXJMyv6jyhyYXTS6aXDS5aHLR5KLJRZPrAAwPil0S8MMqAAAAAElFTkSuQmCC) !important;
-        content: '.';
-        color: transparent;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        opacity: 0.66;
-      }
+    .sequence-ticket-front::after {
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAVElEQVR42rXMIREAIADAwOWgBv2LUATLIbhpxMTbZ6/xa/5ocpHmV5Y/Ua4oV5QryhXlinJFuaJcUS6SXJMyv6jyhyYXTS6aXDS5aHLR5KLJRZPrAAwPil0S8MMqAAAAAElFTkSuQmCC) !important;
+      content: '.';
+      color: transparent;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      opacity: 0.55;
+      z-index: 1;
     }
   }
   
   &.sequence-ticket-cant-estimate {
     height: 10em;
     
-    .sequence-ticket-front {
-      border-color: rgb(206, 164, 164);
-      &::before {
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAU0lEQVR42rXMoQ0AIADAsN2B4Qn+fwtLEGQaMVFb9hq/5o8mF2l+ZfkT5YpyRbmiXFGuKFeUK8oV5SLJNSnziyp/aHLR5KLJRZOLJhdNLppcNLkOeXn+P/ZZdQcAAAAASUVORK5CYII=) !important;
-        content: '.';
-        color: transparent;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        opacity: 0.50;
-      }
-      
+    .sequence-ticket-front::after {
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAU0lEQVR42rXMoQ0AIADAsN2B4Qn+fwtLEGQaMVFb9hq/5o8mF2l+ZfkT5YpyRbmiXFGuKFeUK8oV5SLJNSnziyp/aHLR5KLJRZOLJhdNLppcNLkOeXn+P/ZZdQcAAAAASUVORK5CYII=) !important;
+      content: '.';
+      color: transparent;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      opacity: 0.40;
+      z-index: 1;
     }
   }
   
-  .warning {
-    position: absolute;
-    top: 6px;
-    right: 32px;
-    width: 0;
-    font-size: 11px;
-    line-height: 1em;
-    font-weight: 400;
-    white-space: nowrap;
-    overflow: hidden;
-    text-align: right;
-    
-    -webkit-transition: width 0.1s ease-out;
-    -moz-transition: width 0.1s ease-out;
-    -o-transition: width 0.1s ease-out;
-    transition: width 0.1s ease-out;
-  }
-  
-  &.hover {
-    &::after { color: #333; }
-  }
+  &.hover { &::after { color: #333; } }
 }
+
+.sequence-ticket-summary { display: table; height: 100%; width: 100%; }
+.sequence-ticket-summary > div { display: table-cell; vertical-align: middle; padding: 0 1.66em 0 12px; position: relative; z-index: 2; }
+
+.sequence-ticket-edit { display: table; height: 100%; }
+.sequence-ticket-edit > i { display: table-cell; vertical-align: middle; position: relative; z-index: 2; }
 
 .add-ticket {
   text-transform: none;
@@ -240,35 +226,50 @@ th.sequence-velocity {
 
 .sequence-ticket.resolved {
   .sequence-ticket-front {
-    background: #e8f5ef;
-    border-color: #8dd6b4;
+    .ticket-type { background: #38a00f !important; }
+    
+    .sequence-ticket-summary {
+      > div {
+        padding-left: 28px;
+      }
+      
+      &::before {
+        font-family: 'FontAwesome';
+        content: '\f058';
+        display: block;
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        margin-top: -0.5em;
+      }
+      
+      color: #38a00f;
+      background: #E6F1E1;
+    }
     
     &::before { background: transparent !important; }
   }
 }
 
 .ui-sortable .sequence-ticket.unresolved {
+  cursor: pointer;
+  
   &.hover .sequence-ticket-front { // steel blue
     border-color: rgb(169, 215, 226);
-    background: -webkit-linear-gradient(90deg, rgb(229, 238, 240), rgb(250, 251, 252)) repeat scroll 0 0 transparent;
-    background:    -moz-linear-gradient(90deg, rgb(229, 238, 240), rgb(250, 251, 252)) repeat scroll 0 0 transparent;
+    
+    .sequence-ticket-summary { background: #e5eef0; }
   }
   
   &.selected .sequence-ticket-front {
     border-color: rgb(99, 178, 196);
-    background: -webkit-linear-gradient(90deg, #CDE8EE, rgb(247, 252, 255)) repeat scroll 0 0 transparent;
-    background:    -moz-linear-gradient(90deg, #CDE8EE, rgb(247, 252, 255)) repeat scroll 0 0 transparent;
+    
+    .sequence-ticket-summary { background: #DCECF0; }
   }
 }
 
 .sequence-ticket-summary {
   line-height: 1em;
   cursor: default;
-  height: 100%;
-  margin-left: 4em;
-  margin-right: 2em;
-  position: absolute;
-  z-index: 1;
 }
 
 
@@ -363,7 +364,3 @@ th.sequence-velocity {
   
   &.filled { background: rgba(0,0,0,0.33); }
 }
-
-
-.sequence-ticket-summary { display: table; }
-.sequence-ticket-summary > div { display: table-cell; vertical-align: middle; }

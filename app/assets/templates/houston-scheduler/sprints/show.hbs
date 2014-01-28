@@ -17,6 +17,7 @@
     <tr>
       <th class="ticket-sequence sort-desc"><i class="icon icon-reorder"></i></th>
       <th class="ticket-effort">Effort</th>
+      <td class="ticket-type ticket-type-na"></td>
       <th class="ticket-summary">Summary</th>
       <th class="ticket-worker">Worker</th>
     </tr>
@@ -33,6 +34,7 @@
           <i class="icon-ok-sign" rel="tooltip" title="Released {{formatDate this}}"></i>
         {{/firstReleaseAt}}
       </td>
+      <td class="ticket-type ticket-type-{{type}}"></td>
       <td class="ticket-summary">
         {{summary}}
         <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a>

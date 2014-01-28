@@ -3,6 +3,7 @@
   <input type="number" value="{{estimatedEffort}}" name="estimatedEffort" class="ticket-effort" />
   <button tabindex="-1" class="btn btn-unable-to-estimate">Can't Estimate</button>
 </td>
+<td class="ticket-type ticket-type-{{type}}"></td>
 <td class="ticket-summary">{{summary}}
   {{{formatPrerequisites prerequisites}}}
   <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a>
