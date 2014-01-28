@@ -102,6 +102,8 @@ class Scheduler.NewTicketView extends Backbone.View
       errors = Errors.fromResponse(response)
       if errors.missingCredentials or errors.invalidCredentials
         App.promptForCredentialsTo @project.ticketTrackerName
+      else if errors.oauthLocation
+        App.oauth(errors.oauthLocation)
       else
         errors.renderToAlert().prependTo($('#houston_scheduler_view')).alert()
 
