@@ -37,6 +37,7 @@ class Scheduler.EditTicketsView extends Backbone.View
     @tickets
       .sortBy (ticket)=>
         (+ticket.get('estimatedEffort') > 0) * 99999999 + # put tickets _with_ estimates at the bottom,
+        (+!!ticket.get('unableToSetEstimatedEffort') > 0) * 99999999 +
         (+ticket.get('sequence') <= 0) * 9999999 +        # then tickets with no priority,
          +ticket.get('sequence')                          # finally sort by priority
       .each (ticket)=>
