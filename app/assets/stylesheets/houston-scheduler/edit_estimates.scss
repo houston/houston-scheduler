@@ -2,7 +2,7 @@
   
   &.hide-completed {
     .ticket.unable-to-estimate,
-    .ticket.saved { display: none; }
+    .ticket.saved-on-render { display: none; }
   }
   
   table {
