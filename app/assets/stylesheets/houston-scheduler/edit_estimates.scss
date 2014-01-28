@@ -1,5 +1,10 @@
 .edit-estimates-view {
   
+  &.hide-completed {
+    .ticket.unable-to-estimate,
+    .ticket.saved { display: none; }
+  }
+  
   table {
     border-collapse: separate;
     border-spacing: 0 2px;

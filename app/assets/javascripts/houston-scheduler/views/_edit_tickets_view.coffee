@@ -6,11 +6,12 @@ KEYS = {
 }
 
 class Scheduler.EditTicketsView extends Backbone.View
-  className: "edit-estimates-view"
+  className: "edit-estimates-view hide-completed"
   
   
   events:
     'keydown input': 'onKeyDown'
+    'click #show_completed_tickets': 'toggleShowCompleted'
   
   
   keyDownHandlers:
@@ -87,4 +88,15 @@ class Scheduler.EditTicketsView extends Backbone.View
     
   thisLine: ->
     $('input:focus').closest('.ticket')
-
+  
+  
+  
+  toggleShowCompleted: (e)->
+    $button = $(e.target)
+    if $button.hasClass('active')
+      $button.removeClass('btn-success')
+      @$el.addClass('hide-completed')
+    else
+      $button.addClass('btn-success')
+      @$el.removeClass('hide-completed')
+  
