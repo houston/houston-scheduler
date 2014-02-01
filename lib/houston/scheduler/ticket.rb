@@ -19,12 +19,20 @@ module Houston
           where("NOT defined(tickets.extended_attributes, 'sequence') OR NULLIF(tickets.extended_attributes->'sequence', '')::int <= 0")
         end
         
+        def able_to_prioritize
+          where("NOT defined(tickets.extended_attributes, 'unable_to_set_priority') OR tickets.extended_attributes->'unable_to_set_priority' = ''")
+        end
+        
         def estimated
           where("NULLIF(tickets.extended_attributes->'estimated_effort', '')::numeric > 0")
         end
         
         def unestimated
           where("NOT defined(tickets.extended_attributes, 'estimated_effort') OR NULLIF(tickets.extended_attributes->'estimated_effort', '')::numeric <= 0")
+        end
+        
+        def able_to_estimate
+          where("NOT defined(tickets.extended_attributes, 'unable_to_set_estimated_effort') OR tickets.extended_attributes->'unable_to_set_estimated_effort' = ''")
         end
         
         def in_current_sprint
