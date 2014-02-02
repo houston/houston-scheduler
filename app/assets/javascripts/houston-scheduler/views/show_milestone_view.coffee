@@ -9,7 +9,6 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     @tickets = @options.tickets
     @template = HandlebarsTemplates['houston-scheduler/milestones/show']
     super
-    @render()
   
   render: ->
     tickets = (ticket.toJSON() for ticket in @tickets)
