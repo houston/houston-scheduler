@@ -35,19 +35,13 @@ class Scheduler.EditTicketsView extends Backbone.View
     @$el.delegate 'input', 'blur', -> $(@).closest('.ticket').removeClass('focus')
     
     $list = $('#tickets').empty()
-    @tickets
-      .sortBy (ticket)=>
-        (+ticket.get('estimatedEffort') > 0) * 99999999 + # put tickets _with_ estimates at the bottom,
-        (+!!ticket.get('unableToSetEstimatedEffort') > 0) * 99999999 +
-        (+ticket.get('sequence') <= 0) * 9999999 +        # then tickets with no priority,
-         +ticket.get('sequence')                          # finally sort by priority
-      .each (ticket)=>
-        view = new Scheduler.EditTicketView
-          ticket: ticket
-          template: @ticketTemplate
-          isValid: _.bind(@isValid, @)
-          attribute: @attribute
-        $list.appendView(view)
+    @tickets.each (ticket)=>
+      view = new Scheduler.EditTicketView
+        ticket: ticket
+        template: @ticketTemplate
+        isValid: _.bind(@isValid, @)
+        attribute: @attribute
+      $list.appendView(view)
     
     @$el.loadTicketDetailsOnClick()
     
