@@ -72,12 +72,12 @@ class Scheduler.EditTicketsView extends Backbone.View
   
   prevLine: ->
     $prev = @thisLine().prev()
-    $prev = $prev.prev() while $prev.is('.unable-to-estimate')
+    $prev = $prev.prev() while $prev.is('.unable-to-estimate, .saved-on-render')
     $prev
     
   nextLine: ->
     $next = @thisLine().next()
-    $next = $next.next() while $next.is('.unable-to-estimate')
+    $next = $next.next() while $next.is('.unable-to-estimate, .saved-on-render')
     $next
     
   thisLine: ->
