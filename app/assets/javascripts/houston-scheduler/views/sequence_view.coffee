@@ -179,7 +179,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     $ticket = $('#sequence_sorted .sequence-ticket.selected')
     if $ticket.length > 0
       index = $ticket.index()
-      $target = $("#sequence_unsorted .sequence-ticket:eq(#{index})")
+      $target = $("#sequence_unsorted .sequence-ticket:not(.disabled):eq(#{index})")
       $target = $("#sequence_unsorted .sequence-ticket:last") if $target.length == 0
       if $target.length > 0
         $('.multiselectable-previous').removeClass('multiselectable-previous')
@@ -190,7 +190,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
   
   moveSelectionUp: ->
     $ticket = $('.sequence-ticket.selected')
-    $prev = $ticket.prev()
+    $prev = $ticket.prev(':not(.disabled)')
     if $prev.length > 0
       $('.multiselectable-previous').removeClass('multiselectable-previous')
       $ticket.removeClass('selected')
@@ -201,7 +201,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     $ticket = $('#sequence_unsorted .sequence-ticket.selected')
     if $ticket.length > 0
       index = $ticket.index()
-      $target = $("#sequence_sorted .sequence-ticket:eq(#{index})")
+      $target = $("#sequence_sorted .sequence-ticket:not(.disabled):eq(#{index})")
       $target = $("#sequence_sorted .sequence-ticket:last") if $target.length == 0
       if $target.length > 0
         $('.multiselectable-previous').removeClass('multiselectable-previous')
@@ -211,7 +211,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
   
   moveSelectionDown: ->
     $ticket = $('.sequence-ticket.selected')
-    $next = $ticket.next()
+    $next = $ticket.next(':not(.disabled)')
     if $next.length > 0
       $('.multiselectable-previous').removeClass('multiselectable-previous')
       $ticket.removeClass('selected')

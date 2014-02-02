@@ -24,6 +24,8 @@
 						myIndex = parent.children().index(item),
 						prevIndex = parent.children().index(parent.find('.multiselectable-previous'))
 					
+					if(item.hasClass('disabled')) return;
+					
 					if (!e.ctrlKey && !e.metaKey)
 						parent.find('.' + options.selectedClass).removeClass(options.selectedClass)
 					else {
@@ -38,9 +40,9 @@
 					if (e.shiftKey && prevIndex >= 0) {
 						parent.find('.multiselectable-previous').toggleClass(options.selectedClass)
 						if (prevIndex < myIndex)
-							item.prevUntil('.multiselectable-previous').toggleClass(options.selectedClass)
+							item.prevUntil('.multiselectable-previous', ':not(.disabled)').toggleClass(options.selectedClass)
 						else if (prevIndex > myIndex)
-							item.nextUntil('.multiselectable-previous').toggleClass(options.selectedClass)
+							item.nextUntil('.multiselectable-previous', ':not(.disabled)').toggleClass(options.selectedClass)
 					} else {
   					parent.find('.multiselectable-previous').removeClass('multiselectable-previous')
   					item.addClass('multiselectable-previous')
