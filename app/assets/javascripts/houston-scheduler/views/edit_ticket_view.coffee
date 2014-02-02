@@ -20,7 +20,9 @@ class Scheduler.EditTicketView extends Backbone.View
       .attr('id', "ticket_#{@ticket.get('id')}")
       .html(@template @ticket.toJSON())
       .toggleClass('saved saved-on-render', @isValid(@ticket))
-    @unableToEstimate() if @ticket.get(@unableToSetAttribute)
+    if @ticket.get(@unableToSetAttribute)
+      @$el.addClass('unable-to-estimate-on-render')
+      @unableToEstimate()
     @
   
   

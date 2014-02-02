@@ -1,7 +1,7 @@
 .edit-estimates-view {
   
   &.hide-completed {
-    .ticket.unable-to-estimate,
+    .ticket.unable-to-estimate-on-render,
     .ticket.saved-on-render { display: none; }
   }
   
