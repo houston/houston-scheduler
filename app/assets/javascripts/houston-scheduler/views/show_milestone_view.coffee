@@ -73,8 +73,12 @@ class Scheduler.ShowMilestoneView extends Backbone.View
       regLast3 = @computeRegression(data.slice(-4))     if data.length >= 4  # last 3 weeks only
       regLast2 = @computeRegression(data.slice(-3))     if data.length >= 3  # last 2 weeks only
     
+    width = mostRecentDataPoint - firstSprint
+    maxDate = @getEndOfSprint(mostRecentDataPoint + width)
+    console.log 'earliestDataPoint', new Date(firstSprint)
     console.log 'mostRecentDataPoint', new Date(mostRecentDataPoint)
     console.log 'lastCompleteSprint', new Date(lastCompleteSprint)
+    console.log "width: #{(width / Duration.DAY).toFixed(1)} days"
     
     console.log 'regAll', new Date(regAll.x2) if regAll
     console.log 'regLast3', new Date(regLast3.x2) if regLast3
@@ -88,6 +92,7 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     sprints = (d.sprint for d in data).sort()
     if projectedEnd = projections.max()
       lastSprint = @getEndOfSprint(projectedEnd)
+      lastSprint = maxDate if lastSprint > maxDate
       sprint = _.last(sprints)
       while sprint < lastSprint
         sprint = @nextSprint(sprint)
