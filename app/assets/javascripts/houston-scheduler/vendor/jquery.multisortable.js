@@ -41,11 +41,12 @@
 							item.prevUntil('.multiselectable-previous').toggleClass(options.selectedClass)
 						else if (prevIndex > myIndex)
 							item.nextUntil('.multiselectable-previous').toggleClass(options.selectedClass)
+					} else {
+  					parent.find('.multiselectable-previous').removeClass('multiselectable-previous')
+  					item.addClass('multiselectable-previous')
 					}
 					
 					item.toggleClass(options.selectedClass)
-					parent.find('.multiselectable-previous').removeClass('multiselectable-previous')
-					item.addClass('multiselectable-previous')
 					
 					options.click(e, item)
 				});
