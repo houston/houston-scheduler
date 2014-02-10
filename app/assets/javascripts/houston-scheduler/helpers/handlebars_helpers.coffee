@@ -8,7 +8,7 @@ Handlebars.registerHelper 'ticketEstimateBy', (ticket, maintainerId)->
   estimate.toLowerCase()
 
 Handlebars.registerHelper 'formatPrerequisites', (prerequisites)->
-  return '' unless prerequisites.length
+  return '' unless prerequisites and prerequisites.length
   
   tickets = _.compact(Scheduler.tickets.get(id) for id in prerequisites)
   return '' unless tickets.length

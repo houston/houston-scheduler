@@ -23,26 +23,21 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
       showInstuctions: !@readonly
     @$el.html(html)
     
-    @renderNewTicketView()
     @renderTickets()
     @renderShowEffortOption()
     @renderHelp()
     
     @$el.find('#discuss_tickets_button').click _.bind(@unableToEstimate, @)
     
+    $(document).bind 'ticket:create', (e, ticket)=>
+      ticket = new Scheduler.Ticket(ticket)
+      $ticket = @prependTicketTo ticket, @$el.find('#sequence_unsorted')
+      $ticket.pseudoHover()
+    
     @$el.find('#sequence_commands').affix
       offset:
         top: 100
     @
-  
-  renderNewTicketView: ->
-    @newTicketView = new Scheduler.NewTicketView
-      project: @project
-      el: $('#new_ticket_form')[0]
-    @newTicketView.render()
-    @newTicketView.bind 'create', (ticket)=>
-      $ticket = @prependTicketTo ticket, @$el.find('#sequence_unsorted')
-      $ticket.pseudoHover()
   
   renderTickets: ->
     $unsortedTickets = @$el.find('#sequence_unsorted')
