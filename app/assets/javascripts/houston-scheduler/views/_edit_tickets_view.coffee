@@ -11,6 +11,7 @@ class Scheduler.EditTicketsView extends Backbone.View
   
   events:
     'keydown input': 'onKeyDown'
+    'keypress input': 'onKeyPress'
     'click #show_completed_tickets': 'toggleShowCompleted'
   
   
@@ -63,6 +64,8 @@ class Scheduler.EditTicketsView extends Backbone.View
         e.preventDefault()
         handler.apply(@)
   
+  onKeyPress: (e)->
+    
   identifyKey: (code)->
       KEYS[code]
   

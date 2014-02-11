@@ -5,3 +5,7 @@ class Scheduler.EditTicketEffortView extends Scheduler.EditTicketsView
   initialize: ->
     @pageTemplate = HandlebarsTemplates['houston-scheduler/tickets/edit_tickets_effort']
     super
+  
+  onKeyPress: (e)->
+    value = $(e.target).val() + String.fromCharCode(e.charCode)
+    e.preventDefault() unless /[\d\.]+/.test(value)
