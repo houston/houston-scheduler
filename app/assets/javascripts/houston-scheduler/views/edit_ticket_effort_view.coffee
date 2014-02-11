@@ -7,5 +7,11 @@ class Scheduler.EditTicketEffortView extends Scheduler.EditTicketsView
     super
   
   onKeyPress: (e)->
-    value = $(e.target).val() + String.fromCharCode(e.charCode)
+    character = String.fromCharCode(e.charCode)
+    value = $(e.target).val() + character
     e.preventDefault() unless /[\d\.]+/.test(value)
+    
+    if character == 'm'
+      $ticket = $('.ticket.focus')
+      Scheduler.loadTicketDetails $ticket.find('a.ticket-details').attr('href'), ->
+        $ticket.find('input').focus()

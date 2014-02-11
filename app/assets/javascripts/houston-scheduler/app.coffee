@@ -1,4 +1,21 @@
-window.Scheduler = {}
+window.Scheduler =
+  
+  loadTicketDetails: (url, callback)->
+    return unless url
+    $.get url, (ticket)->
+      html = """
+      <div class="modal hide" tabindex="-1">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h3>#{ticket.summary}</h3>
+        </div>
+        <div class="modal-body">
+          #{ticket.description}
+        </div>
+      </div>
+      """
+      $modal = $(html).modal()
+      $modal.on('hidden', callback) if callback
     
 $.tablesorter.addParser
   id: 'inputs'
