@@ -6,7 +6,7 @@
 <td class="ticket-type ticket-type-{{type}}"></td>
 <td class="ticket-summary">{{summary}}
   {{{formatPrerequisites prerequisites}}}
-  <a href="{{ticketUrl}}" target="_blank" title="View in {{ticketSystem}}">[#{{number}}]</a>
+  <a href="{{ticketUrl}}" target="_blank" title="View in {{ticketSystem}}" tabindex="-1">[#{{number}}]</a>
   {{#tags}}
     <span class="ticket-tag" style="background-color: #{{color}}">{{name}}</span>
   {{/tags}}
