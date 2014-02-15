@@ -11,6 +11,7 @@ class Scheduler.ProjectView extends Backbone.View
     @canEstimate = @options.canEstimate
     @canPrioritize = @options.canPrioritize
     @tickets.on 'change', _.bind(@render, @)
+    @tickets.on 'add', _.bind(@refresh, @)
     @router = new Scheduler.Router(parent: @)
     
     for ticket in @tickets.models
@@ -38,6 +39,10 @@ class Scheduler.ProjectView extends Backbone.View
     $('#sequence_settings').empty()
     $(@el).empty().appendView(view)
   
+  
+  refresh: ->
+    @router.reload()
+    @render()
   
   render: ->
     if @canPrioritize

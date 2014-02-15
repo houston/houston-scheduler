@@ -15,6 +15,16 @@ class Scheduler.Router extends Backbone.Router
     @parent = options.parent
   
   
+  reload: ->
+    location = window.location.hash.replace(/^#?\/?/, '').replace(/\?.*/, '')
+    method = @routes[location]
+    if method
+      console.log "[router] refreshing #{location}"
+      @[method]()
+    else
+      console.log "[router] unable to refresh #{location}"
+  
+  
   showSequence: ->
     @activateTab('#sequence')
     @show new Scheduler.SequenceView

@@ -29,11 +29,6 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     
     @$el.find('#discuss_tickets_button').click _.bind(@unableToEstimate, @)
     
-    $(document).bind 'ticket:create', (e, ticket)=>
-      ticket = new Scheduler.Ticket(ticket)
-      $ticket = @prependTicketTo ticket, @$el.find('#sequence_unsorted')
-      $ticket.pseudoHover()
-    
     @$el.find('#sequence_commands').affix
       offset:
         top: 100

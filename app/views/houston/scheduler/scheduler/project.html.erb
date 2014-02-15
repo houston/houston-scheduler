@@ -61,7 +61,7 @@
     window.options = window.options || {};
     window.options.showEffort = <%= current_user.view_options.fetch("scheduler.showEffort", "true") == "true" %>;
     
-    new Scheduler.ProjectView({
+    Scheduler.view = new Scheduler.ProjectView({
       project: {
         id: <%= @project.id %>,
         slug: <%=raw @project.slug.to_json %>,
@@ -75,6 +75,10 @@
       canEstimate: <%= can?(:estimate, @project) %>,
       canPrioritize: <%= can?(:prioritize, @project) %>,
       el: $('#houston_scheduler_view')
+    });
+    
+    $(document).bind('ticket:create', function(e, ticket) {
+      Scheduler.tickets.add(ticket);
     });
   });
 </script>
