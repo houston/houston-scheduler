@@ -4,6 +4,7 @@
     <tr>
       <th class="ticket-sequence sort-desc"><i class="icon icon-reorder"></i></th>
       <td class="ticket-type ticket-type-na"></td>
+      <td class="ticket-reporter"></td>
       <th class="ticket-effort">Summary</th>
       <td></td>
     </tr>
@@ -15,6 +16,11 @@
           {{sequence}}
         </td>
         <td class="ticket-type ticket-type-{{type}}"></td>
+        <td class="ticket-reporter">
+          {{#if reporter}}
+            {{{avatar reporter/email 24 ''}}}
+          {{/if}}
+        </td>
         <td class="ticket-summary">
           {{summary}}
           <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a>

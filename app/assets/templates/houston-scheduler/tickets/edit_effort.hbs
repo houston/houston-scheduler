@@ -4,6 +4,11 @@
   <button tabindex="-1" class="btn btn-unable-to-estimate">Can't Estimate</button>
 </td>
 <td class="ticket-type ticket-type-{{type}}"></td>
+<td class="ticket-reporter">
+  {{#if reporter}}
+    {{{avatar reporter/email 24 ''}}}
+  {{/if}}
+</td>
 <td class="ticket-summary">{{summary}}
   {{{formatPrerequisites prerequisites}}}
   <a href="{{ticketUrl}}" target="_blank" title="View in {{ticketSystem}}" tabindex="-1">[#{{number}}]</a>
