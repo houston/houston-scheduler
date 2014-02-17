@@ -27,7 +27,7 @@
       "closedAt" => t.closed_at,
       "resolved" => !t.resolution.blank?,
       "milestoneId" => t.milestone_id,
-      "prerequisites" => t.ticket_prerequisite_ids
+      "prerequisites" => t.prerequisites
     } }.to_json %>;
     
     Scheduler.tickets = new Scheduler.Tickets(tickets);

@@ -8,6 +8,12 @@ class Scheduler.Ticket extends Backbone.Model
 class Scheduler.Tickets extends Backbone.Collection
   model: Scheduler.Ticket
   
+  numbered: (numbers)->
+    numbers = [] unless numbers
+    numbers = [numbers] unless _.isArray(numbers)
+    return [] unless numbers.length >= 1
+    @select (ticket)-> ticket.get('number') in numbers
+  
   sortedBySequence: ->
     @sortBy (ticket)=>
       (+ticket.get('sequence') <= 0) * 9999999 + # then tickets with no priority,
