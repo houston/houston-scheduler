@@ -5,14 +5,6 @@
     .ticket.saved-on-render { display: none; }
   }
   
-  table {
-    border-collapse: separate;
-    border-spacing: 0 2px;
-    border: none;
-  }
-  
-  th { white-space: nowrap; }
-  
   .ticket, .headings {
     line-height: 34px;
     padding: 1px 0;
@@ -29,8 +21,7 @@
     
     > td {
       position: relative;
-      border: none;
-    
+      
       &.ticket-effort { min-width: 17em; }
       &.ticket-summary { width: 72%; overflow: hidden; text-overflow: ellipsis; }
     }

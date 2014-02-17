@@ -4,6 +4,18 @@
   
     select, input { margin-bottom: 0; }
   }
+  
+  table {
+    border-collapse: separate;
+    border-spacing: 0 4px;
+    border: none;
+
+    td {
+      border: none;
+    }
+  }
+  
+  th { white-space: nowrap; }
 }
 
 #houston_scheduler_tabs {
