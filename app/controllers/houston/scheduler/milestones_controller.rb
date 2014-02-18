@@ -22,6 +22,13 @@ module Houston
       end
       
       
+      def close
+        @milestone = Milestone.unscoped.find(params[:id])
+        @milestone.close!
+        render json: {}
+      end
+      
+      
     end
   end
 end

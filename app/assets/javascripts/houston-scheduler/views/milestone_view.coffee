@@ -7,6 +7,9 @@ class Scheduler.MilestoneView extends Backbone.View
     @template = HandlebarsTemplates['houston-scheduler/milestones/milestone']
     @$el.attr('data-id', @milestone.id)
     @$el.on 'drop', (e, ui)=> @trigger('drop', ui.draggable)
+    @$el.on 'click', '.milestone-close', (e)=>
+      e.preventDefault()
+      @close()
   
   render: ->
     html = @template
@@ -35,3 +38,7 @@ class Scheduler.MilestoneView extends Backbone.View
         @$el.removeClass 'working'
     @milestone.tickets.push ticket
     @render()
+    
+  close: ->
+    @milestone.destroy()
+      .done => @remove()

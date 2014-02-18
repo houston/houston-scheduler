@@ -16,7 +16,8 @@ class Scheduler.ProjectView extends Backbone.View
     
     for ticket in @tickets.models
       milestoneId = ticket.get('milestoneId')
-      @milestones.get(milestoneId).tickets.push(ticket) if milestoneId
+      milestone = @milestones.get(milestoneId) if milestoneId
+      milestone.tickets.push(ticket) if milestone
     
     Backbone.history.start()
     @render()
