@@ -48,7 +48,8 @@ module Houston
       end
       
       def sequence=(value)
-        extended_attributes = extended_attributes.merge("sequence" => value)
+        extended_attributes["sequence"] = value
+        extended_attributes_will_change!
       end
       
       def effort

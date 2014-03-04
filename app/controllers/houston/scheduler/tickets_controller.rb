@@ -8,7 +8,7 @@ module Houston
         @project = ticket.project
         
         
-        extended_attributes = @ticket.extended_attributes
+        extended_attributes = @ticket.extended_attributes.dup
         
         if params.key?(:estimatedEffort)
           authorize! :estimate, project
