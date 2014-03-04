@@ -1,6 +1,7 @@
 module Houston
   module Scheduler
     class TicketLocksController < ApplicationController
+      before_filter :authenticate_user!
       before_filter :find_ticket
       
       
