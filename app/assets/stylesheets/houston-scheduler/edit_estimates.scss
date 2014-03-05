@@ -25,6 +25,12 @@
       &.ticket-effort { padding-right: 2px; }
       &.ticket-unable-to-estimate { padding-left: 2px; }
       &.ticket-summary { width: 72%; overflow: hidden; text-overflow: ellipsis; }
+      &.ticket-created-at {
+        line-height: 1em;
+        text-align: right;
+        
+        .year { display: block; font-size: 10px; }
+      }
     }
   }
   

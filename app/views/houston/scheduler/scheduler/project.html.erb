@@ -25,6 +25,7 @@
     var tickets = <%=raw MultiJson.dump(@tickets.map { |t| {
       "id" => t.id,
       "number" => t.number,
+      "createdAt" => t.created_at,
       "ticketUrl" => t.ticket_tracker_ticket_url,
       "ticketSystem" => t.project.ticket_tracker_name,
       "reporter" => t.reporter && {

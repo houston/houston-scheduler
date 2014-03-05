@@ -25,6 +25,12 @@ $.tablesorter.addParser
   type: 'numeric'
 
 $.tablesorter.addParser
+  id: 'timestamp'
+  is: (s)-> false # don't auto-detect
+  format: (text, table, td)-> $(td).attr('data-timestamp')
+  type: 'text'
+
+$.tablesorter.addParser
   id: 'sequence'
   is: (s)-> false # don't auto-detect
   format: (text, table, td)->

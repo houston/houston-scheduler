@@ -50,6 +50,7 @@ class Scheduler.EditTicketsView extends Backbone.View
       headers:
         0: {sorter: 'sequence'}
         1: {sorter: 'inputs'}
+        6: {sorter: 'timestamp'}
     @
   
   
