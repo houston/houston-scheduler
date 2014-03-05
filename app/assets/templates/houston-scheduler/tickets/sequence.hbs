@@ -20,9 +20,11 @@
     <th class="sequence-column">
       <h3 class="sequence-title sequence-title-sorted">Work Queue</h3>
     </th>
+    {{#if velocity}}
     <th class="sequence-column sequence-velocity">
       <h4 id="sequence_velocity_help" unselectable="true">&#xf059;</h4>
     </th>
+    {{/if}}
     <th class="sequence-column sequence-commands"></th>
   </tr>
   
@@ -33,9 +35,11 @@
     <td class="sequence-column sequence-sorted-column">
       <div id="sequence_sorted" class="sequence-list"></div>
     </td>
+    {{#if velocity}}
     <td class="sequence-column sequence-velocity">
       <div id="sequence_velocity_indicator" style="height: {{velocity}}em;"></div>
     </td>
+    {{/if}}
     <td class="sequence-column sequence-commands">
       <div id="sequence_commands">
         <div class="score score-medium sequence-ticket-count">

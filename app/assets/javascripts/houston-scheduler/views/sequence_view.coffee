@@ -209,6 +209,8 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
   
   
   adjustVelocityIndicatorHeight: ->
+    return unless @velocity
+    
     # The height of the velocity indicator is {{points}em just like the height of tickets;
     # but tickets have borders and padding and margins and those skew the perspective.
     # 
