@@ -10,7 +10,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     # send the sort order 800ms after the user has
     # stopped making changes to it.
     #
-    @delayedNotifier = new Lail.DelayedAction(_.bind(@updateOrder, @), delay: 800)
+    @delayedNotifier = new Lail.DelayedAction(_.bind(@saveTicketOrder, @), delay: 800)
     
     @sortedTickets = @tickets.sorted()
     @unsortedTickets = @tickets.unresolved().unsorted().sortBy (ticket)-> ticket.get('summary')
@@ -50,12 +50,10 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     
     @$el.find('#sequence_unsorted').on 'sortreceive', (event, ui)=>
       @clearSequenceOfTicketFor(ui.item)
-      @delayedNotifier.trigger()
-      @adjustVelocityIndicatorHeight()
+      @onOrderChanged()
     
     @$el.find('#sequence_sorted').on 'sortupdate', (event, ui)=>
-      @delayedNotifier.trigger()
-      @adjustVelocityIndicatorHeight()
+      @onOrderChanged()
     
     @adjustVelocityIndicatorHeight()
     
@@ -83,7 +81,11 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
   
   
   
-  updateOrder: ->
+  onOrderChanged: ->
+    @delayedNotifier.trigger()
+    @adjustVelocityIndicatorHeight()
+  
+  saveTicketOrder: ->
     $tickets = $('#sequence_sorted .sequence-ticket')
     ids = _.map $tickets, (el)-> $(el).attr('data-ticket-id')
     @setTicketSequence(ids[i], i + 1) for i in [0...ids.length]
@@ -129,8 +131,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
         $ticket = $ticket.remove().insertBefore($target).data('multiselectable', true).pseudoHover()
       
       @clearSequenceOfTicketFor($ticket)
-      @delayedNotifier.trigger()
-      @adjustVelocityIndicatorHeight()
+      @onOrderChanged()
   
   moveUp: ->
     $ticket = $('.sequence-ticket.selected')
@@ -138,8 +139,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     if $prev.length > 0
       $ticket.remove().insertBefore($prev).data('multiselectable', true).pseudoHover()
       
-      @delayedNotifier.trigger()
-      @adjustVelocityIndicatorHeight()
+      @onOrderChanged()
   
   moveRight: ->
     $ticket = $('#sequence_unsorted .sequence-ticket.selected')
@@ -151,8 +151,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
       else
         $ticket.remove().insertBefore($target).data('multiselectable', true).pseudoHover()
       
-      @delayedNotifier.trigger()
-      @adjustVelocityIndicatorHeight()
+      @onOrderChanged()
   
   moveDown: ->
     $ticket = $('.sequence-ticket.selected')
@@ -160,8 +159,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     if $next.length > 0
       $ticket.remove().insertAfter($next).data('multiselectable', true).pseudoHover()
       
-      @delayedNotifier.trigger()
-      @adjustVelocityIndicatorHeight()
+      @onOrderChanged()
   
   
   
