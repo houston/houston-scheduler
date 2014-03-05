@@ -224,6 +224,32 @@ th.sequence-velocity {
   }
 }
 
+.sequence-ticket-prerequisite {
+  display: block;
+  padding: 0.66em 0.5em 0.66em 2em;
+  margin: 7px -3px 2px 2px; // I'm not sure why these numbers make it look right
+  line-height: 1em;
+  color: #D35300;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #ffefef;
+    text-decoration: none;
+    color: #E05800;
+  }
+  
+  i {
+    display: block;
+    float: left;
+    font-size: 1.75em;
+    margin-right: 0.25em;
+    line-height: 1.5em;
+  }
+  
+  .prerequisite-statement { font-size: 0.88em; font-weight: 200; }
+  .prerequisite-link { font-weight: 500; }
+}
+
 .sequence-ticket.resolved {
   .sequence-ticket-front {
     .ticket-type { background: #38a00f !important; }

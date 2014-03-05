@@ -12,6 +12,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     #
     @delayedNotifier = new Lail.DelayedAction(_.bind(@saveTicketOrder, @), delay: 800)
     
+    @unresolvedTickets = @tickets.unresolved().pluck('number')
     @sortedTickets = @tickets.sorted()
     @unsortedTickets = @tickets.unresolved().unsorted().sortBy (ticket)-> ticket.get('summary')
   
@@ -28,6 +29,8 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     @renderHelp()
     
     @$el.find('#discuss_tickets_button').click _.bind(@unableToEstimate, @)
+    
+    @$el.on 'click', '.sequence-ticket-prerequisite', _.bind(@insertPrerequisite, @)
     
     @$el.find('#sequence_commands').affix
       offset:
@@ -50,12 +53,13 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     
     @$el.find('#sequence_unsorted').on 'sortreceive', (event, ui)=>
       @clearSequenceOfTicketFor(ui.item)
-      @onOrderChanged()
+      @onOrderChanged(immediate: true)
     
     @$el.find('#sequence_sorted').on 'sortupdate', (event, ui)=>
-      @onOrderChanged()
+      @onOrderChanged(immediate: true)
     
     @adjustVelocityIndicatorHeight()
+    @identifyMissingPrerequisites()
     
   renderHelp: ->
     @$el.find('.sequence-explanation').popover()
@@ -81,8 +85,12 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
   
   
   
-  onOrderChanged: ->
-    @delayedNotifier.trigger()
+  onOrderChanged: (options={})->
+    if options.immediate
+      @delayedNotifier.reset()
+      @saveTicketOrder()
+    else
+      @delayedNotifier.trigger()
     @adjustVelocityIndicatorHeight()
   
   saveTicketOrder: ->
@@ -92,6 +100,33 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     ids = "empty" if $tickets.length == 0
     url = window.location.pathname + '/ticket_order'
     $.put url, {order: ids}
+    @identifyMissingPrerequisites()
+  
+  identifyMissingPrerequisites: ->
+    $('#sequence_sorted .sequence-ticket-prerequisite').remove()
+    ticketNumbersSoFar = []
+    @tickets.sorted().each (ticket)=>
+      for prerequisite in (ticket.get('prerequisites') ? [])
+        if (prerequisite in @unresolvedTickets) and (prerequisite not in ticketNumbersSoFar)
+          ticketNumbersSoFar.push prerequisite
+          prerequisiteTicket = @tickets.findWhere(number: prerequisite)
+          if prerequisiteTicket
+            $ticket = $("#ticket_#{ticket.get('id')}")
+            $ticket.before """
+              <a class="sequence-ticket-prerequisite" data-ticket-id="#{prerequisiteTicket.get('id')}">
+                <i class="icon-long-arrow-down"></i>
+                <span class="prerequisite-statement">##{ticket.get('number')} requires ##{prerequisiteTicket.get('number')}</span>
+                <br/>
+                <span class="prerequisite-link">Insert ##{prerequisiteTicket.get('number')} here</span>
+              </a>
+            """
+      ticketNumbersSoFar.push ticket.get('number')
+  
+  insertPrerequisite: (e)->
+    $placeholder = $(e.target)
+    $ticket = $("#ticket_#{$placeholder.attr('data-ticket-id')}")
+    $placeholder.replaceWith $ticket
+    @onOrderChanged(immediate: true)
   
   
   

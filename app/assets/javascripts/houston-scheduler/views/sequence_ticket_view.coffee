@@ -12,6 +12,7 @@ class Scheduler.SequenceTicketView extends Backbone.View
     html = @template(ticket)
     @$el.html(html)
     @$el.attr('data-ticket-id', ticket.id)
+    @$el.attr('id', "ticket_#{ticket.id}")
     if ticket.resolved
       @$el.addClass('resolved disabled')
     else
