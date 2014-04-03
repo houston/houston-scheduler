@@ -6,7 +6,7 @@ module Houston
       extend ActiveSupport::Concern
       
       included do
-        default_scope reorder("NULLIF(tickets.extended_attributes->'sequence', '')::int")
+        default_scope { reorder("NULLIF(tickets.extended_attributes->'sequence', '')::int") }
       end
       
       module ClassMethods
