@@ -8,19 +8,14 @@ class Scheduler.ShowSprintView extends Backbone.View
   initialize: ->
     @sprintId = @options.sprintId
     @template = HandlebarsTemplates['houston-scheduler/sprints/show']
-    
-    $.get "/scheduler/sprints/#{@sprintId}", (tickets)=>
-      for ticket in tickets
-        ticket.checkedOut = ticket.checkedOutBy?
-        ticket.checkedOutByMe = ticket.checkedOutBy && ticket.checkedOutBy.id == window.user.id
-      @tickets = tickets
-      @render()
-    
+    @tickets = (ticket.toJSON() for ticket in @options.tickets)
     super
   
   render: ->
     return @ unless @tickets
-    html = @template(tickets: @tickets)
+    html = @template
+      tickets: @tickets
+      sprintId: @sprintId
     @$el.html html
     
     @renderBurndownChart(@tickets)

@@ -1,20 +1,21 @@
 class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
   
+  events:
+    'change #project_slug': 'changeProject'
+  
+  
   initialize: ->
     super
-    @project = @options.project
+    @projects = @options.projects
     @sprintId = @options.sprintId
     @ticketsOutsideSprint = []
-    @ticketsInsideSprint = []
-    @tickets.sortedBySequence().each (ticket)=>
-      if ticket.get('sprintId') == @sprintId
-        @ticketsInsideSprint.push ticket
-      else if !ticket.get('resolved')
-        @ticketsOutsideSprint.push ticket
+    @ticketsInsideSprint = @options.tickets or []
   
   render: ->
     template = HandlebarsTemplates['houston-scheduler/sprints/edit']
-    html = template()
+    html = template
+      sprintId: @sprintId
+      projects: @projects
     @$el.html(html)
     
     $('#update_sprint_button').click _.bind(@updateSprint, @)
@@ -24,9 +25,7 @@ class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
     @updateTotalEffort()
   
   renderTickets: ->
-    $ticketsOutsideSprint = @$el.find('#tickets_outside_sprint')
-    for ticket in @ticketsOutsideSprint
-      $ticketsOutsideSprint.appendView(new Scheduler.SequenceTicketView(ticket: ticket))
+    @renderTicketsOutsideSprint()
     
     $ticketsInsideSprint = @$el.find('#tickets_inside_sprint')
     for ticket in @ticketsInsideSprint
@@ -41,6 +40,23 @@ class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
     super(connected: true)
   
   
+  
+  changeProject: ->
+    slug = $('#project_slug').val()
+    if slug
+      $.get "/projects/#{slug}/tickets/open.json", (tickets)=>
+        @ticketsOutsideSprint = tickets
+        @renderTicketsOutsideSprint()
+    else
+      @ticketsOutsideSprint = []
+      @renderTicketsOutsideSprint()
+      
+  renderTicketsOutsideSprint: ->
+    $ticketsOutsideSprint = @$el.find('#tickets_outside_sprint')
+    $ticketsOutsideSprint.empty()
+    for ticket in @ticketsOutsideSprint
+      $ticketsOutsideSprint.appendView new Scheduler.SequenceTicketView
+        ticket: new Scheduler.Ticket(ticket)
   
   updateSprint: (e)->
     e.preventDefault()
@@ -59,6 +75,13 @@ class Scheduler.EditSprintView extends Scheduler.ShowTicketsView
   updateTotalEffort: ->
     ids = @selectedTicketIds()
     effort = 0
-    for ticket in @tickets.toJSON() when _.contains(ids, ticket.id)
-      effort += +ticket.estimatedEffort
-    $('#total_effort').html(effort.toFixed(1))
+    plus = false
+    for ticket in @tickets when _.contains(ids, ticket.id)
+      ticketEffort = ticket.estimatedEffort()
+      if ticketEffort
+        effort += +ticketEffort
+      else
+        plus = true
+    effort = effort.toFixed(1)
+    effort = "#{effort}+" if plus
+    $('#total_effort').html(effort)

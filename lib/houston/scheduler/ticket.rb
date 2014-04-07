@@ -36,9 +36,7 @@ module Houston
         end
         
         def in_current_sprint
-          joins(:project => :sprints)
-            .where("tickets.sprint_id = sprints.id")
-            .where("sprints.end_date >= current_date")
+          joins(:sprint).where("sprints.end_date >= current_date")
         end
         
       end

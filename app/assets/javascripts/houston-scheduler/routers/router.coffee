@@ -4,8 +4,6 @@ class Scheduler.Router extends Backbone.Router
     '':                   'showSequence'
     'sequence':           'showSequence'
     'milestones':         'showMilestones'
-    'sprint':             'showSprint'
-    'edit-sprint':        'editSprint'
     'unable-to-estimate': 'showUnableToEstimate'
     'estimate-effort':    'showTicketsWithNoEffort'
     'planning-poker':     'showPlanningPoker'
@@ -41,27 +39,6 @@ class Scheduler.Router extends Backbone.Router
       milestones: @parent.milestones
       readonly: !@parent.canPrioritize
     
-  showSprint: ->
-    @activateTab('#sprint')
-    if @parent.sprintId
-      @show new Scheduler.ShowSprintView
-        project: @parent.project
-        sprintId: @parent.sprintId
-    else
-      @show new Scheduler.NewSprintView
-        project: @parent.project
-        tickets: @parent.tickets
-        onCreated: (sprint)=>
-          @parent.sprintId = sprint.id
-          @showSprint()
-  
-  editSprint: ->
-    @activateTab('#sprint')
-    @show new Scheduler.EditSprintView
-      project: @parent.project
-      tickets: @parent.tickets
-      sprintId: @parent.sprintId
-
   showUnableToEstimate: ->
     @updateActiveTab()
     @show new Scheduler.UnableToEstimateView

@@ -23,7 +23,6 @@ module Houston
           @tickets = @project.tickets.unclosed.includes(:project, :reporter)
           @milestones = @project.milestones.uncompleted
           @maintainers = @project.maintainers
-          @sprint_id = @project.sprints.current.try(:id)
         else
           render template: "houston/scheduler/scheduler/no_ticket_tracker"
         end

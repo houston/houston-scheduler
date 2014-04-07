@@ -8,6 +8,9 @@
 <div id="sprint_instructions">
   <h2>Edit Sprint</h2>
   <p>Drag tickets into the sprint and then click save</p>
+  {{#if sprintId}}
+    <a class="btn" href="/scheduler/sprints/{{sprintId}}">Cancel</a>
+  {{/if}}
   <button id="update_sprint_button" class="btn btn-primary">Save</button>
 </div>
 
@@ -23,6 +26,12 @@
   
   <tr>
     <td class="sequence-column">
+      <select id="project_slug">
+        <option></option>
+        {{#projects}}
+          <option value="{{slug}}">{{name}}</option>
+        {{/projects}}
+      </select>
       <div id="tickets_outside_sprint" class="sequence-list"></div>
     </td>
     <td class="sequence-column sequence-sorted-column">

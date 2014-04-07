@@ -1,6 +1,9 @@
 class Scheduler.Ticket extends Backbone.Model
   urlRoot: '/scheduler/tickets'
   
+  estimatedEffort: ->
+    @get('extendedAttributes')?.estimated_effort
+  
   validate: (attributes)->
     return 'estimatedEffort can not be negative' if attributes.estimatedEffort && attributes.estimatedEffort < 0
     return 'estimatedValue can not be negative' if attributes.estimatedValue && attributes.estimatedValue < 0

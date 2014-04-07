@@ -1,7 +1,3 @@
-
-Handlebars.registerHelper 'projectColor', (project)->
-  window.projects[project]
-
 Handlebars.registerHelper 'ticketEstimateBy', (ticket, maintainerId)->
   estimate = ticket["estimatedEffort[#{maintainerId}]"]
   return 'none' unless estimate
