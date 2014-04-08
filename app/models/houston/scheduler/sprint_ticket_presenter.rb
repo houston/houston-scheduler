@@ -1,9 +1,5 @@
 class Houston::Scheduler::SprintTicketPresenter < TicketPresenter
   
-  def initialize(tickets)
-    super tickets.includes(:checked_out_by)
-  end
-  
   def ticket_to_json(ticket)
     super.merge(
       estimatedEffort: ticket.extended_attributes["estimated_effort"],

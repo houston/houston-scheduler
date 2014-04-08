@@ -15,11 +15,12 @@
     window.options.showEffort = false;
     $('#houston_scheduler_view').appendView(new Scheduler.ShowSprintView({
       sprintId: <%= @sprint.try(:id).to_json %>,
-      tickets: <%= raw Houston::Scheduler::SprintTicketPresenter.new(@sprint.tickets).to_json %>.map(function(ticket) {
+      sprintTickets: <%= raw Houston::Scheduler::SprintTicketPresenter.new(@tickets).to_json %>.map(function(ticket) {
         ticket.checkedOut = !!ticket.checkedOutBy;
         ticket.checkedOutByMe = ticket.checkedOutBy && (ticket.checkedOutBy.id == window.user.id);
-        return new Scheduler.Ticket(ticket);
-      })
+        return ticket;
+      }),
+      openTickets: <%= raw TicketPresenter.new(@open_tickets).to_json %>
     }));
   });
 </script>

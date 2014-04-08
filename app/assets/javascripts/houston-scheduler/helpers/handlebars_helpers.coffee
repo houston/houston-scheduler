@@ -3,6 +3,9 @@ Handlebars.registerHelper 'ticketEstimateBy', (ticket, maintainerId)->
   return 'none' unless estimate
   estimate.toLowerCase()
 
+Handlebars.registerPartial 'sprintTicket', (ticket)->
+  HandlebarsTemplates['houston-scheduler/sprints/ticket'](ticket)
+
 Handlebars.registerHelper 'formatPrerequisites', (prerequisites)->
   tickets = Scheduler.tickets.numbered(prerequisites)
   return '' unless tickets.length

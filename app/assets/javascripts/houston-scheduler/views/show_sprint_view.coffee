@@ -4,11 +4,16 @@ class Scheduler.ShowSprintView extends Backbone.View
   events:
     'click .check-out-button': 'toggleCheckOut'
     'click #show_completed_tickets': 'toggleShowCompleted'
+    'click #show_edit_mode': 'toggleEditSprint'
+    'click .remove-ticket-button': 'removeTicket'
+    'submit #add_ticket_form': 'addTicket'
   
   initialize: ->
     @sprintId = @options.sprintId
     @template = HandlebarsTemplates['houston-scheduler/sprints/show']
-    @tickets = (ticket.toJSON() for ticket in @options.tickets)
+    @typeaheadTemplate = HandlebarsTemplates['houston-scheduler/tickets/typeahead']
+    @tickets = @options.sprintTickets
+    @openTickets = @options.openTickets
     super
   
   render: ->
@@ -21,12 +26,98 @@ class Scheduler.ShowSprintView extends Backbone.View
     @renderBurndownChart(@tickets)
     @updateTotalEffort()
     
+    typeaheadTemplate = @typeaheadTemplate
+    view = @
+    $add_ticket = @$el.find('#add_ticket').typeahead
+      source: @openTickets
+      matcher: (item)->
+        ~item.summary.toLowerCase().indexOf(@query.toLowerCase()) ||
+        ~item.number.toString().toLowerCase().indexOf(@query.toLowerCase())
+      
+      sorter: (items)->
+        beginswith = []
+        caseSensitive = []
+        caseInsensitive = []
+        
+        while item = items.shift()
+          if !item.summary.toLowerCase().indexOf(@query.toLowerCase())
+            beginswith.push(item)
+          else if ~item.summary.indexOf(@query)
+            caseSensitive.push(item)
+          else
+            caseInsensitive.push(item)
+        
+        beginswith.concat(caseSensitive, caseInsensitive)
+      
+      highlighter: (ticket)->
+        query = @query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
+        regex = new RegExp("(#{query})", 'ig')
+        ticket.summary.replace regex, ($1, match)-> "<strong>#{match}</strong>"
+        typeaheadTemplate
+          summary: ticket.summary.replace regex, ($1, match)-> "<strong>#{match}</strong>"
+          number: ticket.number.toString().replace regex, ($1, match)-> "<strong>#{match}</strong>"
+          projectTitle: ticket.projectTitle
+          projectColor: ticket.projectColor
+    
+    $add_ticket.data('typeahead').render = (tickets)->
+      items = $(tickets).map (i, item)=>
+        i = $(@options.item).attr('data-value', item.id)
+        i.find('a').html(@highlighter(item))
+        i[0]
+      
+      items.first().addClass('active')
+      @$menu.html(items)
+      @
+    
+    addTicket = _.bind(@addTicket, @)
+    $add_ticket.data('typeahead').select = ->
+      id = @$menu.find('.active').attr('data-value')
+      # @$element.val(@updater(val)).change()
+      @$element.val('')
+      @hide()
+      addTicket(id)
+    
+    
+    
     @$el.loadTicketDetailsOnClick()
     
     $('.table-sortable').tablesorter
       headers:
         0: {sorter: 'sequence'}
     @
+  
+  
+  
+  addTicket: (id)->
+    e?.preventDefault()
+    $('#add_ticket_form').addClass('loading')
+    
+    $.post("/scheduler/sprints/#{@sprintId}/tickets/#{id}")
+      .error =>
+        $('#add_ticket_form').removeClass('loading')
+      .success (ticket)=>
+        @tickets.push ticket
+        @rerenderTickets()
+        @renderBurndownChart(@tickets)
+        $('#add_ticket_form').removeClass('loading')
+  
+  removeTicket: (e)->
+    $button = $(e.target)
+    $ticket = $button.closest('.ticket')
+    id = $ticket.attr('data-ticket-id')
+    $.destroy("/scheduler/sprints/#{@sprintId}/tickets/#{id}")
+      .error =>
+        $ticket.removeClass('deleting')
+      .success (ticket)=>
+        @tickets = _.reject(@tickets, (ticket)-> ticket.id == id)
+        $ticket.remove()
+        @renderBurndownChart(@tickets)
+    
+  rerenderTickets: ->
+    template = HandlebarsTemplates['houston-scheduler/sprints/ticket']
+    $tickets = @$el.find('#tickets').empty()
+    for ticket in @tickets
+      $tickets.append template(ticket)
   
   
   
@@ -90,6 +181,7 @@ class Scheduler.ShowSprintView extends Backbone.View
       .x((d)-> x(d.day))
       .y((d)-> y(d.effort))
     
+    $('#graph').empty()
     svg = d3.select('#graph').append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
@@ -193,3 +285,14 @@ class Scheduler.ShowSprintView extends Backbone.View
     else
       $button.addClass('btn-success')
       @$el.removeClass('hide-completed')
+
+
+  toggleEditSprint: (e)->
+    $button = $(e.target)
+    if $button.hasClass('active')
+      $button.removeClass('btn-success')
+      @$el.removeClass('edit-mode')
+    else
+      $button.addClass('btn-success')
+      @$el.addClass('edit-mode')
+

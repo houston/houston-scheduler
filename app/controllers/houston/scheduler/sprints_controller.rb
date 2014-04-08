@@ -5,51 +5,33 @@ module Houston
       
       layout "houston/scheduler/application"
       before_filter :authenticate_user!
-      before_filter :find_sprint, only: [:update, :edit, :show]
-      
-      
-      def create
-        authorize! :create, Sprint
-        sprint = Sprint.create!
-        sprint.ticket_ids = params[:ticket_ids]
-        render json: sprint, status: :created
-      end
-      
-      
-      def update
-        authorize! :update, sprint
-        sprint.ticket_ids = Array(params[:ticket_ids]) + sprint.tickets.resolved.pluck(:id)
-        head :ok
-      end
+      before_filter :find_sprint, only: [:show, :add_ticket, :remove_ticket]
       
       
       def current
-        @sprint = Sprint.current
-        if sprint
-          authorize! :read, sprint
-          redirect_to sprint_path(sprint)
-        else
-          authorize! :create, Sprint
-          redirect_to new_sprint_path
-        end
-      end
-      
-      
-      def new
-        authorize! :create, Sprint
-        
-        @sprint = Sprint.current
-        redirect_to sprint_path(sprint) if sprint
+        @sprint = Sprint.current || Sprint.create!
+        show
       end
       
       
       def show
         authorize! :read, sprint
+        @open_tickets = ::Ticket.joins(:project).includes(:project).unclosed
+        @tickets = @sprint.tickets.includes(:checked_out_by)
       end
       
       
-      def edit
+      def add_ticket
         authorize! :update, sprint
+        ticket = ::Ticket.find(params[:ticket_id])
+        ticket.update_column :sprint_id, sprint.id
+        render json: Houston::Scheduler::SprintTicketPresenter.new(ticket).to_json
+      end
+      
+      def remove_ticket
+        authorize! :update, sprint
+        ::Ticket.where(id: params[:ticket_id]).update_all(sprint_id: nil)
+        head :ok
       end
       
       

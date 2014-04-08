@@ -14,11 +14,9 @@ Houston::Scheduler::Engine.routes.draw do
   post "milestones", :to => "milestones#create"
   
   get "sprints/current", :to => "sprints#current", :as => :current_sprint
-  get "sprints/new", :to => "sprints#new", :as => :new_sprint
-  post "sprints", :to => "sprints#create"
-  put "sprints/:id", :to => "sprints#update", constraints: {id: /\d+/}
   get "sprints/:id", :to => "sprints#show", constraints: {id: /\d+/}, :as => :sprint
-  get "sprints/:id/edit", :to => "sprints#edit", constraints: {id: /\d+/}, :as => :edit_sprint
+  post "sprints/:id/tickets/:ticket_id", :to => "sprints#add_ticket", constraints: {id: /\d+/, ticket_id: /\d+/}
+  delete "sprints/:id/tickets/:ticket_id", :to => "sprints#remove_ticket", constraints: {id: /\d+/, ticket_id: /\d+/}
   
   post "tickets/:id/lock", :to => "ticket_locks#create", constraints: {id: /\d+/}
   delete "tickets/:id/lock", :to => "ticket_locks#destroy", constraints: {id: /\d+/}
