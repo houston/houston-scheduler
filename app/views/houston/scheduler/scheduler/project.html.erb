@@ -10,6 +10,7 @@
   <% end %>
   <li><a href="#milestones">Milestones</a></li>
   <li><a href="#unable-to-estimate">Discussion Needed <span class="badge tickets-discussion-needed-count zero"></span></a></li>
+  <li><a href="#postponed">Postponed <span class="badge tickets-postponed-count zero"></span></a></li>
   
   <li id="sequence_settings"></li>
 </ul>
@@ -35,6 +36,7 @@
       "estimatedEffort" => t.extended_attributes["estimated_effort"],
       "unableToSetEstimatedEffort" => t.extended_attributes["unable_to_set_estimated_effort"],
       "unableToSetPriority" => t.extended_attributes["unable_to_set_priority"],
+      "postponed" => t.extended_attributes["postponed"],
       "summary" => t.summary,
       "description" => t.description,
       "milestoneId" => t.milestone_id,

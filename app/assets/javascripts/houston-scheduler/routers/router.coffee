@@ -5,6 +5,7 @@ class Scheduler.Router extends Backbone.Router
     'sequence':           'showSequence'
     'milestones':         'showMilestones'
     'unable-to-estimate': 'showUnableToEstimate'
+    'postponed':          'showPostponed'
     'estimate-effort':    'showTicketsWithNoEffort'
     'planning-poker':     'showPlanningPoker'
   
@@ -46,6 +47,12 @@ class Scheduler.Router extends Backbone.Router
       canEstimate: @parent.canEstimate
       canPrioritize: @parent.canPrioritize
   
+  showPostponed: ->
+    @updateActiveTab()
+    @show new Scheduler.PostponedView
+      tickets: @parent.ticketsPostponed()
+      canPrioritize: @parent.canPrioritize
+
   showTicketsWithNoEffort: ->
     @updateActiveTab()
     @show new Scheduler.EditTicketEffortView

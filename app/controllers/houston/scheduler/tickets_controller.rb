@@ -35,6 +35,11 @@ module Houston
           extended_attributes["unable_to_set_priority"] = params[:unableToSetPriority]
         end
         
+        if params.key?(:postponed)
+          authorize! :prioritize, project
+          extended_attributes["postponed"] = params[:postponed]
+        end
+        
         
         
         attributes = {extended_attributes: extended_attributes}

@@ -1,0 +1,46 @@
+{{#if tickets}}
+<table class="table table-sortable table-striped table-unable-to-estimate-tickets">
+  <thead>
+    <tr>
+      <th class="ticket-sequence sort-desc"><i class="icon icon-reorder"></i></th>
+      <td class="ticket-type ticket-type-na"></td>
+      <td class="ticket-reporter"></td>
+      <th class="ticket-effort">Summary</th>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody id="tickets">
+    {{#tickets}}
+      <tr class="ticket" data-ticket-id="{{id}}">
+        <td class="ticket-sequence">
+          {{sequence}}
+        </td>
+        <td class="ticket-type ticket-type-{{type}}"></td>
+        <td class="ticket-reporter">
+          {{#if reporter}}
+            {{{avatar reporter/email 24 ''}}}
+          {{/if}}
+        </td>
+        <td class="ticket-summary">
+          {{summary}}
+          <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a>
+          {{#tags}}
+            <span class="ticket-tag" style="background-color: #{{color}}">{{name}}</span>
+          {{/tags}}
+          {{#if milestoneName}}
+            <span class="ticket-tag" style="background-color: #333">{{milestoneName}}</span>
+          {{/if}}
+          <a href="/tickets/{{id}}.json" class="ticket-details" tabindex="-1">more</a>
+        </td>
+        <td class="ticket-command">
+          {{#if ../canPrioritize}}
+            <button tabindex="-1" class="btn btn-success btn-unpostpone">Unpostpone</button>
+          {{/if}}
+        </td>
+      </tr>
+    {{/tickets}}
+  </tbody>
+</table>
+{{else}}
+<div class="alert alert-success">There are no tickets that the Develpment Team is unable to estimate.</div>
+{{/if}}

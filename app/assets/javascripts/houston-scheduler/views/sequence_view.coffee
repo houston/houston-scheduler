@@ -29,6 +29,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     @renderHelp()
     
     @$el.find('#discuss_tickets_button').click _.bind(@unableToEstimate, @)
+    @$el.find('#postpone_tickets_button').click _.bind(@postponeTickets, @)
     
     @$el.on 'click', '.sequence-ticket-prerequisite', _.bind(@insertPrerequisite, @)
     
@@ -295,6 +296,24 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
       id = $ticket.attr('data-ticket-id')
       ticket = @tickets.get(id)
       ticket.save {unableToSetPriority: true},
+        patch: true
+        beforeSend: =>
+          # @$el.addClass 'working'
+        success: =>
+          # @$el.removeClass 'working'
+          $ticket.remove()
+        error: =>
+          console.log arguments
+          # @$el.removeClass 'working'
+        complete: =>
+          # @$el.removeClass 'working'
+
+  postponeTickets: ->
+    _.each @ticketSelection(), (ticket)=>
+      $ticket = $(ticket)
+      id = $ticket.attr('data-ticket-id')
+      ticket = @tickets.get(id)
+      ticket.save {postponed: true},
         patch: true
         beforeSend: =>
           # @$el.addClass 'working'

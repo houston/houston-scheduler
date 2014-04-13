@@ -22,14 +22,15 @@ class Scheduler.ProjectView extends Backbone.View
     @render()
   
   
-  ticketsReadyToPrioritize: -> @tickets.ableToPrioritize()
+  ticketsReadyToPrioritize: -> @tickets.unpostponed().ableToPrioritize()
   ticketsWaitingForSequence: -> @openTickets().ableToPrioritize().withoutSequence()
-  openTickets: -> @tickets.unresolved()
-  ticketsWaitingForDiscussion: -> @tickets.waitingForDiscussion()
+  openTickets: -> @tickets.unpostponed().unresolved()
+  ticketsWaitingForDiscussion: -> @tickets.unpostponed().waitingForDiscussion()
   ticketsWaitingForEffortEstimate: -> @openTickets().withoutEffortEstimate().ableToEstimate()
   ticketsWaitingForMyEffortEstimate: ->
     myEstimateKey = "estimatedEffort[#{window.user.id}]"
     @ticketsWaitingForEffortEstimate().select (ticket)-> !ticket.get(myEstimateKey)
+  ticketsPostponed: -> @tickets.postponed()
   
   
   showTab: (view)->
@@ -57,3 +58,6 @@ class Scheduler.ProjectView extends Backbone.View
     
     count = @ticketsWaitingForDiscussion().length
     $('.tickets-discussion-needed-count').html(count).toggleClass('zero', count == 0)
+    
+    count = @ticketsPostponed().length
+    $('.tickets-postponed-count').html(count).toggleClass('zero', count == 0)
