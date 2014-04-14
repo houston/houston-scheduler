@@ -28,35 +28,24 @@ class Scheduler.ShowSprintView extends Backbone.View
     
     typeaheadTemplate = @typeaheadTemplate
     view = @
-    $add_ticket = @$el.find('#add_ticket').typeahead
+    $add_ticket = @$el.find('#add_ticket').attr('autocomplete', 'off').typeahead
       source: @openTickets
       matcher: (item)->
         ~item.summary.toLowerCase().indexOf(@query.toLowerCase()) ||
+        ~item.projectTitle.toLowerCase().indexOf(@query.toLowerCase()) ||
         ~item.number.toString().toLowerCase().indexOf(@query.toLowerCase())
       
-      sorter: (items)->
-        beginswith = []
-        caseSensitive = []
-        caseInsensitive = []
-        
-        while item = items.shift()
-          if !item.summary.toLowerCase().indexOf(@query.toLowerCase())
-            beginswith.push(item)
-          else if ~item.summary.indexOf(@query)
-            caseSensitive.push(item)
-          else
-            caseInsensitive.push(item)
-        
-        beginswith.concat(caseSensitive, caseInsensitive)
+      sorter: (items)-> items # apply no sorting (return them in order of priority)
       
       highlighter: (ticket)->
         query = @query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
         regex = new RegExp("(#{query})", 'ig')
         ticket.summary.replace regex, ($1, match)-> "<strong>#{match}</strong>"
         typeaheadTemplate
+          sequence: ticket.extendedAttributes?.sequence
           summary: ticket.summary.replace regex, ($1, match)-> "<strong>#{match}</strong>"
           number: ticket.number.toString().replace regex, ($1, match)-> "<strong>#{match}</strong>"
-          projectTitle: ticket.projectTitle
+          projectTitle: ticket.projectTitle.replace regex, ($1, match)-> "<strong>#{match}</strong>"
           projectColor: ticket.projectColor
     
     $add_ticket.data('typeahead').render = (tickets)->
@@ -72,7 +61,6 @@ class Scheduler.ShowSprintView extends Backbone.View
     addTicket = _.bind(@addTicket, @)
     $add_ticket.data('typeahead').select = ->
       id = @$menu.find('.active').attr('data-value')
-      # @$element.val(@updater(val)).change()
       @$element.val('')
       @hide()
       addTicket(id)
