@@ -1,17 +1,19 @@
 <div class="flippable">
   <div class="sequence-ticket-front">
-    <i class="ticket-type ticket-type-{{type}}"></i>
-    <div class="sequence-ticket-summary">
-      <div>
-        {{summary}}
-        {{#tags}}
-          <span class="ticket-tag" style="background-color: #{{color}}">{{name}}</span>
-        {{/tags}}
-        {{#if milestoneName}}
-          <span class="ticket-tag" style="background-color: #333">{{milestoneName}}</span>
-        {{/if}}
+    <div class="sequence-ticket-mask">
+      <i class="ticket-type ticket-type-{{type}}"></i>
+      <div class="sequence-ticket-summary">
+        <div>
+          {{summary}}
+          {{#tags}}
+            <span class="ticket-tag" style="background-color: #{{color}}">{{name}}</span>
+          {{/tags}}
+          {{#if milestoneName}}
+            <span class="ticket-tag" style="background-color: #333">{{milestoneName}}</span>
+          {{/if}}
+        </div>
+        <a class="sequence-ticket-number" href="{{ticketUrl}}" target="_blank">#{{number}}</a>
       </div>
-      <a class="sequence-ticket-number" href="{{ticketUrl}}" target="_blank">#{{number}}</a>
     </div>
   </div>
 </div>

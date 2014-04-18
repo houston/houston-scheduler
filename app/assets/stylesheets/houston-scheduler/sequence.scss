@@ -110,10 +110,18 @@ th.sequence-velocity {
   
   .sequence-ticket-front {
     position: relative;
-    overflow: hidden;
     border: 1px solid transparent;
     padding: 1px;
     background: white;
+    
+    .sequence-ticket-mask {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      bottom: 1px;
+      left: 1px;
+      overflow: hidden;
+    }
     
     .ticket-type {
       position: absolute;
@@ -125,13 +133,7 @@ th.sequence-velocity {
     }
     
     .sequence-ticket-summary {
-      position: absolute;
-      top: 1px;
-      right: 1px;
-      bottom: 1px;
-      left: 1px;
       background: #f0f0f0;
-      padding: 0;
     }
     
     .sequence-ticket-number {
@@ -140,6 +142,7 @@ th.sequence-velocity {
       font-weight: 200;
       text-align: right;
       color: #aaa;
+      padding-right: 1.5em;
       
       &:hover { color: #005580; }
     }
@@ -147,39 +150,77 @@ th.sequence-velocity {
   
   &.sequence-ticket-no-effort {
     height: 10em;
-    
-    .sequence-ticket-front::after {
-      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAVElEQVR42rXMIREAIADAwOWgBv2LUATLIbhpxMTbZ6/xa/5ocpHmV5Y/Ua4oV5QryhXlinJFuaJcUS6SXJMyv6jyhyYXTS6aXDS5aHLR5KLJRZPrAAwPil0S8MMqAAAAAElFTkSuQmCC) !important;
-      content: '.';
-      color: transparent;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      opacity: 0.55;
-      z-index: 1;
-    }
   }
   
   &.sequence-ticket-cant-estimate {
     height: 10em;
     
-    .sequence-ticket-front::after {
-      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAU0lEQVR42rXMoQ0AIADAsN2B4Qn+fwtLEGQaMVFb9hq/5o8mF2l+ZfkT5YpyRbmiXFGuKFeUK8oV5SLJNSnziyp/aHLR5KLJRZOLJhdNLppcNLkOeXn+P/ZZdQcAAAAASUVORK5CYII=) !important;
-      content: '.';
-      color: transparent;
+    .sequence-ticket-summary {
+      background: #fbfbfb;
+      color: #d8d8d8;
+    }
+    
+    .sequence-ticket-number {
+      color: #d8d8d8;
+    }
+    
+    .sequence-ticket-front::before {
+      font-family: 'FontAwesome';
+      content: '\f071';
+      display: block;
       position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      opacity: 0.40;
-      z-index: 1;
+      right: -4px;
+      top: 50%;
+      margin-top: -7px;
+      font-size: 1.33em;
+      color: #666;
+      z-index: 100;
+    }
+  }
+  
+  &.resolved {
+    .sequence-ticket-summary {
+      background: #fbfbfb;
+      color: #d8d8d8;
+    }
+    
+    .sequence-ticket-number {
+      color: #d8d8d8;
+    }
+    
+    .sequence-ticket-front::before {
+      font-family: 'FontAwesome';
+      content: '\f058';
+      content: '\f14a';
+      display: block;
+      position: absolute;
+      right: -4px;
+      top: 50%;
+      margin-top: -7px;
+      font-size: 1.33em;
+//      background: white;
+//      border-radius: 4px;
+      color: #666;
+      z-index: 100;
     }
   }
   
   &.hover { &::after { color: #333; } }
+}
+
+#houston_scheduler_view.with-effort .sequence-ticket-no-effort .sequence-ticket-front::before {
+  font-family: 'FontAwesome';
+  content: '\f059';
+  display: block;
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  margin-top: -7px;
+  font-size: 1.33em;
+//  background: white;
+//  border-radius: 4em;
+  color: #666;
+  z-index: 100;
 }
 
 .sequence-ticket-summary { display: table; height: 100%; width: 100%; }
@@ -243,46 +284,27 @@ th.sequence-velocity {
   .prerequisite-link { font-weight: 500; }
 }
 
-.sequence-ticket.resolved {
-  .sequence-ticket-front {
-    .ticket-type { background: #38a00f !important; }
-    
-    .sequence-ticket-summary {
-      > div {
-        padding-left: 28px;
-      }
-      
-      &::before {
-        font-family: 'FontAwesome';
-        content: '\f058';
-        display: block;
-        position: absolute;
-        left: 12px;
-        top: 50%;
-        margin-top: -0.5em;
-      }
-      
-      color: #38a00f;
-      background: #E6F1E1;
-    }
-    
-    &::before { background: transparent !important; }
-  }
-}
-
 .ui-sortable .sequence-ticket.unresolved {
   cursor: pointer;
   
   &.hover .sequence-ticket-front { // steel blue
     border-color: rgb(169, 215, 226);
     
-    .sequence-ticket-summary { background: #e5eef0; }
+    .sequence-ticket-summary {
+      background: #e5eef0;
+      color: #254a53;
+      .sequence-ticket-number { color: #254a53; }
+    }
   }
   
   &.selected .sequence-ticket-front {
     border-color: rgb(99, 178, 196);
     
-    .sequence-ticket-summary { background: #DCECF0; }
+    .sequence-ticket-summary {
+      background: #dcecf0;
+      color: #254a53;
+      .sequence-ticket-number { color: #254a53; }
+    }
   }
 }
 
