@@ -62,8 +62,9 @@
     Scheduler.tickets = new Scheduler.Tickets(tickets);
     Scheduler.milestones = new Scheduler.Milestones(milestones);
     
-    window.options = window.options || {};
-    window.options.showEffort = <%= current_user.view_options.fetch("scheduler.showEffort", "true") == "true" %>;
+    <% if current_user.view_options.fetch("scheduler.showEffort", "true") == "true" %>
+    $('#houston_scheduler_view').addClass('with-effort');
+    <% end %>
     
     Scheduler.view = new Scheduler.ProjectView({
       project: {

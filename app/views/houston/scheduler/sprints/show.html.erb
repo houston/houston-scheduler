@@ -11,8 +11,6 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
-    window.options = window.options || {};
-    window.options.showEffort = false;
     $('#houston_scheduler_view').appendView(new Scheduler.ShowSprintView({
       sprintId: <%= @sprint.try(:id).to_json %>,
       sprintTickets: <%= raw Houston::Scheduler::SprintTicketPresenter.new(@tickets).to_json %>.map(function(ticket) {

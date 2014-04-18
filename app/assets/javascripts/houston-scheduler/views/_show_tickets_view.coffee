@@ -30,20 +30,20 @@ class Scheduler.ShowTicketsView extends Backbone.View
   renderShowEffortOption: ->
     $('#sequence_settings').html """
       <label for="sequence_show_effort">
-        <input type="checkbox" id="sequence_show_effort" #{'checked="checked"' if window.options.showEffort} />
+        <input type="checkbox" id="sequence_show_effort" #{'checked="checked"' if $('#houston_scheduler_view').hasClass('with-effort')} />
         Show Effort
       </label>
     """
     
     $('#sequence_show_effort').click (e)=>
-      window.options.showEffort = $(e.target).is(':checked')
-      $.put '/options', {options: {'scheduler.showEffort': window.options.showEffort}}
+      $('#houston_scheduler_view').toggleClass 'with-effort', $(e.target).is(':checked')
+      $.put '/options', {options: {'scheduler.showEffort': $('#houston_scheduler_view').hasClass('with-effort')}}
       @showOrHideEffort()
     
     @showOrHideEffort()
   
   showOrHideEffort: ->
-    if window.options.showEffort
+    if $('#houston_scheduler_view').hasClass('with-effort')
       $('.sequence-ticket').each ->
         $ticket = $(@)
         effort = $ticket.attr('data-effort')
