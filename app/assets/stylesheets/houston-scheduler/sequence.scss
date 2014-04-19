@@ -3,8 +3,6 @@
 
 .sequence-instructions { padding-left: 8px; margin-bottom: 8px; }
 
-.sequence-explanation { color: #005580; font-weight: bold; cursor: pointer; }
-
 #houston_scheduler_view .popover-title { margin: 0; }
 
 #sequence_settings {
@@ -95,7 +93,22 @@ th.sequence-velocity {
   font-size: 1.25em;
   font-weight: 500;
   line-height: 1em;
-  margin: 1em 0 0 0;
+  margin: 0;
+  
+  .popover {
+    text-transform: none;
+    font-weight: normal;
+    font-size: 0.8em;
+  }
+}
+
+.sequence-explanation {
+  color: #d8d8d8;
+  cursor: pointer;
+  display: inline-block;
+  padding: 2px 4px;
+  
+  &:hover { color: #333; }
 }
 
 #sequence_velocity_indicator {
