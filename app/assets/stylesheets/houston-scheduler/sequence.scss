@@ -148,13 +148,11 @@ th.sequence-velocity {
     }
   }
   
-  &.sequence-ticket-no-effort {
+  &.sequence-ticket-no-effort, &.sequence-ticket-cant-estimate {
     height: 10em;
   }
   
-  &.sequence-ticket-cant-estimate {
-    height: 10em;
-    
+  &.sequence-ticket-cant-estimate, &.resolved {
     .sequence-ticket-summary {
       background: #fbfbfb;
       color: #d8d8d8;
@@ -162,65 +160,27 @@ th.sequence-velocity {
     
     .sequence-ticket-number {
       color: #d8d8d8;
-    }
-    
-    .sequence-ticket-front::before {
-      font-family: 'FontAwesome';
-      content: '\f071';
-      display: block;
-      position: absolute;
-      right: -4px;
-      top: 50%;
-      margin-top: -7px;
-      font-size: 1.33em;
-      color: #666;
-      z-index: 100;
-    }
-  }
-  
-  &.resolved {
-    .sequence-ticket-summary {
-      background: #fbfbfb;
-      color: #d8d8d8;
-    }
-    
-    .sequence-ticket-number {
-      color: #d8d8d8;
-    }
-    
-    .sequence-ticket-front::before {
-      font-family: 'FontAwesome';
-      content: '\f058';
-      content: '\f14a';
-      display: block;
-      position: absolute;
-      right: -4px;
-      top: 50%;
-      margin-top: -7px;
-      font-size: 1.33em;
-//      background: white;
-//      border-radius: 4px;
-      color: #666;
-      z-index: 100;
     }
   }
   
   &.hover { &::after { color: #333; } }
 }
 
-#houston_scheduler_view.with-effort .sequence-ticket-no-effort .sequence-ticket-front::before {
-  font-family: 'FontAwesome';
-  content: '\f059';
+.sequence-ticket-icon {
   display: block;
   position: absolute;
-  right: -4px;
+  right: -12px;
   top: 50%;
-  margin-top: -7px;
+  margin-top: -15px;
   font-size: 1.33em;
-//  background: white;
-//  border-radius: 4em;
   color: #666;
   z-index: 100;
+  padding: 8px; // larger mouse target for popover
+}
+
+.sequence-ticket-icon.icon-question-sign { display: none; }
+#houston_scheduler_view.with-effort .sequence-ticket-no-effort {
+  .sequence-ticket-icon.icon-question-sign { display: block; }
 }
 
 .sequence-ticket-summary { display: table; height: 100%; width: 100%; }
@@ -293,6 +253,7 @@ th.sequence-velocity {
     .sequence-ticket-summary {
       background: #e5eef0;
       color: #254a53;
+      
       .sequence-ticket-number { color: #254a53; }
     }
   }
@@ -303,6 +264,7 @@ th.sequence-velocity {
     .sequence-ticket-summary {
       background: #dcecf0;
       color: #254a53;
+      
       .sequence-ticket-number { color: #254a53; }
     }
   }

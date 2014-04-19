@@ -28,6 +28,10 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     @renderShowEffortOption()
     @renderHelp()
     
+    @$el.find('[data-toggle="tooltip"]').tooltip
+      placement: 'left'
+      trigger: 'hover'
+    
     @$el.find('#discuss_tickets_button').click _.bind(@unableToEstimate, @)
     @$el.find('#postpone_tickets_button').click _.bind(@postponeTickets, @)
     

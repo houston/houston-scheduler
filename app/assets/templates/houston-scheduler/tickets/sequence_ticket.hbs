@@ -15,5 +15,13 @@
         <a class="sequence-ticket-number" href="{{ticketUrl}}" target="_blank">#{{number}}</a>
       </div>
     </div>
+    {{#if resolved}}
+      <i class="sequence-ticket-icon icon-check-sign" data-toggle="tooltip" title="Resolved" />
+    {{else}}{{#if unableToSetEstimatedEffort}}
+      <i class="sequence-ticket-icon icon-warning-sign" data-toggle="tooltip" title="Discussion Needed" />
+    {{else}}{{#if estimatedEffort}}
+    {{else}}
+      <i class="sequence-ticket-icon icon-question-sign" data-toggle="tooltip" title="Hasn't been Estimated" />
+    {{/if}}{{/if}}{{/if}}
   </div>
 </div>
