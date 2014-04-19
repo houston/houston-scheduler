@@ -223,16 +223,17 @@ th.sequence-velocity {
   padding: 0.66em 0.5em 0.66em 2em;
   margin: 7px -3px 2px 2px; // I'm not sure why these numbers make it look right
   line-height: 1em;
-  color: #D35300;
   cursor: pointer;
+  position: relative;
+  color: #666;
   
   &:hover {
-    background-color: #F4FCF2;
     text-decoration: none;
-    color: #5FB14B;
+    background: #e5eef0;
+    color: #254a53;
   }
   
-  i {
+  i.icon-long-arrow-down {
     display: block;
     float: left;
     font-size: 1.75em;

@@ -27,10 +27,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     @renderTickets()
     @renderShowEffortOption()
     @renderHelp()
-    
-    @$el.find('[data-toggle="tooltip"]').tooltip
-      placement: 'left'
-      trigger: 'hover'
+    @activateTooltips()
     
     @$el.find('#discuss_tickets_button').click _.bind(@unableToEstimate, @)
     @$el.find('#postpone_tickets_button').click _.bind(@postponeTickets, @)
@@ -123,12 +120,14 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
                 <span class="prerequisite-statement">##{ticket.get('number')} requires ##{prerequisiteTicket.get('number')}</span>
                 <br/>
                 <span class="prerequisite-link">Insert ##{prerequisiteTicket.get('number')} here</span>
+                <i class="sequence-ticket-icon icon-plus-sign-alt" data-toggle="tooltip" title="Missing prerequisite" />
               </a>
             """
       ticketNumbersSoFar.push ticket.get('number')
+    @activateTooltips()
   
   insertPrerequisite: (e)->
-    $placeholder = $(e.target)
+    $placeholder = $(e.target).closest('.sequence-ticket-prerequisite')
     $ticket = $("#ticket_#{$placeholder.attr('data-ticket-id')}")
     $placeholder.replaceWith $ticket
     @onOrderChanged(immediate: true)
@@ -291,6 +290,13 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     view = new Scheduler.SequenceTicketView(ticket: ticket)
     $el.prependView(view)
     view.$el
+  
+  
+  
+  activateTooltips: ->
+    @$el.find('[data-toggle="tooltip"]').tooltip
+      placement: 'left'
+      trigger: 'hover'
   
   
   
