@@ -16,7 +16,10 @@ module Houston
       
       def show
         authorize! :read, sprint
-        @open_tickets = ::Ticket.joins(:project).includes(:project).unclosed
+        @open_tickets = ::Ticket.joins(:project).includes(:project)
+          .unclosed
+          .unresolved
+          .able_to_estimate
         @tickets = @sprint.tickets.includes(:checked_out_by)
         render template: "houston/scheduler/sprints/show"
       end
