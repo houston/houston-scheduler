@@ -5,7 +5,7 @@
   <% if can?(:estimate, @project) %>
     <li><a href="#estimate-effort">Estimate Effort <span class="badge tickets-without-effort-count zero"></span></a></li>
   <% end %>
-  <% if can?(:estimate, @project) %>
+  <% if Houston::Scheduler.config.use_planning_poker? && can?(:estimate, @project) %>
     <li><a href="#planning-poker">Planning Poker <span class="badge tickets-without-my-effort-estimate-count zero"></span></a></li>
   <% end %>
   <li><a href="#milestones">Milestones</a></li>
