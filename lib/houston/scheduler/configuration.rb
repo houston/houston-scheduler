@@ -5,7 +5,8 @@ module Houston::Scheduler
       @use_planning_poker = true
       @use_mixer = true
       @use_velocity = true
-      instance_eval(&Houston.config.module(:scheduler).config)
+      config = Houston.config.module(:scheduler).config
+      instance_eval(&config) if config
     end
     
     def planning_poker(arg)
