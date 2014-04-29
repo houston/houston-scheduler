@@ -4,6 +4,7 @@ module Houston::Scheduler
     def initialize
       @use_planning_poker = true
       @use_mixer = true
+      @use_velocity = true
       instance_eval(&Houston.config.module(:scheduler).config)
     end
     
@@ -15,12 +16,20 @@ module Houston::Scheduler
       @use_mixer = false if arg == :off
     end
     
+    def velocity(arg)
+      @use_velocity = false if arg == :off
+    end
+    
     def use_planning_poker?
       @use_planning_poker
     end
     
     def use_mixer?
       @use_mixer
+    end
+    
+    def use_velocity?
+      @use_velocity
     end
     
   end

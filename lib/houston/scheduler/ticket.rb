@@ -39,6 +39,10 @@ module Houston
           joins(:sprint).where("sprints.end_date >= current_date")
         end
         
+        def with_commit_time
+          select { |ticket| ticket.commit_time > 0 }
+        end
+        
       end
       
       def sequence
