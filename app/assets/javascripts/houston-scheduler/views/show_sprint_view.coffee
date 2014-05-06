@@ -31,6 +31,7 @@ class Scheduler.ShowSprintView extends Backbone.View
     $add_ticket = @$el.find('#add_ticket').attr('autocomplete', 'off').typeahead
       source: @openTickets
       matcher: (item)->
+        return false if _.detect(view.tickets, (ticket)-> ticket.id == item.id)
         ~item.summary.toLowerCase().indexOf(@query.toLowerCase()) ||
         ~item.projectTitle.toLowerCase().indexOf(@query.toLowerCase()) ||
         ~item.number.toString().toLowerCase().indexOf(@query.toLowerCase())
@@ -92,7 +93,7 @@ class Scheduler.ShowSprintView extends Backbone.View
   removeTicket: (e)->
     $button = $(e.target)
     $ticket = $button.closest('.ticket')
-    id = $ticket.attr('data-ticket-id')
+    id = +$ticket.attr('data-ticket-id')
     $.destroy("/scheduler/sprints/#{@sprintId}/tickets/#{id}")
       .error =>
         $ticket.removeClass('deleting')
