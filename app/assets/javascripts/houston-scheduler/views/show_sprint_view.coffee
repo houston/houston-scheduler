@@ -283,4 +283,5 @@ class Scheduler.ShowSprintView extends Backbone.View
     else
       $button.addClass('btn-success')
       @$el.addClass('edit-mode')
+      $('#add_ticket').focus()
 
