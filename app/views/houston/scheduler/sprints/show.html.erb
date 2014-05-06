@@ -13,6 +13,7 @@
   $(function() {
     $('#houston_scheduler_view').appendView(new Scheduler.ShowSprintView({
       sprintId: <%= @sprint.try(:id).to_json %>,
+      sprintLocked: <%= @sprint.try(:locked?).to_json %>,
       sprintTickets: <%= raw Houston::Scheduler::SprintTicketPresenter.new(@tickets).to_json %>.map(function(ticket) {
         ticket.checkedOut = !!ticket.checkedOutBy;
         ticket.checkedOutByMe = ticket.checkedOutBy && (ticket.checkedOutBy.id == window.user.id);

@@ -5,7 +5,7 @@ module Houston
       
       layout "houston/scheduler/application"
       before_filter :authenticate_user!
-      before_filter :find_sprint, only: [:show, :add_ticket, :remove_ticket]
+      before_filter :find_sprint, only: [:show, :lock, :add_ticket, :remove_ticket]
       
       
       def current
@@ -22,6 +22,13 @@ module Houston
           .able_to_estimate
         @tickets = @sprint.tickets.includes(:checked_out_by)
         render template: "houston/scheduler/sprints/show"
+      end
+      
+      
+      def lock
+        authorize! :manage, sprint
+        sprint.lock!
+        head :ok
       end
       
       

@@ -15,6 +15,7 @@ Houston::Scheduler::Engine.routes.draw do
   
   get "sprints/current", :to => "sprints#current", :as => :current_sprint
   get "sprints/:id", :to => "sprints#show", constraints: {id: /\d+/}, :as => :sprint
+  put "sprints/:id/lock", :to => "sprints#lock", constraints: {id: /\d+/}
   post "sprints/:id/tickets/:ticket_id", :to => "sprints#add_ticket", constraints: {id: /\d+/, ticket_id: /\d+/}
   delete "sprints/:id/tickets/:ticket_id", :to => "sprints#remove_ticket", constraints: {id: /\d+/, ticket_id: /\d+/}
   

@@ -1,4 +1,7 @@
 <tr class="ticket {{#firstReleaseAt}}ticket-released{{/firstReleaseAt}} {{#resolved}}ticket-resolved{{/resolved}} {{#closedAt}}ticket-closed{{/closedAt}}" data-ticket-id="{{id}}">
+  <td class="ticket-remove">
+    <button class="btn btn-danger remove-ticket-button">Remove</button>
+  </td>
   <td class="ticket-sequence">
     {{sequence}}
   </td>
@@ -32,8 +35,5 @@
     {{else}}
       <button class="btn btn-info check-out-button" data-toggle="button">Check out</button>
     {{/if}}
-  </td>
-  <td class="ticket-remove">
-    <button class="btn btn-danger remove-ticket-button">Remove</button>
   </td>
 </tr>

@@ -4,12 +4,13 @@ class Scheduler.ShowSprintView extends Backbone.View
   events:
     'click .check-out-button': 'toggleCheckOut'
     'click #show_completed_tickets': 'toggleShowCompleted'
-    'click #show_edit_mode': 'toggleEditSprint'
+    'click #lock_sprint_button': 'confirmLockSprint'
     'click .remove-ticket-button': 'removeTicket'
     'submit #add_ticket_form': 'addTicket'
   
   initialize: ->
     @sprintId = @options.sprintId
+    @locked = @options.sprintLocked
     @template = HandlebarsTemplates['houston-scheduler/sprints/show']
     @typeaheadTemplate = HandlebarsTemplates['houston-scheduler/tickets/typeahead']
     @tickets = @options.sprintTickets
@@ -19,9 +20,16 @@ class Scheduler.ShowSprintView extends Backbone.View
   render: ->
     return @ unless @tickets
     html = @template
+      locked: @locked
       tickets: @tickets
       sprintId: @sprintId
     @$el.html html
+    
+    if @locked
+      @showAsLocked()
+    else
+      @$el.addClass 'edit-mode'
+      $('#add_ticket').focus()
     
     @renderBurndownChart(@tickets)
     @updateTotalEffort()
@@ -276,13 +284,38 @@ class Scheduler.ShowSprintView extends Backbone.View
       @$el.removeClass('hide-completed')
 
 
-  toggleEditSprint: (e)->
-    $button = $(e.target)
-    if $button.hasClass('active')
-      $button.removeClass('btn-success')
-      @$el.removeClass('edit-mode')
-    else
-      $button.addClass('btn-success')
-      @$el.addClass('edit-mode')
-      $('#add_ticket').focus()
-
+  confirmLockSprint: ->
+    return if @locked
+    $modal = $("""
+    <div class="modal hide" tabindex="-1">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Lock Sprint</h3>
+      </div>
+      <div class="modal-body">
+        Once you lock a Sprint, you will be unable to add or remove tickets.
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal">Back away slowly</button>
+        <button id="confirm_lock_sprint" class="btn btn-danger" data-dismiss="modal">
+          <i class="icon icon-lock" /> Lock It!
+        </button>
+      </div>
+    </div>
+    """).modal()
+    $modal.on 'hidden', -> $modal.remove()
+    $('#confirm_lock_sprint').click _.bind(@lockSprint, @)
+  
+  lockSprint: ->
+    $.put("/scheduler/sprints/#{@sprintId}/lock")
+      .success =>
+        @locked = true
+        @showAsLocked()
+  
+  showAsLocked: ->
+    @$el.removeClass 'edit-mode'
+    $('#lock_sprint_button')
+      .attr('disabled', 'disabled')
+      .addClass('active')
+      .removeClass('btn-danger')
+      .html('<i class="icon icon-lock" /> Locked')
