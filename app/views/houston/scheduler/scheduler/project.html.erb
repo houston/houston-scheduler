@@ -11,6 +11,7 @@
   <li><a href="#milestones">Milestones</a></li>
   <li><a href="#unable-to-estimate">Discussion Needed <span class="badge tickets-discussion-needed-count zero"></span></a></li>
   <li><a href="#postponed">Postponed <span class="badge tickets-postponed-count zero"></span></a></li>
+  <li><a href="#vision">Vision</a></li>
   
   <li id="sequence_settings"></li>
 </ul>
@@ -71,7 +72,8 @@
         id: <%= @project.id %>,
         slug: <%=raw @project.slug.to_json %>,
         name: <%=raw @project.name.to_json %>,
-        ticketTrackerName: <%=raw @project.ticket_tracker_name.to_json %> },
+        ticketTrackerName: <%=raw @project.ticket_tracker_name.to_json %>,
+        valueStatements: <%= raw @project.value_statements.to_json %> },
       tickets: Scheduler.tickets,
       milestones: Scheduler.milestones,
       maintainers: maintainers,

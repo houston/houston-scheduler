@@ -8,6 +8,7 @@ class Scheduler.Router extends Backbone.Router
     'postponed':          'showPostponed'
     'estimate-effort':    'showTicketsWithNoEffort'
     'planning-poker':     'showPlanningPoker'
+    'vision':             'showValueStatements'
   
   
   initialize: (options)->
@@ -63,6 +64,12 @@ class Scheduler.Router extends Backbone.Router
     @show new Scheduler.PlanningPoker
       tickets: @parent.ticketsWaitingForEffortEstimate()
       maintainers: @parent.maintainers
+  
+  showValueStatements: ->
+    @updateActiveTab()
+    @show new Scheduler.ValueStatementsView
+      project: @parent.project
+  
   
   
   show: (view)->

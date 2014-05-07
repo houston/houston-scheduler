@@ -6,6 +6,8 @@ Houston::Scheduler::Engine.routes.draw do
   get "by_project/:slug", :to => "scheduler#project", :as => :project
   put "by_project/:slug/ticket_order", :to => "tickets#update_order"
   
+  put "projects/:id/value_statements", :to => "value_statements#update"
+  
   put "tickets/:id", :to => "tickets#update", constraints: {id: /\d+/}
   match "tickets/:id", :to => "tickets#update", constraints: {id: /\d+/}, via: "PATCH"
   
