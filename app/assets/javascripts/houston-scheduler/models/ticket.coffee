@@ -39,9 +39,6 @@ class Scheduler.Tickets extends Backbone.Collection
   withoutEffortEstimate: ->
     new Scheduler.Tickets(@select (ticket)-> +ticket.get('estimatedEffort') == 0)
   
-  inSprint: (sprintId)->
-    @select (ticket)-> ticket.get('sprintId') == sprintId
-  
   ableToPrioritize: ->
     new Scheduler.Tickets(@select (ticket)-> !ticket.get('unableToSetPriority'))
   

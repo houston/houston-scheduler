@@ -35,10 +35,6 @@ module Houston
           where("NOT defined(tickets.extended_attributes, 'unable_to_set_estimated_effort') OR tickets.extended_attributes->'unable_to_set_estimated_effort' = ''")
         end
         
-        def in_current_sprint
-          joins(:sprint).where("sprints.end_date >= current_date")
-        end
-        
         def with_commit_time
           select { |ticket| ticket.commit_time > 0 }
         end
