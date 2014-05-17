@@ -10,11 +10,6 @@ module Houston
         
         extended_attributes = @ticket.extended_attributes.dup
         
-        if params.key?(:estimatedEffort)
-          authorize! :estimate, project
-          extended_attributes["estimated_effort"] = params[:estimatedEffort]
-        end
-        
         params.keys.grep(/estimatedEffort\[\d+\]/).each do |key|
           authorize! :estimate, project
           extended_attributes[key.gsub(/estimatedEffort/, "estimated_effort")] = params[key]
@@ -66,7 +61,7 @@ module Houston
               .update_all("extended_attributes = extended_attributes || 'sequence=>NULL'::hstore")
             
             ids.each_with_index do |id, i|
-              ::Ticket.where(id: id).update_all("extended_attributes = extended_attributes || 'sequence=>#{i+1}'::hstore")
+              ::Ticket.unscoped.where(id: id).update_all("extended_attributes = extended_attributes || 'sequence=>#{i+1}'::hstore")
             end
           end
         elsif params[:order] == "empty"

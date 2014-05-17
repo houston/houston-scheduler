@@ -23,14 +23,6 @@ module Houston
           where("NOT defined(tickets.extended_attributes, 'unable_to_set_priority') OR tickets.extended_attributes->'unable_to_set_priority' = ''")
         end
         
-        def estimated
-          where("NULLIF(tickets.extended_attributes->'estimated_effort', '')::numeric > 0")
-        end
-        
-        def unestimated
-          where("NOT defined(tickets.extended_attributes, 'estimated_effort') OR NULLIF(tickets.extended_attributes->'estimated_effort', '')::numeric <= 0")
-        end
-        
         def able_to_estimate
           where("NOT defined(tickets.extended_attributes, 'unable_to_set_estimated_effort') OR tickets.extended_attributes->'unable_to_set_estimated_effort' = ''")
         end
@@ -48,10 +40,6 @@ module Houston
       def sequence=(value)
         extended_attributes["sequence"] = value
         extended_attributes_will_change!
-      end
-      
-      def effort
-        extended_attributes["estimated_effort"]
       end
       
       def unable_to_prioritize?

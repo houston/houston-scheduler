@@ -8,6 +8,7 @@ class Scheduler.SequenceTicketView extends Backbone.View
   
   render: ->
     ticket = @ticket.toJSON()
+    ticket.estimatedEffort = @ticket.estimatedEffort()
     html = @template(ticket)
     @$el.html(html)
     @$el.attr('data-ticket-id', ticket.id)
@@ -19,10 +20,10 @@ class Scheduler.SequenceTicketView extends Backbone.View
     
     if ticket.unableToSetEstimatedEffort
       @$el.addClass('sequence-ticket-cant-estimate')
-    else if !ticket.estimatedEffort
+    else if !@ticket.estimated()
       @$el.addClass('sequence-ticket-no-effort')
     else
-      height = ticket.estimatedEffort
+      height = @ticket.estimatedEffort()
       height = 1 if height < 1.0
       @$el.attr('data-effort', height)
       @$el.css('height', "#{height}em")

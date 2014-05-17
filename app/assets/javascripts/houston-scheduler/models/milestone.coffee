@@ -9,7 +9,7 @@ class Scheduler.Milestone extends Backbone.Model
     complexity = 0
     indeterminate = false
     for ticket in @tickets
-      effort = ticket.get('estimatedEffort')
+      effort = ticket.estimatedEffort()
       if effort > 0
         complexity += +effort
       else

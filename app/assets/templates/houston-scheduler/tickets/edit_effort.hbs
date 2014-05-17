@@ -1,25 +1,35 @@
-<td class="ticket-sequence">{{sequence}}</td>
-<td class="ticket-effort">
-  <input type="number" value="{{estimatedEffort}}" name="estimatedEffort" class="ticket-effort mousetrap" />
-</td>
-<td class="ticket-unable-to-estimate">
-  <button tabindex="-1" class="btn btn-unable-to-estimate">Can't Estimate</button>
-</td>
-<td class="ticket-type ticket-type-{{type}}"></td>
-<td class="ticket-reporter">
-  {{#if reporter}}
-    {{{avatar reporter/email 24 ''}}}
-  {{/if}}
-</td>
-<td class="ticket-summary">{{summary}}
-  {{{formatPrerequisites prerequisites}}}
-  <a href="{{ticketUrl}}" target="_blank" title="View in {{ticketSystem}}" tabindex="-1">[#{{number}}]</a>
-  {{#tags}}
-    <span class="ticket-tag" style="background-color: #{{color}}">{{name}}</span>
-  {{/tags}}
-  {{#if milestoneName}}
-    <span class="ticket-tag" style="background-color: #333">{{milestoneName}}</span>
-  {{/if}}
-  <a href="/tickets/{{id}}.json" class="ticket-details" tabindex="-1">more</a>
-</td>
-<td class="ticket-created-at" data-timestamp="{{createdAt}}">{{{formatDateWithYear createdAt}}}</td>
+{{#task0}}
+<tr class="ticket-task" id="task_{{id}}" data-id="{{id}}">
+  <td rowspan="{{../tasks}}" class="ticket-sequence">{{../sequence}}</td>
+  <td class="task-effort">
+    <input type="number" value="{{effort}}" name="effort" class="ticket-effort mousetrap" />
+  </td>
+  <td rowspan="{{../tasks}}" class="ticket-unable-to-estimate">
+    <button tabindex="-1" class="btn btn-unable-to-estimate">Can't Estimate</button>
+  </td>
+  <td rowspan="{{../tasks}}" class="ticket-type ticket-type-{{../type}}"></td>
+  <td rowspan="{{../tasks}}" class="ticket-reporter">
+    {{#if ../reporter}}
+      {{{avatar ../reporter/email 24 ''}}}
+    {{/if}}
+  </td>
+  <td class="ticket-summary">{{description}}
+    {{{formatPrerequisites ../prerequisites}}}
+    <a href="{{../ticketUrl}}" target="_blank" title="View in {{../ticketSystem}}" tabindex="-1">[#{{shorthand}}]</a>
+    <a href="/tickets/{{../id}}.json" class="ticket-details" tabindex="-1">more</a>
+  </td>
+  <td rowspan="{{../tasks}}" class="ticket-created-at">{{{formatDateWithYear ../createdAt}}}</td>
+</tr>
+{{/task0}}
+{{#otherTasks}}
+<tr class="ticket-task" id="task_{{id}}" data-id="{{id}}">
+  <td class="task-effort">
+    <input type="number" value="{{effort}}" name="effort" class="ticket-effort mousetrap" />
+  </td>
+  <td class="ticket-summary">{{description}}
+    {{{formatPrerequisites ../prerequisites}}}
+    <a href="{{../ticketUrl}}" target="_blank" title="View in {{../ticketSystem}}" tabindex="-1">[#{{shorthand}}]</a>
+    <a href="/tickets/{{../id}}.json" class="ticket-details" tabindex="-1">more</a>
+  </td>
+</tr>
+{{/otherTasks}}

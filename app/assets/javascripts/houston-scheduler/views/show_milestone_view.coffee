@@ -11,11 +11,15 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     super
   
   render: ->
-    tickets = (ticket.toJSON() for ticket in @tickets)
+    tickets = for ticket in @tickets.models
+      json = ticket.toJSON()
+      json.estimatedEffort = ticket.estimatedEffort()
+      json
+      
     html = @template(tickets: tickets)
     @$el.html html
     
-    @renderBurndownChart(tickets)
+    @renderBurndownChart(@tickets.models)
     
     @$el.loadTicketDetailsOnClick()
     
@@ -34,9 +38,9 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     totalEffort = 0
     mostRecentDataPoint = 0
     for ticket in tickets
-      effort = +ticket.estimatedEffort
-      if effort and ticket.firstReleaseAt
-        firstReleaseAt = App.parseDate(ticket.firstReleaseAt)
+      effort = +ticket.estimatedEffort()
+      if effort and ticket.get('firstReleaseAt')
+        firstReleaseAt = App.parseDate(ticket.get('firstReleaseAt'))
         mostRecentDataPoint = +firstReleaseAt if mostRecentDataPoint < firstReleaseAt
         sprint = @getEndOfSprint(firstReleaseAt)
         progressBySprint[sprint] = (progressBySprint[sprint] || 0) + effort
@@ -256,7 +260,7 @@ class Scheduler.ShowMilestoneView extends Backbone.View
     
     $ticket = $(e.target).closest('.ticket')
     id = +$ticket.attr('data-ticket-id')
-    ticket = _.find @tickets, (ticket)-> ticket.id is id
+    ticket = @tickets.get id
     
     attributes =
       milestoneId: null

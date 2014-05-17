@@ -19,7 +19,12 @@
       "type" => t.type.to_s.downcase.dasherize,
       "tags" => t.tags.map(&:to_h),
       "sequence" => t.extended_attributes["sequence"],
-      "estimatedEffort" => t.extended_attributes["estimated_effort"],
+      "tasks" => t.tasks.map { |task| {
+        "id" => task.id,
+        "description" => task.description,
+        "shorthand" => task.shorthand,
+        "effort" => task.effort
+      } },
       "unableToSetEstimatedEffort" => t.extended_attributes["unable_to_set_estimated_effort"],
       "summary" => t.summary,
       "description" => t.description,
@@ -39,7 +44,7 @@
           slug: <%=raw @project.slug.to_json %>,
           name: <%=raw @project.name.to_json %>,
           ticketTrackerName: <%=raw @project.ticket_tracker_name.to_json %> },
-        tickets: Scheduler.tickets.models
+        tickets: Scheduler.tickets
       })
     );
   });
