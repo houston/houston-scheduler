@@ -8,7 +8,6 @@ class Scheduler.SequenceTicketView extends Backbone.View
   
   render: ->
     ticket = @ticket.toJSON()
-    ticket.noEstimate = !ticket.unableToSetEstimatedEffort && !ticket.estimatedEffort
     html = @template(ticket)
     @$el.html(html)
     @$el.attr('data-ticket-id', ticket.id)

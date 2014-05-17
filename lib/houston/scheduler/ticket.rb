@@ -54,10 +54,6 @@ module Houston
         extended_attributes["estimated_effort"]
       end
       
-      def effort
-        extended_attributes["estimated_effort"]
-      end
-      
       def unable_to_prioritize?
         extended_attributes["unable_to_set_priority"] == "true"
       end
@@ -68,10 +64,6 @@ module Houston
       
       def unprioritized?
         sequence.blank?
-      end
-      
-      def unestimated?
-        [nil, "", "0"].member?(effort)
       end
       
       def discussion_needed?
