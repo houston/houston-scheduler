@@ -15,8 +15,7 @@
   </td>
   <td class="ticket-summary">{{description}}
     {{{formatPrerequisites ../prerequisites}}}
-    <a href="{{../ticketUrl}}" target="_blank" title="View in {{../ticketSystem}}" tabindex="-1">[#{{shorthand}}]</a>
-    <a href="/tickets/{{../id}}.json" class="ticket-details" tabindex="-1">more</a>
+    <a href="{{../ticketUrl}}" target="_blank" rel="ticket" data-number="{{../number}}" tabindex="-1">[#{{shorthand}}]</a>
   </td>
   <td rowspan="{{../tasks}}" class="ticket-created-at">{{{formatDateWithYear ../createdAt}}}</td>
 </tr>
@@ -28,8 +27,7 @@
   </td>
   <td class="ticket-summary">{{description}}
     {{{formatPrerequisites ../prerequisites}}}
-    <a href="{{../ticketUrl}}" target="_blank" title="View in {{../ticketSystem}}" tabindex="-1">[#{{shorthand}}]</a>
-    <a href="/tickets/{{../id}}.json" class="ticket-details" tabindex="-1">more</a>
+    <a href="{{../ticketUrl}}" target="_blank" rel="ticket" data-number="{{../number}}" tabindex="-1">[#{{shorthand}}]</a>
   </td>
 </tr>
 {{/otherTasks}}

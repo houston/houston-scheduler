@@ -93,8 +93,15 @@ class Scheduler.ShowTicketsView extends Backbone.View
   
   onKeyDown: (e)->
     if e.keyCode == 32 and @anyTicketsSelected()
-      @triggerEdit()
       e.preventDefault()
+      @showTicketDetails @ticketSelection().first().find('[rel="ticket"]')
+  
+  
+  
+  showTicketDetails: ($ticket)->
+    number = +$ticket.attr('data-number')
+    App.showTicket number, @project.slug,
+      $context: $ticket.closest('.sequence-list')
   
   
   
@@ -105,9 +112,6 @@ class Scheduler.ShowTicketsView extends Backbone.View
     $('.sequence-ticket.selected')
   
   
-  
-  triggerEdit: ->
-    @ticketSelection().first().trigger('edit:begin')
   
   cancelEdit: ->
     @viewInEdit.cancelEdit() if @viewInEdit

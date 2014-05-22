@@ -31,7 +31,6 @@ class Scheduler.EditTicketsEffortView extends Backbone.View
     @$el.delegate 'input', 'focus', -> $(@).closest('.ticket').addClass('focus')
     @$el.delegate 'input', 'blur', -> $(@).closest('.ticket').removeClass('focus')
     
-    @$el.loadTicketDetailsOnClick()
     @$el.on 'click', 'th', (e)=> @toggleSort $(e.target).closest('th')
   
   
@@ -63,8 +62,9 @@ class Scheduler.EditTicketsEffortView extends Backbone.View
 
     if character == 'm'
       $ticket = $('.ticket.focus')
-      Scheduler.loadTicketDetails $ticket.find('a.ticket-details').attr('href'), ->
-        $ticket.find('input').focus()
+      number = +$ticket.find('[rel="ticket"]').attr('data-number')
+      App.showTicket number, null,
+        onClose: -> $ticket.find('input').focus()
     
   identifyKey: (code)->
       KEYS[code]

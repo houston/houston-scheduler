@@ -48,6 +48,11 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     
     @$el.find('.sequence-ticket').pseudoHover()
     
+    @$el.on 'click', '[rel="ticket"]', (e)=>
+      e.preventDefault()
+      e.stopImmediatePropagation()
+      @showTicketDetails($(e.target))
+    
     @makeTicketsSortable() unless @readonly
     
   makeTicketsSortable: ->

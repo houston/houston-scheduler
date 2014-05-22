@@ -20,8 +20,6 @@ class Scheduler.UnableToEstimateView extends Backbone.View
       
     $(@el).html html
     
-    @$el.loadTicketDetailsOnClick()
-    
     $('.table-sortable').tablesorter
       headers:
         0: {sorter: 'sequence'}

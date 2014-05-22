@@ -36,9 +36,3 @@ $.fn.extend
         left: pos.left
         width: $el.width()
         height: $el.height()
-  
-  loadTicketDetailsOnClick: ->
-    $(@).delegate '.ticket-details', 'click', (e)->
-      e.preventDefault()
-      e.stopImmediatePropagation()
-      Scheduler.loadTicketDetails $(e.target).attr('href')

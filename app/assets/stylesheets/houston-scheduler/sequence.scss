@@ -289,95 +289,10 @@ th.sequence-velocity {
   cursor: default;
 }
 
-
-
-.sequence-ticket.flipped .flippable {
-  // flip
-  -webkit-transform: rotateY(180deg);
-  -moz-transform: rotateY(180deg);
-  transform: rotateY(180deg);
-  filter: FlipH;
-  -ms-filter: "FlipH";
-  
-  -webkit-transition: 0.4s;
-  -moz-transition: 0.4s;
-  transition: 0.4s;
-  
-  // bring to front
-  z-index: 1001;
-  
-  // re-align
-  position: fixed;
-  
-  // these values are !important to override the inline styles
-  width: 640px !important;
-  height: 480px !important;
-  top: 20% !important;
-  left: 50% !important;
-  margin-left: -320px;
-}
-
-.notransition {
-  -webkit-transition: none !important;
-  -moz-transition: none !important;
-  -o-transition: none !important;
-  -ms-transition: none !important;
-  transition: none !important;
-}
-
-.flippable {
-  -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  
-  // Faster transition when hiding than showing
-  -webkit-transition: 0.2s;
-  -moz-transition: 0.2s;
-  transition: 0.2s;
-  
-  height: 100%;
-}
-
-.sequence-ticket-front, .sequence-ticket-back {
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  backface-visibility: hidden;
-  
+.sequence-ticket-front {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-}
-
-
-// placed in front of .sequence-ticket-back
-.sequence-ticket-front { z-index: 2; }
-
-// initially flipped
-.sequence-ticket-back {
-  -webkit-transform: rotateY(180deg);
-  -moz-transform: rotateY(180deg);
-  transform: rotateY(180deg);
-  filter: FlipH;
-  -ms-filter: "FlipH";
-  
-  border-radius: 0.33em;
-  padding: 2px;
-  background: white;
-}
-
-.sequence-dropcloth {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  
-  -webkit-transition: background 0.4s;
-  -moz-transition: background 0.4s;
-  transition: background 0.4s;
-  
-  &.filled { background: rgba(0,0,0,0.33); }
 }

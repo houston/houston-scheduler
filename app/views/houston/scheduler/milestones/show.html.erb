@@ -1,10 +1,4 @@
-<% content_for :title do %>
-<h1 class="project-banner <%= @project.color %> space-below">
-  <%= @project.name %><small> : <%= @milestone.name %></small>
-  
-  <div id="sequence_settings"></div>
-</h1>
-<% end %>
+<%= render partial: "projects/header", locals: {project: @project, postfix: @milestone.name} %>
 
 <div id="houston_scheduler_view"><div>
 
