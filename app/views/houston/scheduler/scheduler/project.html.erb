@@ -34,7 +34,7 @@
       "type" => t.type.to_s.downcase.dasherize,
       "tags" => t.tags.map(&:to_h),
       "sequence" => t.extended_attributes["sequence"],
-      "tasks" => t.tasks.map { |task| {
+      "tasks" => t.tasks.map { |task| task.ticket = t; {
         "id" => task.id,
         "description" => task.description,
         "shorthand" => task.shorthand,

@@ -20,7 +20,7 @@ module Houston
         @velocity = (velocity * (value / 100.0)).round(1)
         
         if @project.has_ticket_tracker?
-          @tickets = @project.tickets.unclosed.includes(:project, :reporter)
+          @tickets = @project.tickets.unclosed.includes(:project, :reporter, :tasks)
           @milestones = @project.milestones.uncompleted
           @maintainers = @project.maintainers
         else
