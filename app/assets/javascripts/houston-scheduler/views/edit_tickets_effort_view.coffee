@@ -129,4 +129,4 @@ class Scheduler.EditTicketsEffortView extends Backbone.View
   sequenceSorter: (ticket)-> ticket.get('sequence')
   effortSorter: (ticket)-> ticket.estimatedEffort()
   summarySorter: (ticket)-> ticket.get('summary').toLowerCase().replace(/^\W/, '')
-  createdAtSorter: (ticket)-> ticket.get('createdAt')
+  openedAtSorter: (ticket)-> ticket.get('openedAt')

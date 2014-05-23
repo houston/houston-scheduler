@@ -2,8 +2,22 @@ class Scheduler.Ticket extends Backbone.Model
   urlRoot: '/scheduler/tickets'
   
   tasks: -> @_tasks ?= new Scheduler.Tasks(@get('tasks'))
-  estimatedEffort: -> @tasks().reduce ((sum, task)-> sum + +task.get('effort')), 0
+  estimatedEffort: ->
+    effort = @tasks().reduce ((sum, task)-> sum + +task.get('effort')), 0
+    if effort == 0 then null else effort
   estimated: -> @tasks().every (task)-> +task.get('effort') > 0
+  
+  parse: (ticket)->
+    if ticket.extendedAttributes
+      ticket.sequence = +ticket.extendedAttributes['sequence']
+      ticket.sequence = null if ticket.sequence == 0
+      ticket.unableToSetEstimatedEffort = ticket.extendedAttributes['unable_to_set_estimated_effort']
+      ticket.unableToSetPriority = ticket.extendedAttributes['unable_to_set_priority']
+      ticket.postponed = ticket.extendedAttributes['postponed']
+      for key, value of ticket
+        if key.match(/estimated_effort\[\d+\]/)
+          ticket[key.replace(/estimated_effort/, 'estimatedEffort')] = value
+    ticket
 
 
 

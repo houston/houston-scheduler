@@ -5,31 +5,9 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
-    var tickets = <%=raw @tickets.map { |t| {
-      "id" => t.id,
-      "number" => t.number,
-      "ticketUrl" => t.ticket_tracker_ticket_url,
-      "ticketSystem" => t.project.ticket_tracker_name,
-      "type" => t.type.to_s.downcase.dasherize,
-      "tags" => t.tags.map(&:to_h),
-      "sequence" => t.extended_attributes["sequence"],
-      "tasks" => t.tasks.map { |task| {
-        "id" => task.id,
-        "description" => task.description,
-        "shorthand" => task.shorthand,
-        "effort" => task.effort
-      } },
-      "unableToSetEstimatedEffort" => t.extended_attributes["unable_to_set_estimated_effort"],
-      "summary" => t.summary,
-      "description" => t.description,
-      "firstReleaseAt" => t.first_release_at,
-      "closedAt" => t.closed_at,
-      "resolved" => !t.resolution.blank?,
-      "milestoneId" => t.milestone_id,
-      "prerequisites" => t.prerequisites
-    } }.to_json %>;
+    var tickets = <%=raw Houston::Scheduler::TicketPresenter.new(@tickets).to_json %>;
     
-    Scheduler.tickets = new Scheduler.Tickets(tickets);
+    Scheduler.tickets = new Scheduler.Tickets(tickets, {parse: true});
     
     $('#houston_scheduler_view').appendView(
       new Scheduler.ShowMilestoneView({

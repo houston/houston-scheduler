@@ -15,9 +15,9 @@
   </td>
   <td class="ticket-summary">{{description}}
     {{{formatPrerequisites ../prerequisites}}}
-    <a href="{{../ticketUrl}}" target="_blank" rel="ticket" data-number="{{../number}}" tabindex="-1">[#{{shorthand}}]</a>
+    <a href="{{../ticketUrl}}" target="_blank" rel="ticket" data-number="{{../number}}" tabindex="-1">[#{{../number}}{{letter}}]</a>
   </td>
-  <td rowspan="{{../tasks}}" class="ticket-created-at">{{{formatDateWithYear ../createdAt}}}</td>
+  <td rowspan="{{../tasks}}" class="ticket-created-at">{{{formatDateWithYear ../openedAt}}}</td>
 </tr>
 {{/task0}}
 {{#otherTasks}}
@@ -27,7 +27,7 @@
   </td>
   <td class="ticket-summary">{{description}}
     {{{formatPrerequisites ../prerequisites}}}
-    <a href="{{../ticketUrl}}" target="_blank" rel="ticket" data-number="{{../number}}" tabindex="-1">[#{{shorthand}}]</a>
+    <a href="{{../ticketUrl}}" target="_blank" rel="ticket" data-number="{{../number}}" tabindex="-1">[#{{../number}}{{letter}}]</a>
   </td>
 </tr>
 {{/otherTasks}}

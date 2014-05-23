@@ -21,38 +21,7 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
-    var tickets = <%=raw MultiJson.dump(@tickets.map { |t| {
-      "id" => t.id,
-      "number" => t.number,
-      "createdAt" => t.created_at,
-      "ticketUrl" => t.ticket_tracker_ticket_url,
-      "ticketSystem" => t.project.ticket_tracker_name,
-      "reporter" => t.reporter && {
-        "name" => t.reporter.name,
-        "email" => t.reporter.email
-      },
-      "type" => t.type.to_s.downcase.dasherize,
-      "tags" => t.tags.map(&:to_h),
-      "sequence" => t.extended_attributes["sequence"],
-      "tasks" => t.tasks.map { |task| task.ticket = t; {
-        "id" => task.id,
-        "description" => task.description,
-        "shorthand" => task.shorthand,
-        "effort" => task.effort
-      } },
-      "unableToSetEstimatedEffort" => t.extended_attributes["unable_to_set_estimated_effort"],
-      "unableToSetPriority" => t.extended_attributes["unable_to_set_priority"],
-      "postponed" => t.extended_attributes["postponed"],
-      "summary" => t.summary,
-      "description" => t.description,
-      "milestoneId" => t.milestone_id,
-      "milestoneName" => @milestones.detect { |m| m.id == t.milestone_id }.try(:name),
-      "sprintId" => t.sprint_id,
-      "resolved" => t.resolved?,
-      "prerequisites" => t.prerequisites
-    }.merge(t.extended_attributes.keys.grep(/estimated_effort\[\d+\]/).each_with_object({}) { |key, attrs| 
-      attrs[key.gsub(/estimated_effort/, "estimatedEffort")] = t.extended_attributes[key]
-    }) }) %>;
+    var tickets = <%=raw Houston::Scheduler::TicketPresenter.new(@tickets).to_json %>;
     
     var milestones = <%=raw MultiJson.dump(@milestones.map { |m| {
       "id" => m.id,
@@ -65,7 +34,7 @@
       "name" => m.name
     } }) %>;
     
-    Scheduler.tickets = new Scheduler.Tickets(tickets);
+    Scheduler.tickets = new Scheduler.Tickets(tickets, {parse: true});
     Scheduler.milestones = new Scheduler.Milestones(milestones);
     
     <% if current_user.view_options.fetch("scheduler.showEffort", "true") == "true" %>
