@@ -1,24 +1,45 @@
-.ticket-prerequisites {
-  text-shadow: none;
-  color: #333;
-  background-color: #bbb;
+#houston_scheduler_view {
+  .ticket-prerequisites {
+    text-shadow: none;
+    color: #333;
+    background-color: #bbb;
   
-  a { color: #0670a5; }
-  a:hover { color: rgb(0, 60, 90); }
-}
+    a { color: #0670a5; }
+    a:hover { color: rgb(0, 60, 90); }
+  }
 
-tr.ticket-resolved {
-  background: #ECF8FD;
-  color: #62889E;
-}
+  tr.ticket-resolved {
+    background: #ECF8FD;
+    color: #62889E;
+  }
 
-tr.ticket-closed {
-  background: #f4f4f4;
-  color: #a4a4a4;
-}
+  tr.ticket-closed {
+    background: #f4f4f4;
+    color: #a4a4a4;
+  }
 
-.hide-completed {
-  tr.ticket-closed, tr.ticket-released, tr.ticket-resolved { display: none; }
-}
+  td.ticket-reporter { width: 24px; min-width: 24px; max-width:24px; padding-right: 0; }
 
-.check-out-button { white-space: nowrap; }
+  td.ticket-summary {
+    input { 
+      width: 100%;
+      box-sizing: border-box;
+      margin: 0;
+      height: 32px;
+    }
+  }
+
+  .hide-completed {
+    tr.ticket-closed, tr.ticket-released, tr.ticket-resolved { display: none; }
+  }
+
+  .check-out-button { white-space: nowrap; }
+
+  .split-ticket-button {
+    display: inline-block;
+    border-radius: 3px;
+    padding: 3px 6px;
+  
+    &:hover { background: #EDF9FF; }
+  }
+}
