@@ -10,7 +10,7 @@ class Scheduler.Ticket extends Backbone.Model
   parse: (ticket)->
     if ticket.extendedAttributes
       ticket.sequence = +ticket.extendedAttributes['sequence']
-      ticket.sequence = null if ticket.sequence == 0
+      ticket.sequence = null if !ticket.sequence
       ticket.unableToSetEstimatedEffort = ticket.extendedAttributes['unable_to_set_estimated_effort']
       ticket.unableToSetPriority = ticket.extendedAttributes['unable_to_set_priority']
       ticket.postponed = ticket.extendedAttributes['postponed']
