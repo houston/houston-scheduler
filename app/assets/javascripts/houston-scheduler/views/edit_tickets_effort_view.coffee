@@ -76,7 +76,8 @@ class Scheduler.EditTicketsEffortView extends Backbone.View
     
     @visibleTickets = @visibleTickets.sortBy(sorter)
     @visibleTickets = @visibleTickets.reverse() if order == 'desc'
-    @render()
+    @visibleTickets = new Scheduler.Tickets(@visibleTickets)
+    @renderTickets()
 
   sequenceSorter: (ticket)-> ticket.get('sequence')
   effortSorter: (ticket)-> ticket.estimatedEffort()
