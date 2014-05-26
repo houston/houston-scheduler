@@ -2,18 +2,6 @@
 
 <h4>Tasks and Effort</h4>
 
-<table class="tasks">
-  {{#tasks}}
-    <tr class="ticket-task" id="task_{{id}}" data-id="{{id}}">
-      <td class="task-letter">
-        {{letter}}.
-      </td>
-      <td class="task-effort">
-        <input type="number" step="any" min="0.1" value="{{effort}}" name="effort" class="task-effort mousetrap" />
-      </td>
-      <td class="task-description">
-        {{description}}
-      </td>
-    </tr>
-  {{/tasks}}
-</table>
+<table id="tasks" class="tasks"></table>
+
+<button id="add_task_button" class="btn">Add Task</button>

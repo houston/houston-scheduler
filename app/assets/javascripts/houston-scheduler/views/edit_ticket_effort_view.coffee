@@ -1,19 +1,23 @@
 class Scheduler.EditTicketEffortView extends Backbone.View
   
   events:
-    'change input': 'saveValue'
-    'keypress input': 'onKeyPress'
+    'change input[type="number"]': 'saveValue'
+    'keypress input[type="number"]': 'onKeyPress'
     'click .btn-unable-to-estimate': 'onToggleUnableToEstimate'
+    'click #add_task_button': 'addTask'
   
   initialize: ->
     @ticket = @options.ticket
+    @ticket.on 'change:tasks', _.bind(@render, @)
     @template = HandlebarsTemplates['houston-scheduler/tickets/edit_effort']
     @$el.addClass('estimate-effort')
   
   render: ->
-    json = @ticket.toJSON()
-    json.tasks = @ticket.tasks().toJSON()
-    @$el.html @template(json)
+    @$el.html @template()
+    $tasks = @$el.find('#tasks')
+    @ticket.tasks().each (task)->
+      $tasks.appendView new Scheduler.EditTicketTaskView
+        task: task
     
     # Allow scrolling with mousewheel rather than
     # spinning a ticket's effort estimate up or down
@@ -88,3 +92,42 @@ class Scheduler.EditTicketEffortView extends Backbone.View
     character = String.fromCharCode(e.charCode)
     value = $(e.target).val() + character
     e.preventDefault() unless /^[\d\.]+$/.test(value)
+
+
+
+  addTask: (e)->
+    e.preventDefault()
+    $('#add_task_button').hide()
+    @$el.find('#tasks').append """
+    <tr class="ticket-task" id="new_task">
+      <td class="task-letter">
+        #{@ticket.nextTaskLetter()}.
+      </td>
+      <td class="task-description">
+        <input type="text" name="description"/>
+      </td>
+      <td class="task-effort">
+        <input type="number" step="any" min="0.1" value="{{effort}}" name="effort" class="task-effort mousetrap" />
+      </td>
+    </tr>
+    """
+    $task = $('#new_task')
+    $task.find('input:first').focus().select()
+    $task.keydown (e)=>
+      if e.keyCode == 27
+        @cancelNewTask()
+      if e.keyCode == 13
+        e.stopImmediatePropagation()
+        e.preventDefault()
+        @createTask $task.serializeFormElements()
+
+  cancelNewTask: ->
+    $('#new_task').remove()
+    $('#add_task_button').show()
+
+  createTask: (attributes)->
+    xhr = @ticket.addTask(attributes)
+    xhr.success => @cancelNewTask()
+    xhr.error ->
+      console.log 'error', arguments
+

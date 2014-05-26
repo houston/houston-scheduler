@@ -7,6 +7,24 @@ class Scheduler.Ticket extends Backbone.Model
     if effort == 0 then null else effort
   estimated: -> @tasks().every (task)-> +task.get('effort') > 0
   
+  addTask: (attributes)->
+    xhr = $.post "/scheduler/tickets/#{@id}/tasks", attributes
+    xhr.success (tasks)=>
+      @_tasks = null
+      @set('tasks', tasks)
+    xhr
+  
+  nextTaskNumber: ->
+    _.max(@tasks().pluck('number')) + 1
+  
+  nextTaskLetter: ->
+    bytes = []
+    remaining = @nextTaskNumber()
+    while remaining > 0
+      bytes.unshift (remaining - 1) % 26 + 97
+      remaining = Math.round((remaining - 1) / 26)
+    String.fromCharCode(bytes)
+  
   parse: (ticket)->
     if ticket.extendedAttributes
       ticket.sequence = +ticket.extendedAttributes['sequence']

@@ -11,6 +11,7 @@ Houston::Scheduler::Engine.routes.draw do
   put "tickets/:id", :to => "tickets#update", constraints: {id: /\d+/}
   match "tickets/:id", :to => "tickets#update", constraints: {id: /\d+/}, via: "PATCH"
   
+  post "tickets/:id/tasks", :to => "tasks#create", constraints: {id: /\d+/}
   put "tasks/:id", :to => "tasks#update", constraints: {id: /\d+/}
   match "tasks/:id", :to => "tasks#update", constraints: {id: /\d+/}, via: "PATCH"
   

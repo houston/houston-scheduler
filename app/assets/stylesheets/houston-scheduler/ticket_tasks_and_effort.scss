@@ -8,14 +8,15 @@
       padding: 2px;
       vertical-align: top;
       
-      &.task-letter { line-height: 28px; }
+      &.task-letter { padding-top: 6px; }
+      &.task-description { padding-top: 6px; width: 100%; }
     }
     
     input.task-effort {
       text-align: right;
       font-size: 1.08em;
-      padding: .33em .75em;
-      width: 4em;
+      padding: .33em;
+      width: 3.5em;
       margin: 0;
     }
   }

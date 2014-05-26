@@ -15,6 +15,28 @@ module Houston
       end
       
       
+      def create
+        ticket = ::Ticket.find params[:id]
+        task = ticket.tasks.build params.slice(:description, :effort)
+        if task.save
+          render json: present_tasks(ticket), status: :created
+        else
+          render json: {errors: task.errors.full_messages}, status: :unprocessable_entity
+        end
+      end
+      
+      
+    private
+      
+      def present_tasks(ticket)
+        ticket.tasks.map { |task| task.ticket = ticket; {
+          id: task.id,
+          description: task.description,
+          number: task.number,
+          letter: task.letter,
+          effort: task.effort } }
+      end
+      
     end
   end
 end
