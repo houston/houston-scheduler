@@ -3,6 +3,8 @@
     float: right;
   }
   
+  [task-count="1"] .ticket-task td.task-remove { display: none; }
+  
   .ticket-task {
     td {
       padding: 2px;

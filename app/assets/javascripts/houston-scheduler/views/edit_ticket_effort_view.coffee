@@ -15,6 +15,7 @@ class Scheduler.EditTicketEffortView extends Backbone.View
   render: ->
     @$el.html @template()
     $tasks = @$el.find('#tasks')
+    $tasks.attr('task-count', @ticket.tasks().length)
     @ticket.tasks().each (task)=>
       $tasks.appendView new Scheduler.EditTicketTaskView
         ticket: @ticket
