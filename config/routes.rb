@@ -14,6 +14,7 @@ Houston::Scheduler::Engine.routes.draw do
   post "tickets/:id/tasks", :to => "tasks#create", constraints: {id: /\d+/}
   put "tasks/:id", :to => "tasks#update", constraints: {id: /\d+/}
   match "tasks/:id", :to => "tasks#update", constraints: {id: /\d+/}, via: "PATCH"
+  delete "tasks/:id", :to => "tasks#destroy", constraints: {id: /\d+/}
   
   get "milestones/:id", :to => "milestones#show", constraints: {id: /\d+/}
   delete "milestones/:id", :to => "milestones#close", constraints: {id: /\d+/}

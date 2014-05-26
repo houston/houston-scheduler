@@ -26,6 +26,17 @@ module Houston
       end
       
       
+      def destroy
+        task = Task.find params[:id]
+        ticket = task.ticket
+        if task.destroy
+          render json: present_tasks(ticket), status: :created
+        else
+          render json: {errors: task.errors.full_messages}, status: :unprocessable_entity
+        end
+      end
+      
+      
     private
       
       def present_tasks(ticket)

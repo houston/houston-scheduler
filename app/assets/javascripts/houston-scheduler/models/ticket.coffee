@@ -14,6 +14,13 @@ class Scheduler.Ticket extends Backbone.Model
       @set('tasks', tasks)
     xhr
   
+  deleteTask: (task)->
+    xhr = $.destroy "/scheduler/tasks/#{task.id}"
+    xhr.success (tasks)=>
+      @_tasks = null
+      @set('tasks', tasks)
+    xhr
+  
   nextTaskNumber: ->
     _.max(@tasks().pluck('number')) + 1
   

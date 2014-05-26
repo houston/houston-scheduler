@@ -15,8 +15,9 @@ class Scheduler.EditTicketEffortView extends Backbone.View
   render: ->
     @$el.html @template()
     $tasks = @$el.find('#tasks')
-    @ticket.tasks().each (task)->
+    @ticket.tasks().each (task)=>
       $tasks.appendView new Scheduler.EditTicketTaskView
+        ticket: @ticket
         task: task
     
     # Allow scrolling with mousewheel rather than
