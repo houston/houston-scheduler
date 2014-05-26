@@ -1,0 +1,17 @@
+{{#tickets}}
+<tr class="ticket {{#if saved}}saved{{/if}} {{#if unableToSetEstimatedEffort}}unable-to-estimate{{/if}}" id="ticket_{{id}}" rel="ticket" data-number="{{number}}">
+  <td class="ticket-sequence">{{sequence}}</td>
+  <td class="task-effort">{{effort}}</td>
+  <td class="ticket-type ticket-type-{{type}}"></td>
+  <td class="ticket-reporter">
+    {{#if reporter}}
+      {{{avatar reporter/email 24 ''}}}
+    {{/if}}
+  </td>
+  <td class="ticket-summary">{{summary}}
+    {{{formatPrerequisites prerequisites}}}
+  </td>
+  <td class="ticket-number">#{{number}}</td>
+  <td class="ticket-created-at">{{{formatDateWithYear openedAt}}}</td>
+</tr>
+{{/tickets}}

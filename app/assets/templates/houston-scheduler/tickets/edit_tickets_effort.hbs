@@ -1,15 +1,15 @@
 <a class="btn" id="show_completed_tickets" data-toggle="button">Show Completed Tickets</a>
 
-<table id="tickets" class="table table-sortable">
+<table class="table table-sortable table-hoverable">
   <thead>
     <tr>
       <th class="ticket-sequence sort-desc" data-attribute="sequence"><i class="icon icon-reorder"></i></th>
       <th class="ticket-effort" data-attribute="effort">Effort <small>(Points)</small></th>
-      <td class="ticket-unable-to-estimate"></td>
       <td class="ticket-type ticket-type-na"></td>
       <td class="ticket-reporter"></td>
-      <th class="ticket-summary" data-attribute="summary">Summary</th>
+      <th class="ticket-summary" data-attribute="summary" colspan="2">Summary</th>
       <th class="ticket-created-at" data-attribute="openedAt">Opened</th>
     </tr>
   </thead>
+  <tbody id="tickets"></tbody>
 </table>

@@ -1,107 +1,59 @@
-KEYS =
-  13: "RETURN"
-  27: "ESC"
-  38: "UP"
-  40: "DOWN"
-
 class Scheduler.EditTicketsEffortView extends Backbone.View
   className: "edit-estimates-view hide-completed"
   
   
   events:
-    'keydown input': 'onKeyDown'
-    'keypress input': 'onKeyPress'
     'click #show_completed_tickets': 'toggleShowCompleted'
-  
-  
-  keyDownHandlers:
-    UP:     -> @putFocusOn @prevLine()
-    DOWN:   -> @putFocusOn @nextLine()
   
   
   initialize: ->
     @template = HandlebarsTemplates['houston-scheduler/tickets/edit_tickets_effort']
+    @ticketsTemplate = HandlebarsTemplates['houston-scheduler/tickets/edit_tickets_effort_tickets']
     @tickets = @options.tickets
+    @visibleTickets = @tickets.ableToEstimate().withoutEffortEstimate()
     
-    # Allow scrolling with mousewheel rather than
-    # spinning a ticket's effort estimate up or down
-    @$el.delegate 'input[type="number"]', 'mousewheel', -> $(@).blur()
-    @$el.delegate '.ticket', 'click', (e)->
-      $(@).find('input:first').focus() unless $(e.target).is('input')
-    @$el.delegate 'input', 'focus', -> $(@).closest('.ticket').addClass('focus')
-    @$el.delegate 'input', 'blur', -> $(@).closest('.ticket').removeClass('focus')
+    @tickets.on 'change', _.bind(@render, @)
     
     @$el.on 'click', 'th', (e)=> @toggleSort $(e.target).closest('th')
+    
+    @$el.on 'click', '[rel="ticket"]', (e)=>
+      e.preventDefault()
+      e.stopImmediatePropagation()
+      number = +$(e.target).closest('[rel="ticket"]').attr('data-number')
+      App.showTicket number, null,
+        tickets: @visibleTickets
+        taskView: (el, ticket)-> new Scheduler.EditTicketEffortView
+          el: el
+          ticket: ticket
   
   
   
   render: ->
-    $(@el).html @template()
-    @$list = $('#tickets')
-    @refresh()
+    @$el.html @template()
+    @$tickets = @$el.find('#tickets')
+    @renderTickets()
     @
   
-  refresh: ->
-    @$list.find('tbody').remove()
-    @tickets.each (ticket)=>
-      view = new Scheduler.EditTicketEffortView(ticket: ticket)
-      @$list.appendView(view)
-  
-  
-  onKeyDown: (e)->
-    keyName = @identifyKey(e.keyCode)
-    handler = @keyDownHandlers[keyName]
-    if handler
-      e.preventDefault()
-      handler.apply(@)
-  
-  onKeyPress: (e)->
-    character = String.fromCharCode(e.charCode)
-    value = $(e.target).val() + character
-    e.preventDefault() unless /[\d\.]+/.test(value)
-
-    if character == 'm'
-      $ticket = $('.ticket.focus')
-      number = +$ticket.find('[rel="ticket"]').attr('data-number')
-      App.showTicket number, null,
-        onClose: -> $ticket.find('input').focus()
-    
-  identifyKey: (code)->
-      KEYS[code]
-  
-  
-  putFocusOn: ($line)->
-    $line.find('input:first').focus()
-  
-  prevLine: ->
-    $prev = @thisLine().prev()
-    if $prev.length == 0
-      $prevTicket = @thisLine().closest('tbody').prev()
-      $prevTicket = $prevTicket.prev() while $prevTicket.is('.unable-to-estimate, .saved-on-render')
-      $prev = $prevTicket.find('tr:last')
-    $prev
-    
-  nextLine: ->
-    $next = @thisLine().next()
-    if $next.length == 0
-      $nextTicket = @thisLine().closest('tbody').next()
-      $nextTicket = $nextTicket.next() while $nextTicket.is('.unable-to-estimate, .saved-on-render')
-      $next = $nextTicket.find('tr:first')
-    $next
-    
-  thisLine: ->
-    $('input:focus').closest('tr')
-  
+  renderTickets: ->
+    tickets = @visibleTickets.map (ticket)->
+      json = ticket.toJSON()
+      json.effort = ticket.estimatedEffort()
+      json.saved = ticket.estimated()
+      json
+    @$tickets.html @ticketsTemplate(tickets: tickets)
+    @$tickets.find('.ticket').pseudoHover()
   
   
   toggleShowCompleted: (e)->
     $button = $(e.target)
     if $button.hasClass('active')
       $button.removeClass('btn-success')
-      @$el.addClass('hide-completed')
+      @visibleTickets = @tickets.ableToEstimate().withoutEffortEstimate()
+      @renderTickets()
     else
       $button.addClass('btn-success')
-      @$el.removeClass('hide-completed')
+      @visibleTickets = @tickets
+      @renderTickets()
 
 
 
@@ -122,9 +74,9 @@ class Scheduler.EditTicketsEffortView extends Backbone.View
     sorter = @["#{attribute}Sorter"]
     return console.log "#{attribute}Sorter is undefined!" unless sorter
     
-    @tickets = @tickets.sortBy(sorter)
-    @tickets = @tickets.reverse() if order == 'desc'
-    @refresh()
+    @visibleTickets = @visibleTickets.sortBy(sorter)
+    @visibleTickets = @visibleTickets.reverse() if order == 'desc'
+    @render()
 
   sequenceSorter: (ticket)-> ticket.get('sequence')
   effortSorter: (ticket)-> ticket.estimatedEffort()

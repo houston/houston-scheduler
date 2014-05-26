@@ -1,10 +1,4 @@
 .edit-estimates-view {
-  
-  &.hide-completed {
-    .ticket.unable-to-estimate-on-render,
-    .ticket.saved-on-render { display: none; }
-  }
-  
   .ticket, .headings {
     line-height: 34px;
     padding: 1px 0;
@@ -18,29 +12,29 @@
       background-color: #efefef;
       color: #999;
     }
+  }
+  
+  .ticket > td {
+    position: relative;
+    padding: 2px 8px;
     
-    .ticket-task > td {
-      position: relative;
-      padding: 2px 8px;
+    &.ticket-effort { padding-right: 2px; }
+    &.ticket-unable-to-estimate { padding-left: 2px; vertical-align: top; padding-top: 4px; }
+    &.ticket-summary { width: 72%; overflow: hidden; text-overflow: ellipsis; }
+    &.ticket-created-at {
+      line-height: 1em;
+      text-align: right;
+      vertical-align: top;
+      padding-top: 6px;
       
-      &.ticket-effort { padding-right: 2px; }
-      &.ticket-unable-to-estimate { padding-left: 2px; vertical-align: top; padding-top: 4px; }
-      &.ticket-summary { width: 72%; overflow: hidden; text-overflow: ellipsis; }
-      &.ticket-created-at {
-        line-height: 1em;
-        text-align: right;
-        vertical-align: top;
-        padding-top: 6px;
-        
-        .year { display: block; font-size: 10px; }
-      }
+      .year { display: block; font-size: 10px; }
     }
   }
   
   .headings div {
     height: auto;
     font-weight: bold;
-  
+    
     small { font-weight: normal; }
   }
   
@@ -49,8 +43,8 @@
     padding: 0;
     position: relative;
     line-height: 34px;
-  
-    .output, input {
+    
+    .output, input.ticket-effort {
       text-align: right;
       font-size: 1.08em;
       padding: .33em .75em;
@@ -67,5 +61,10 @@
         color: #888;
       }
     }
+  }
+  
+  td.ticket-add-task {
+    vertical-align: bottom;
+    padding-bottom: 12px;
   }
 }

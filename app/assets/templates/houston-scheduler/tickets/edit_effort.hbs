@@ -1,33 +1,19 @@
-{{#task0}}
-<tr class="ticket-task" id="task_{{id}}" data-id="{{id}}">
-  <td rowspan="{{../tasks}}" class="ticket-sequence">{{../sequence}}</td>
-  <td class="task-effort">
-    <input type="number" value="{{effort}}" name="effort" class="ticket-effort mousetrap" />
-  </td>
-  <td rowspan="{{../tasks}}" class="ticket-unable-to-estimate">
-    <button tabindex="-1" class="btn btn-unable-to-estimate">Can't Estimate</button>
-  </td>
-  <td rowspan="{{../tasks}}" class="ticket-type ticket-type-{{../type}}"></td>
-  <td rowspan="{{../tasks}}" class="ticket-reporter">
-    {{#if ../reporter}}
-      {{{avatar ../reporter/email 24 ''}}}
-    {{/if}}
-  </td>
-  <td class="ticket-summary">{{description}}
-    {{{formatPrerequisites ../prerequisites}}}
-    <a href="{{../ticketUrl}}" target="_blank" rel="ticket" data-number="{{../number}}" tabindex="-1">[#{{../number}}{{letter}}]</a>
-  </td>
-  <td rowspan="{{../tasks}}" class="ticket-created-at">{{{formatDateWithYear ../openedAt}}}</td>
-</tr>
-{{/task0}}
-{{#otherTasks}}
-<tr class="ticket-task" id="task_{{id}}" data-id="{{id}}">
-  <td class="task-effort">
-    <input type="number" value="{{effort}}" name="effort" class="ticket-effort mousetrap" />
-  </td>
-  <td class="ticket-summary">{{description}}
-    {{{formatPrerequisites ../prerequisites}}}
-    <a href="{{../ticketUrl}}" target="_blank" rel="ticket" data-number="{{../number}}" tabindex="-1">[#{{../number}}{{letter}}]</a>
-  </td>
-</tr>
-{{/otherTasks}}
+<button tabindex="-1" class="btn btn-unable-to-estimate">Can't Estimate</button>
+
+<h4>Tasks and Effort</h4>
+
+<table class="tasks">
+  {{#tasks}}
+    <tr class="ticket-task" id="task_{{id}}" data-id="{{id}}">
+      <td class="task-letter">
+        {{letter}}.
+      </td>
+      <td class="task-effort">
+        <input type="number" step="any" min="0.1" value="{{effort}}" name="effort" class="task-effort mousetrap" />
+      </td>
+      <td class="task-description">
+        {{description}}
+      </td>
+    </tr>
+  {{/tasks}}
+</table>
