@@ -9,6 +9,7 @@ class Scheduler.EditTicketEffortView extends Backbone.View
   
   initialize: ->
     @ticket = @options.ticket
+    @prev = @options.prev
     @ticket.on 'change:tasks', _.bind(@render, @)
     @template = HandlebarsTemplates['houston-scheduler/tickets/edit_effort']
     @$el.addClass('estimate-effort')
@@ -26,7 +27,7 @@ class Scheduler.EditTicketEffortView extends Backbone.View
     # spinning a ticket's effort estimate up or down
     @$el.delegate 'input[type="number"]', 'mousewheel', -> $(@).blur()
     
-    @$el.find('input:first').focus()
+    @$el.find("input:#{if @prev then 'last' else 'first'}").focus()
     @$el.find('[data-toggle="tooltip"]').tooltip()
     @$el.toggleClass('saved', @ticket.estimated())
     @unableToEstimate() if @ticket.get('unableToSetEstimatedEffort')

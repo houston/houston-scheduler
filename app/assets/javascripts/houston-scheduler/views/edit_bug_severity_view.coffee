@@ -7,6 +7,7 @@ class Scheduler.EditBugSeverityView extends Backbone.View
   
   initialize: ->
     @ticket = @options.ticket
+    @prev = @options.prev
     @template = HandlebarsTemplates['houston-scheduler/tickets/assess_bug']
     @$el.addClass('assess-severity')
   
@@ -29,7 +30,7 @@ class Scheduler.EditBugSeverityView extends Backbone.View
     # spinning a ticket's effort estimate up or down
     @$el.delegate 'input[type="number"]', 'mousewheel', -> $(@).blur()
     
-    @$el.find('input[type="number"]:first').focus()
+    @$el.find("input[type=\"number\"]:#{if @prev then 'last' else 'first'}").focus()
     @$el.find('[data-toggle="tooltip"]').tooltip()
     @$el.toggleClass('saved', @ticket.severity())
     @

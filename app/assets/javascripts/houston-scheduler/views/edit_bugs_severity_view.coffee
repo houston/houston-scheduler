@@ -22,9 +22,10 @@ class Scheduler.EditBugsSeverityView extends Backbone.View
       number = +$(e.target).closest('[rel="ticket"]').attr('data-number')
       App.showTicket number, null,
         tickets: @visibleTickets
-        taskView: (el, ticket)-> new Scheduler.EditBugSeverityView
+        taskView: (el, ticket, options)-> new Scheduler.EditBugSeverityView
           el: el
           ticket: ticket
+          prev: options.prev
   
   
   

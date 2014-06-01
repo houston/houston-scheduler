@@ -22,9 +22,10 @@ class Scheduler.EditTicketsEffortView extends Backbone.View
       number = +$(e.target).closest('[rel="ticket"]').attr('data-number')
       App.showTicket number, null,
         tickets: @visibleTickets
-        taskView: (el, ticket)-> new Scheduler.EditTicketEffortView
+        taskView: (el, ticket, options)-> new Scheduler.EditTicketEffortView
           el: el
           ticket: ticket
+          prev: options.prev
   
   
   
