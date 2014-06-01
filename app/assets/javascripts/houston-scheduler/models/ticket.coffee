@@ -7,6 +7,16 @@ class Scheduler.Ticket extends Backbone.Model
     if effort == 0 then null else effort
   estimated: -> @tasks().every (task)-> +task.get('effort') > 0
   
+  severity: ->
+    seriousness = @get('seriousness')
+    likelihood = @get('likelihood')
+    clumsiness = @get('clumsiness')
+    return false unless seriousness && likelihood && clumsiness
+    (0.6 * seriousness + 0.3 * likelihood + 0.1 * clumsiness).toFixed(1)
+  
+  value: ->
+    0
+  
   addTask: (attributes)->
     xhr = $.post "/scheduler/tickets/#{@id}/tasks", attributes
     xhr.success (tasks)=>
@@ -39,6 +49,11 @@ class Scheduler.Ticket extends Backbone.Model
       ticket.unableToSetEstimatedEffort = ticket.extendedAttributes['unable_to_set_estimated_effort']
       ticket.unableToSetPriority = ticket.extendedAttributes['unable_to_set_priority']
       ticket.postponed = ticket.extendedAttributes['postponed']
+      
+      ticket.seriousness = ticket.extendedAttributes['seriousness']
+      ticket.likelihood = ticket.extendedAttributes['likelihood']
+      ticket.clumsiness = ticket.extendedAttributes['clumsiness']
+      
       for key, value of ticket
         if key.match(/estimated_effort\[\d+\]/)
           ticket[key.replace(/estimated_effort/, 'estimatedEffort')] = value
@@ -67,8 +82,17 @@ class Scheduler.Tickets extends Backbone.Collection
   withoutSequence: -> @select (ticket)-> !ticket.get('sequence')
   withoutMilestones: -> @select (ticket)-> !ticket.get('milestoneId')
   
+  bugs: ->
+    new Scheduler.Tickets(@select (ticket)-> ticket.get('type') == 'bug')
+  
   withoutEffortEstimate: ->
     new Scheduler.Tickets(@select (ticket)-> !ticket.estimated())
+  
+  withSeverityEstimate: ->
+    new Scheduler.Tickets(@select (ticket)-> console.log(ticket.severity()); !!ticket.severity())
+  
+  withoutSeverityEstimate: ->
+    new Scheduler.Tickets(@select (ticket)-> !ticket.severity())
   
   ableToPrioritize: ->
     new Scheduler.Tickets(@select (ticket)-> !ticket.get('unableToSetPriority'))

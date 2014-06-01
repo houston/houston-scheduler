@@ -20,6 +20,13 @@ module Houston
           extended_attributes["estimated_value"] = params[:estimatedValue]
         end
         
+        %w{seriousness likelihood clumsiness}.each do |key|
+          if params.key?(key)
+            authorize! :prioritize, project
+            extended_attributes[key] = params[key]
+          end
+        end
+        
         if params.key?(:unableToSetEstimatedEffort)
           authorize! :estimate, project
           extended_attributes["unable_to_set_estimated_effort"] = params[:unableToSetEstimatedEffort]
