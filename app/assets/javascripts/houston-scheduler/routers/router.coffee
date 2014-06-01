@@ -58,11 +58,13 @@ class Scheduler.Router extends Backbone.Router
   showTicketsWithNoEffort: ->
     @updateActiveTab()
     @show new Scheduler.EditTicketsEffortView
+      project: @parent.project
       tickets: @parent.openTickets()
   
   showBugsWithNoSeverity: ->
     @updateActiveTab()
     @show new Scheduler.EditBugsSeverityView
+      project: @parent.project
       tickets: @parent.openTickets().bugs()
   
   showPlanningPoker: ->

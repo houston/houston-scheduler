@@ -35,9 +35,9 @@ class Scheduler.EstimateTicketsView extends @TicketsView
       @renderTickets()
   
   showTicketModal: (number)->
-    App.showTicket number, null,
-      tickets: @tickets
-      taskView: (el, ticket, options)=> new @taskView
-        el: el
-        ticket: ticket
-        prev: options.prev
+    tickets: @tickets
+    taskView: (el, ticket, options)=> new @taskView
+      el: el
+      ticket: ticket
+      prev: options.prev
+      project: @project
