@@ -1,4 +1,4 @@
-class Scheduler.EditTicketsEffortView extends Backbone.View
+class Scheduler.EditTicketsEffortView extends @TicketsView
   className: "edit-estimates-view hide-completed"
   
   
@@ -7,25 +7,12 @@ class Scheduler.EditTicketsEffortView extends Backbone.View
   
   
   initialize: ->
+    super
     @template = HandlebarsTemplates['houston-scheduler/tickets/edit_tickets_effort']
     @ticketsTemplate = HandlebarsTemplates['houston-scheduler/tickets/edit_tickets_effort_tickets']
-    @tickets = @options.tickets
-    @visibleTickets = @tickets.ableToEstimate().withoutEffortEstimate()
-    
-    @tickets.on 'change', _.bind(@render, @)
-    
-    @$el.on 'click', 'th', (e)=> @toggleSort $(e.target).closest('th')
-    
-    @$el.on 'click', '[rel="ticket"]', (e)=>
-      e.preventDefault()
-      e.stopImmediatePropagation()
-      number = +$(e.target).closest('[rel="ticket"]').attr('data-number')
-      App.showTicket number, null,
-        tickets: @visibleTickets
-        taskView: (el, ticket, options)-> new Scheduler.EditTicketEffortView
-          el: el
-          ticket: ticket
-          prev: options.prev
+    @allTickets = @tickets
+    @tickets = @allTickets.ableToEstimate().withoutEffortEstimate()
+    @allTickets.on 'change', _.bind(@render, @)
   
   
   
@@ -36,7 +23,7 @@ class Scheduler.EditTicketsEffortView extends Backbone.View
     @
   
   renderTickets: ->
-    tickets = @visibleTickets.map (ticket)->
+    tickets = @tickets.map (ticket)->
       json = ticket.toJSON()
       json.effort = ticket.estimatedEffort()
       json.saved = ticket.estimated()
@@ -49,28 +36,18 @@ class Scheduler.EditTicketsEffortView extends Backbone.View
     $button = $(e.target)
     if $button.hasClass('active')
       $button.removeClass('btn-success')
-      @visibleTickets = @tickets.ableToEstimate().withoutEffortEstimate()
+      @tickets = @allTickets.ableToEstimate().withoutEffortEstimate()
       @renderTickets()
     else
       $button.addClass('btn-success')
-      @visibleTickets = @tickets
+      @tickets = @allTickets
       @renderTickets()
-
-
-
-  toggleSort: ($th)->
-    if $th.hasClass('sort-asc')
-      $th.removeClass('sort-asc').addClass('sort-desc')
-    else if $th.hasClass('sort-desc')
-      $th.removeClass('sort-desc').addClass('sort-asc')
-    else
-      @$el.find('.sort-asc, .sort-desc').removeClass('sort-asc sort-desc')
-      $th.addClass('sort-desc')
-    
-    attribute = $th.attr('data-attribute')
-    order = if $th.hasClass('sort-desc') then 'desc' else 'asc'
-    @performSort attribute, order
   
-  performSort: (attribute, order)->
-    @visibleTickets = @visibleTickets.orderBy(attribute, order)
-    @renderTickets()
+  
+  showTicketModal: (number)->
+    App.showTicket number, null,
+      tickets: @tickets
+      taskView: (el, ticket, options)-> new Scheduler.EditTicketEffortView
+        el: el
+        ticket: ticket
+        prev: options.prev

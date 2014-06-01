@@ -1,4 +1,4 @@
-class Scheduler.EditBugsSeverityView extends Backbone.View
+class Scheduler.EditBugsSeverityView extends @TicketsView
   className: "edit-severity-view hide-completed"
   
   
@@ -7,25 +7,12 @@ class Scheduler.EditBugsSeverityView extends Backbone.View
   
   
   initialize: ->
+    super
     @template = HandlebarsTemplates['houston-scheduler/tickets/edit_bugs_severity']
     @ticketsTemplate = HandlebarsTemplates['houston-scheduler/tickets/edit_bugs_severity_tickets']
-    @tickets = @options.tickets
-    @visibleTickets = @tickets.withoutSeverityEstimate()
-    
-    @tickets.on 'change', _.bind(@render, @)
-    
-    @$el.on 'click', 'th', (e)=> @toggleSort $(e.target).closest('th')
-    
-    @$el.on 'click', '[rel="ticket"]', (e)=>
-      e.preventDefault()
-      e.stopImmediatePropagation()
-      number = +$(e.target).closest('[rel="ticket"]').attr('data-number')
-      App.showTicket number, null,
-        tickets: @visibleTickets
-        taskView: (el, ticket, options)-> new Scheduler.EditBugSeverityView
-          el: el
-          ticket: ticket
-          prev: options.prev
+    @allTickets = @tickets
+    @tickets = @allTickets.withoutSeverityEstimate()
+    @allTickets.on 'change', _.bind(@render, @)
   
   
   
@@ -36,7 +23,7 @@ class Scheduler.EditBugsSeverityView extends Backbone.View
     @
   
   renderTickets: ->
-    tickets = @visibleTickets.map (ticket)->
+    tickets = @tickets.map (ticket)->
       json = ticket.toJSON()
       json.severity = ticket.severity()
       json.saved = !!json.severity
@@ -49,28 +36,18 @@ class Scheduler.EditBugsSeverityView extends Backbone.View
     $button = $(e.target)
     if $button.hasClass('active')
       $button.removeClass('btn-success')
-      @visibleTickets = @tickets.withoutSeverityEstimate()
+      @tickets = @allTickets.withoutSeverityEstimate()
       @renderTickets()
     else
       $button.addClass('btn-success')
-      @visibleTickets = @tickets
+      @tickets = @allTickets
       @renderTickets()
-
-
-
-  toggleSort: ($th)->
-    if $th.hasClass('sort-asc')
-      $th.removeClass('sort-asc').addClass('sort-desc')
-    else if $th.hasClass('sort-desc')
-      $th.removeClass('sort-desc').addClass('sort-asc')
-    else
-      @$el.find('.sort-asc, .sort-desc').removeClass('sort-asc sort-desc')
-      $th.addClass('sort-desc')
-    
-    attribute = $th.attr('data-attribute')
-    order = if $th.hasClass('sort-desc') then 'desc' else 'asc'
-    @performSort attribute, order
   
-  performSort: (attribute, order)->
-    @visibleTickets = @visibleTickets.orderBy(attribute, order)
-    @renderTickets()
+  
+  showTicketModal: (number)->
+    App.showTicket number, null,
+      tickets: @tickets
+      taskView: (el, ticket, options)-> new Scheduler.EditBugSeverityView
+        el: el
+        ticket: ticket
+        prev: options.prev
