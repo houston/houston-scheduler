@@ -3,6 +3,7 @@ class Scheduler.EditTicketEffortView extends Backbone.View
   events:
     'change input[type="number"]': 'saveValue'
     'keypress input[type="number"]': 'onKeyPress'
+    'keydown input[type="number"]': 'onKeyDown'
     'click .btn-unable-to-estimate': 'onToggleUnableToEstimate'
     'click #add_task_button': 'addTask'
   
@@ -94,6 +95,23 @@ class Scheduler.EditTicketEffortView extends Backbone.View
     character = String.fromCharCode(e.charCode)
     value = $(e.target).val() + character
     e.preventDefault() unless /^[\d\.]+$/.test(value)
+
+  onKeyDown: (e)->
+    if e.keyCode == 40
+      $input = $(e.target)
+      $nextInput = $input.closest('tr').next().find('input[type="number"]')
+      if $nextInput.length > 0
+        e.stopImmediatePropagation()
+        e.preventDefault()
+        $nextInput.focus().select()
+
+    if e.keyCode == 38
+      $input = $(e.target)
+      $prevInput = $input.closest('tr').prev().find('input[type="number"]')
+      if $prevInput.length > 0
+        e.stopImmediatePropagation()
+        e.preventDefault()
+        $prevInput.focus().select()
 
 
 
