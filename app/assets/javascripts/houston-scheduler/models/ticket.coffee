@@ -6,6 +6,7 @@ class Scheduler.Ticket extends Backbone.Model
     effort = @tasks().reduce ((sum, task)-> sum + +task.get('effort')), 0
     if effort == 0 then null else effort
   estimated: -> @tasks().every (task)-> +task.get('effort') > 0
+  waitingForDiscussion: -> @get('unableToSetEstimatedEffort') or @get('unableToSetPriority')
   
   severity: ->
     seriousness = @get('seriousness')
@@ -77,38 +78,22 @@ class Scheduler.Tickets extends Backbone.Collection
   
   sorted: -> _.sortBy @withSequence(), (ticket)-> +ticket.get('sequence')
   withSequence: -> @select (ticket)-> !!ticket.get('sequence')
-  unresolved: -> new Scheduler.Tickets(@select (ticket)-> !ticket.get('resolved'))
+  unresolved: -> @scoped (ticket)-> !ticket.get('resolved')
   unsorted: -> @withoutSequence()
   withoutSequence: -> @select (ticket)-> !ticket.get('sequence')
   withoutMilestones: -> @select (ticket)-> !ticket.get('milestoneId')
-  
-  bugs: ->
-    new Scheduler.Tickets(@select (ticket)-> ticket.get('type') == 'bug')
-  
-  withoutEffortEstimate: ->
-    new Scheduler.Tickets(@select (ticket)-> !ticket.estimated())
-  
-  withSeverityEstimate: ->
-    new Scheduler.Tickets(@select (ticket)-> console.log(ticket.severity()); !!ticket.severity())
-  
-  withoutSeverityEstimate: ->
-    new Scheduler.Tickets(@select (ticket)-> !ticket.severity())
-  
-  ableToPrioritize: ->
-    new Scheduler.Tickets(@select (ticket)-> !ticket.get('unableToSetPriority'))
-  
-  ableToEstimate: ->
-    new Scheduler.Tickets(@select (ticket)-> !ticket.get('unableToSetEstimatedEffort'))
-  
-  waitingForDiscussion: ->
-    new Scheduler.Tickets(@select (ticket)->
-      ticket.get('unableToSetEstimatedEffort') or ticket.get('unableToSetPriority'))
-  
-  withBothEstimates: ->
-    @select (ticket)-> (+ticket.get('estimatedValue') > 0) && ticket.estimatedEffort() > 0
+  features: -> @scoped (ticket)-> ticket.get('type') == 'feature' || ticket.get('type') == 'enhancement'
+  bugs: -> @scoped (ticket)-> ticket.get('type') == 'bug'
+  withoutEffortEstimate: -> @scoped (ticket)-> !ticket.estimated()
+  withSeverityEstimate: -> @scoped (ticket)-> !!ticket.severity()
+  withoutSeverityEstimate: -> @scoped (ticket)-> !ticket.severity()
+  withValueEstimate: -> @scoped (ticket)-> !!ticket.value()
+  withoutValueEstimate: -> @scoped (ticket)-> !ticket.value()
+  ableToPrioritize: -> @scoped (ticket)-> !ticket.get('unableToSetPriority')
+  ableToEstimate: -> @scoped (ticket)-> !ticket.get('unableToSetEstimatedEffort')
+  waitingForDiscussion: -> @scoped (ticket)-> ticket.waitingForDiscussion()
+  postponed: -> @scoped (ticket)-> !!ticket.get('postponed')
+  unpostponed: -> @scoped (ticket)-> !ticket.get('postponed')
 
-  postponed: ->
-    new Scheduler.Tickets(@select (ticket)-> !!ticket.get('postponed'))
 
-  unpostponed: ->
-    new Scheduler.Tickets(@select (ticket)-> !ticket.get('postponed'))
+  scoped: (filter)-> new Scheduler.Tickets(@select(filter))
