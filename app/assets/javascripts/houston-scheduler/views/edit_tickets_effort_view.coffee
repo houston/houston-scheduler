@@ -71,15 +71,5 @@ class Scheduler.EditTicketsEffortView extends Backbone.View
     @performSort attribute, order
   
   performSort: (attribute, order)->
-    sorter = @["#{attribute}Sorter"]
-    return console.log "#{attribute}Sorter is undefined!" unless sorter
-    
-    @visibleTickets = @visibleTickets.sortBy(sorter)
-    @visibleTickets = @visibleTickets.reverse() if order == 'desc'
-    @visibleTickets = new Scheduler.Tickets(@visibleTickets)
+    @visibleTickets = @visibleTickets.orderBy(attribute, order)
     @renderTickets()
-
-  sequenceSorter: (ticket)-> ticket.get('sequence')
-  effortSorter: (ticket)-> ticket.estimatedEffort()
-  summarySorter: (ticket)-> ticket.get('summary').toLowerCase().replace(/^\W/, '')
-  openedAtSorter: (ticket)-> ticket.get('openedAt')

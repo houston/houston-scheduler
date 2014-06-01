@@ -95,5 +95,21 @@ class Scheduler.Tickets extends Backbone.Collection
   postponed: -> @scoped (ticket)-> !!ticket.get('postponed')
   unpostponed: -> @scoped (ticket)-> !ticket.get('postponed')
 
+  orderBy: (attribute, ascOrDesc)->
+    tickets = @sortBy(@sorterFor(attribute))
+    tickets = tickets.reverse() if ascOrDesc == 'desc'
+    new Scheduler.Tickets(tickets)
+  
+  sorterFor: (attribute)->
+    switch attribute
+      when 'sequence'     then (ticket)-> +ticket.get('sequence')
+      when 'effort'       then (ticket)-> ticket.estimatedEffort()
+      when 'severity'     then (ticket)-> ticket.severity()
+      when 'seriousness'  then (ticket)-> +ticket.get('seriousness')
+      when 'likelihood'   then (ticket)-> +ticket.get('likelihood')
+      when 'clumsiness'   then (ticket)-> +ticket.get('clumsiness')
+      when 'summary'      then (ticket)-> ticket.get('summary').toLowerCase().replace(/^\W/, '')
+      when 'openedAt'     then (ticket)-> ticket.get('openedAt')
+      else throw "sorterFor doesn't know how to sort #{attribute}!"
 
   scoped: (filter)-> new Scheduler.Tickets(@select(filter))
