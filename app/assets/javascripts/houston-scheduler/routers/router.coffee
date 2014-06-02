@@ -7,6 +7,7 @@ class Scheduler.Router extends Backbone.Router
     'unable-to-estimate': 'showUnableToEstimate'
     'postponed':          'showPostponed'
     'estimate-effort':    'showTicketsWithNoEffort'
+    'estimate-value':     'showFeaturesWithNoValue'
     'estimate-severity':  'showBugsWithNoSeverity'
     'planning-poker':     'showPlanningPoker'
     'vision':             'showValueStatements'
@@ -60,6 +61,12 @@ class Scheduler.Router extends Backbone.Router
     @show new Scheduler.EditTicketsEffortView
       project: @parent.project
       tickets: @parent.openTickets()
+  
+  showFeaturesWithNoValue: ->
+    @updateActiveTab()
+    @show new Scheduler.EditFeaturesValueView
+      project: @parent.project
+      tickets: @parent.openTickets().features()
   
   showBugsWithNoSeverity: ->
     @updateActiveTab()

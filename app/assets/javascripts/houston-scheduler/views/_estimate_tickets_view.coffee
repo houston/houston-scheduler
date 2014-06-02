@@ -16,7 +16,7 @@ class Scheduler.EstimateTicketsView extends @TicketsView
     @
   
   renderTickets: ->
-    tickets = @tickets.map(@ticketToJson)
+    tickets = @tickets.map(_.bind(@ticketToJson, @))
     @$tickets.html @ticketsTemplate(tickets: tickets)
     @$tickets.find('.ticket').pseudoHover()
   

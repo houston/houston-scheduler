@@ -1,0 +1,15 @@
+<h4>Estimate Value</h4>
+
+<table class="assess-severity">
+  {{#valueStatements}}
+  <tbody>
+    <tr>
+      <td colspan="2" class="value-statement"><label for="value_statement_{{id}}">{{text}}</label></td>
+    </tr>
+    <tr>
+      <td class="slider"><input name="estimatedValue[{{id}}]" type="text" rel="slider" value="{{value}}" /></td>
+      <td class="input"><input id="value_statement_{{id}}" name="estimatedValue[{{id}}]" type="number" value="{{value}}" min="1" max="10" step="1" size="2" class="mousetrap" /></td>
+    </tr>
+  </tbody>
+  {{/valueStatements}}
+</table>

@@ -25,15 +25,12 @@
   }
   
   &.saved {
-    h4 {
-      
-      &::after {
-        font-family: 'FontAwesome';
-        content: '\f058';
-        color: #42A800;
-        display: inline-block;
-        margin-left: 0.25em;
-      }
+    h4::after {
+      font-family: 'FontAwesome';
+      content: '\f058';
+      color: #42A800;
+      display: inline-block;
+      margin-left: 0.25em;
     }
   }
 }

@@ -6,6 +6,7 @@
     <li><a href="#estimate-effort">Estimate Effort <span class="badge tickets-without-effort-count zero"></span></a></li>
   <% end %>
   <% if can?(:prioritize, @project) %>
+    <li><a href="#estimate-value">Estimate Value <span class="badge features-without-value-count zero"></span></a></li>
     <li><a href="#estimate-severity">Estimate Severity <span class="badge bugs-without-severity-count zero"></span></a></li>
   <% end %>
   <% if Houston::Scheduler.config.use_planning_poker? && can?(:estimate, @project) %>

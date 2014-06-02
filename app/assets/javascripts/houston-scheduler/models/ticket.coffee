@@ -4,8 +4,17 @@ class Scheduler.Ticket extends @Ticket
   estimated: -> @tasks().every (task)-> +task.get('effort') > 0
   waitingForDiscussion: -> @get('unableToSetEstimatedEffort') or @get('unableToSetPriority')
   
-  value: ->
-    0
+  contributionTo: (valueStatements)->
+    _.inject valueStatements
+      , (sum, statement)=>
+        sum + (statement.weight / 100.0) * @valueFor(statement)
+      , 0
+  valueEstimated: (valueStatements)->
+    _.every(valueStatements, (statement)=> @valueFor(statement))
+    
+  valueFor: (statement)->
+    value = @get("estimatedValue[#{statement.id}]")
+    +(value || 0)
   
   tasks: -> @_tasks ?= new Scheduler.Tasks(@get('tasks'))
   
@@ -47,9 +56,11 @@ class Scheduler.Ticket extends @Ticket
       ticket.likelihood = ticket.extendedAttributes['likelihood']
       ticket.clumsiness = ticket.extendedAttributes['clumsiness']
       
-      for key, value of ticket
+      for key, value of ticket.extendedAttributes
         if key.match(/estimated_effort\[\d+\]/)
           ticket[key.replace(/estimated_effort/, 'estimatedEffort')] = value
+        if key.match(/estimated_value\[\d+\]/)
+          ticket[key.replace(/estimated_value/, 'estimatedValue')] = value
     ticket
 
 
@@ -79,8 +90,8 @@ class Scheduler.Tickets extends @Tickets
   withoutEffortEstimate: -> @scoped (ticket)-> !ticket.estimated()
   withSeverityEstimate: -> @scoped (ticket)-> !!ticket.severity()
   withoutSeverityEstimate: -> @scoped (ticket)-> !ticket.severity()
-  withValueEstimate: -> @scoped (ticket)-> !!ticket.value()
-  withoutValueEstimate: -> @scoped (ticket)-> !ticket.value()
+  withValueEstimate: (valueStatements)-> @scoped (ticket)-> ticket.valueEstimated(valueStatements)
+  withoutValueEstimate: (valueStatements)-> @scoped (ticket)-> !ticket.valueEstimated(valueStatements)
   ableToPrioritize: -> @scoped (ticket)-> !ticket.get('unableToSetPriority')
   ableToEstimate: -> @scoped (ticket)-> !ticket.get('unableToSetEstimatedEffort')
   waitingForDiscussion: -> @scoped (ticket)-> ticket.waitingForDiscussion()

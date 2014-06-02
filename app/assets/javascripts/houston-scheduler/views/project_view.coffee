@@ -27,6 +27,7 @@ class Scheduler.ProjectView extends Backbone.View
   openTickets: -> @tickets.unpostponed().unresolved()
   ticketsWaitingForDiscussion: -> @tickets.unpostponed().waitingForDiscussion()
   ticketsWaitingForEffortEstimate: -> @openTickets().withoutEffortEstimate().ableToEstimate()
+  ticketsWaitingForValueEstimate: -> @openTickets().features().withoutValueEstimate(@project.valueStatements)
   ticketsWaitingForSeverityEstimate: -> @openTickets().bugs().withoutSeverityEstimate()
   ticketsWaitingForMyEffortEstimate: ->
     myEstimateKey = "estimatedEffort[#{window.user.id}]"
@@ -58,6 +59,9 @@ class Scheduler.ProjectView extends Backbone.View
       $('.tickets-without-my-effort-estimate-count').html(count).toggleClass('zero', count == 0)
     
     if @canPrioritize
+      count = @ticketsWaitingForValueEstimate().length
+      $('.features-without-value-count').html(count).toggleClass('zero', count == 0)
+      
       count = @ticketsWaitingForSeverityEstimate().length
       $('.bugs-without-severity-count').html(count).toggleClass('zero', count == 0)
     
