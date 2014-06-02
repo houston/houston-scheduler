@@ -38,7 +38,7 @@ class Scheduler.EditBugSeverityView extends Backbone.View
   
   
   saveChanges: ->
-    @$el.find('input:first').blur()
+    @$el.find('input:focus').blur()
   
   saveValue: (e)->
     $input = $(e.target)

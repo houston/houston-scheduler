@@ -36,7 +36,7 @@ class Scheduler.EditTicketEffortView extends Backbone.View
   
   
   saveChanges: ->
-    @$el.find('input:first').blur()
+    @$el.find('input:focus').blur()
   
   saveValue: (e)->
     $task = $(e.target).closest('.ticket-task')
