@@ -4,8 +4,9 @@ module Houston
       
       def update
         project = Project.find(params[:id])
-        if project.update_attributes(value_statements_attributes: params[:statements])
-          head :ok
+        update = UpdateValueStatements.new(params)
+        if update.apply_to(project)
+          render json: project.value_statements
         else
           render text: project.errors.full_messages.to_sentence, status: :unprocessable_entity
         end

@@ -9,9 +9,7 @@ class Scheduler.ValueStatementsView extends Backbone.View
     @project = @options.project
     @template = HandlebarsTemplates['houston-scheduler/value_statements/index']
     @renderStatement = HandlebarsTemplates['houston-scheduler/value_statements/show']
-    @statements = @project.valueStatements ? []
-    @viewId = 0
-    statement.viewId = ++@viewId for statement in @statements
+    @setStatements @project.valueStatements
   
   render: ->
     @$el.html @template
@@ -109,16 +107,32 @@ class Scheduler.ValueStatementsView extends Backbone.View
 
   save: (e)->
     e.preventDefault()
+    $('#update_value_statements').prop('disabled', true)
+    
     xhr = $.put "/scheduler/projects/#{@project.id}/value_statements",
       statements: _.map @statements, (statement)->
         id: statement.id
         text: statement.text
         weight: statement.weight
         _destroy: statement._destroy
-    xhr.success ->
+    
+    xhr.success (statements)=>
+      $('#update_value_statements').prop('disabled', false)
+      
       $('.alert').remove()
       $('#body').prepend '<div class="alert alert-success">Changes saved <a class="close" data-dismiss="alert" href="#">&times;</a></div>'
+      
+      @setStatements statements
+      @render()
+    
     xhr.error (response)->
+      $('#update_value_statements').prop('disabled', false)
+      
       $('.alert').remove()
       $('#body').prepend "<div class=\"alert alert-error\">#{response.responseText} <a class=\"close\" data-dismiss=\"alert\" href=\"#\">&times;</a></div>"
+
+  setStatements: (statements)->
+    @project.valueStatements = @statements = statements ? []
+    @viewId = 0
+    statement.viewId = ++@viewId for statement in @statements
 
