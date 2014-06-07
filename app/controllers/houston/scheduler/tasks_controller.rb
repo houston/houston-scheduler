@@ -10,7 +10,8 @@ module Houston
         effort = params[:effort]
         effort = effort.to_d if effort
         effort = nil if effort && effort <= 0
-        task.update_column :effort, effort
+        task.updated_by = current_user
+        task.update_attributes effort: effort
         render json: [], status: :ok
       end
       
@@ -18,6 +19,7 @@ module Houston
       def create
         ticket = ::Ticket.find params[:id]
         task = ticket.tasks.build params.slice(:description, :effort)
+        task.updated_by = current_user
         if task.save
           render json: present_tasks(ticket), status: :created
         else
@@ -29,6 +31,7 @@ module Houston
       def destroy
         task = Task.find params[:id]
         ticket = task.ticket
+        task.updated_by = current_user
         if task.destroy
           render json: present_tasks(ticket), status: :created
         else
