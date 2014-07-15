@@ -58,6 +58,14 @@ module Houston
         unable_to_prioritize? or unable_to_estimate?
       end
       
+      def able_to_estimate!
+        return unless unable_to_estimate?
+        
+        new_attributes = extended_attributes.dup
+        new_attributes["unable_to_set_estimated_effort"] = nil
+        update_attributes extended_attributes: new_attributes
+      end
+      
     end
   end
 end
