@@ -5,6 +5,8 @@ module Houston::Scheduler
       @use_planning_poker = true
       @use_mixer = true
       @use_velocity = true
+      @use_estimate_effort = true
+      @use_estimate_value = true
       config = Houston.config.module(:scheduler).config
       instance_eval(&config) if config
     end
@@ -21,6 +23,14 @@ module Houston::Scheduler
       @use_velocity = false if arg == :off
     end
     
+    def estimate_effort(arg)
+      @use_estimate_effort = false if arg == :off
+    end
+    
+    def estimate_value(arg)
+      @use_estimate_value = false if arg == :off
+    end
+    
     def use_planning_poker?
       @use_planning_poker
     end
@@ -31,6 +41,14 @@ module Houston::Scheduler
     
     def use_velocity?
       @use_velocity
+    end
+    
+    def use_estimate_effort?
+      @use_estimate_effort
+    end
+    
+    def use_estimate_value?
+      @use_estimate_value
     end
     
   end
