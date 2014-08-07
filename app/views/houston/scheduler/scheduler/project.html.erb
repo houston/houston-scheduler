@@ -12,7 +12,6 @@
   <% if Houston::Scheduler.config.use_planning_poker? && can?(:estimate, @project) %>
     <li><a href="#planning-poker">Planning Poker <span class="badge tickets-without-my-effort-estimate-count zero"></span></a></li>
   <% end %>
-  <li><a href="#milestones">Milestones</a></li>
   <li><a href="#unable-to-estimate">Discussion Needed <span class="badge tickets-discussion-needed-count zero"></span></a></li>
   <li><a href="#postponed">Postponed <span class="badge tickets-postponed-count zero"></span></a></li>
   <li><a href="#vision">Vision</a></li>
@@ -27,11 +26,6 @@
   $(function() {
     var tickets = <%=raw Houston::Scheduler::TicketPresenter.new(@tickets).to_json %>;
     
-    var milestones = <%=raw MultiJson.dump(@milestones.map { |m| {
-      "id" => m.id,
-      "name" => m.name
-    } }) %>;
-    
     var maintainers = <%=raw MultiJson.dump(@maintainers.map { |m| {
       "id" => m.id,
       "email" => m.email,
@@ -39,7 +33,6 @@
     } }) %>;
     
     Scheduler.tickets = new Scheduler.Tickets(tickets, {parse: true});
-    Scheduler.milestones = new Scheduler.Milestones(milestones);
     
     <% if current_user.view_options.fetch("scheduler.showEffort", "true") == "true" %>
     $('#houston_scheduler_view').addClass('with-effort');
@@ -53,7 +46,6 @@
         ticketTrackerName: <%=raw @project.ticket_tracker_name.to_json %>,
         valueStatements: <%= raw @project.value_statements.to_json %> },
       tickets: Scheduler.tickets,
-      milestones: Scheduler.milestones,
       maintainers: maintainers,
       velocity: <%= @velocity %>,
       canEstimate: <%= can?(:estimate, @project) %>,

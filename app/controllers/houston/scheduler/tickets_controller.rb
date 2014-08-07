@@ -51,10 +51,6 @@ module Houston
         
         attributes = {extended_attributes: extended_attributes}
         
-        if params.key?(:milestoneId)
-          attributes[:milestone_id] = params[:milestoneId]
-        end
-        
         ticket.updated_by = current_user
         if ticket.update_attributes(attributes)
           render json: [], :status => :ok

@@ -4,7 +4,6 @@ class Scheduler.ProjectView extends Backbone.View
   initialize: ->
     @project = @options.project
     @tickets = @options.tickets
-    @milestones = @options.milestones
     @maintainers = @options.maintainers
     @velocity = @options.velocity
     @canEstimate = @options.canEstimate
@@ -12,11 +11,6 @@ class Scheduler.ProjectView extends Backbone.View
     @tickets.on 'change', _.bind(@render, @)
     @tickets.on 'add', _.bind(@refresh, @)
     @router = new Scheduler.Router(parent: @)
-    
-    for ticket in @tickets.models
-      milestoneId = ticket.get('milestoneId')
-      milestone = @milestones.get(milestoneId) if milestoneId
-      milestone.tickets.push(ticket) if milestone
     
     Backbone.history.start()
     @render()

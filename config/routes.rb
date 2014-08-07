@@ -16,10 +16,6 @@ Houston::Scheduler::Engine.routes.draw do
   match "tasks/:id", :to => "tasks#update", constraints: {id: /\d+/}, via: "PATCH"
   delete "tasks/:id", :to => "tasks#destroy", constraints: {id: /\d+/}
   
-  get "milestones/:id", :to => "milestones#show", constraints: {id: /\d+/}
-  delete "milestones/:id", :to => "milestones#close", constraints: {id: /\d+/}
-  post "milestones", :to => "milestones#create"
-  
   get "velocity", :to => "velocity#index"
   
 end

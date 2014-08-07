@@ -84,7 +84,6 @@ class Scheduler.Tickets extends @Tickets
   unresolved: -> @scoped (ticket)-> !ticket.get('resolved')
   unsorted: -> @withoutSequence()
   withoutSequence: -> @select (ticket)-> !ticket.get('sequence')
-  withoutMilestones: -> @select (ticket)-> !ticket.get('milestoneId')
   features: -> @scoped (ticket)-> ticket.get('type') == 'feature' || ticket.get('type') == 'enhancement'
   bugs: -> @scoped (ticket)-> ticket.get('type') == 'bug'
   withoutEffortEstimate: -> @scoped (ticket)-> !ticket.estimated()
