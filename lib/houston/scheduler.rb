@@ -16,10 +16,10 @@ module Houston
       return [] if projects.empty?
       
       menu_items = []
-      menu_items << MenuItem.new("Mixer", Engine.routes.url_helpers.mixer_path) if config.use_mixer?
-      menu_items << MenuItem.new("Velocity", Engine.routes.url_helpers.velocity_path) if config.use_velocity?
-      
-      menu_items << MenuItemDivider.new
+      if config.use_mixer?
+        menu_items << MenuItem.new("Mixer", Engine.routes.url_helpers.mixer_path)
+        menu_items << MenuItemDivider.new
+      end
       menu_items.concat projects.map { |project| ProjectMenuItem.new(project, Engine.routes.url_helpers.project_path(project)) }
       menu_items
     end
