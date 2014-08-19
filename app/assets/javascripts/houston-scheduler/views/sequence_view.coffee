@@ -121,11 +121,11 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
             $ticket = $("#ticket_#{ticket.get('id')}")
             $ticket.before """
               <a class="sequence-ticket-prerequisite" data-ticket-id="#{prerequisiteTicket.get('id')}">
-                <i class="icon-long-arrow-down"></i>
+                <i class="fa fa-long-arrow-down"></i>
                 <span class="prerequisite-statement">##{ticket.get('number')} requires ##{prerequisiteTicket.get('number')}</span>
                 <br/>
                 <span class="prerequisite-link">Insert ##{prerequisiteTicket.get('number')} here</span>
-                <i class="sequence-ticket-icon icon-plus-sign-alt" data-toggle="tooltip" title="Missing prerequisite" />
+                <i class="sequence-ticket-icon fa fa-plus-square" data-toggle="tooltip" title="Missing prerequisite" />
               </a>
             """
       ticketNumbersSoFar.push ticket.get('number')

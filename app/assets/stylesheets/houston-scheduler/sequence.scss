@@ -191,9 +191,9 @@ th.sequence-velocity {
   padding: 8px; // larger mouse target for popover
 }
 
-.sequence-ticket-icon.icon-question-sign { display: none; }
+.sequence-ticket-icon.fa-question-circle { display: none; }
 #houston_scheduler_view.with-effort .sequence-ticket-no-effort {
-  .sequence-ticket-icon.icon-question-sign { display: block; }
+  .sequence-ticket-icon.fa-question-circle { display: block; }
 }
 
 .sequence-ticket-summary { display: table; height: 100%; width: 100%; }
@@ -246,7 +246,7 @@ th.sequence-velocity {
     color: #254a53;
   }
   
-  i.icon-long-arrow-down {
+  i.fa-long-arrow-down {
     display: block;
     float: left;
     font-size: 1.75em;

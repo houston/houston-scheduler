@@ -142,7 +142,7 @@ class Scheduler.MixPlannerView extends Backbone.View
     e.preventDefault()
     
     $save = $(e.target)
-    $save.attr('disabled', 'disabled').html('<i class="icon-spinner icon-spin"></i> Saving...')
+    $save.attr('disabled', 'disabled').html('<i class="fa fa-spinner fa-spin"></i> Saving...')
     
     $.put('/scheduler/mixer', {mixes: @mixes})
       .success =>
