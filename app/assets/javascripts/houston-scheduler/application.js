@@ -12,3 +12,4 @@
 //
 //= require_tree ../../templates/houston-scheduler
 //= require_tree .
+//= require lail/delayed_action
