@@ -20,7 +20,7 @@ module Houston
         
         @readonly = !can?(:manage, Houston::Scheduler::ProjectQuota)
         
-        @projects = Project.scoped.map { |project|
+        @projects = Project.all.map { |project|
           { id: project.id,
             name: project.name,
             color: project.color,
