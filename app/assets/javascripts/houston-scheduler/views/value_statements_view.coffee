@@ -50,8 +50,11 @@ class Scheduler.ValueStatementsView extends Backbone.View
     $statement = $(e.target).closest('.value-statement')
     viewId = +$statement.attr('data-id')
     statement = _.detect @statements, (statement)-> statement.viewId == viewId
-    statement._destroy = true
-    statement.weight = 0
+    if statement.id
+      statement._destroy = true
+      statement.weight = 0
+    else
+      @statements = _.without(@statements, statement)
     $statement.remove()
   
   
