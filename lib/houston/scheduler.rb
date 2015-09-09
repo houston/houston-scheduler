@@ -4,10 +4,12 @@ require "houston/scheduler/configuration"
 module Houston
   module Scheduler
     extend self
-    
-    attr_reader :config
-    
+
+    def config(&block)
+      @configuration ||= Scheduler::Configuration.new
+      @configuration.instance_eval(&block) if block_given?
+      @configuration
+    end
+
   end
-  
-  Scheduler.instance_variable_set :@config, Scheduler::Configuration.new
 end
