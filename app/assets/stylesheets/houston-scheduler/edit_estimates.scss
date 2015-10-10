@@ -2,7 +2,7 @@
   .ticket, .headings {
     line-height: 34px;
     padding: 1px 0;
-    
+
     &.saved {
       background-color: #E6FFDF;
       color: #709E62;
@@ -12,29 +12,29 @@
       color: #999;
     }
   }
-  
+
   .ticket > td {
     position: relative;
     padding: 2px 8px;
-    
+
     &.ticket-effort { padding-right: 2px; }
     &.ticket-unable-to-estimate { padding-left: 2px; vertical-align: top; padding-top: 4px; }
     &.ticket-summary { width: 72%; overflow: hidden; text-overflow: ellipsis; }
   }
-  
+
   .headings div {
     height: auto;
     font-weight: bold;
-    
+
     small { font-weight: normal; }
   }
-  
+
   #tickets {
     margin: 0;
     padding: 0;
     position: relative;
     line-height: 34px;
-    
+
     .output, input.ticket-effort {
       text-align: right;
       font-size: 1.08em;
@@ -42,18 +42,18 @@
       width: 5em;
       margin: 0;
     }
-    
+
     button {
       font-size: 14px;
       white-space: nowrap;
-      
+
       &.active {
         background-color: #d6d6d6;
         color: #888;
       }
     }
   }
-  
+
   td.ticket-add-task {
     vertical-align: bottom;
     padding-bottom: 12px;

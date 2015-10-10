@@ -10,7 +10,7 @@
 !function($) {
 	
 	$.fn.multiselectable = function(options) {
-		options = options || {}; 
+		options = options || {};
 		options = $.extend({}, $.fn.multiselectable.defaults, options)
 		
 		return this.each(function() {

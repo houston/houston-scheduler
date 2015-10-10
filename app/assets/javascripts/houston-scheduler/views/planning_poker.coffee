@@ -1,15 +1,15 @@
 class Scheduler.PlanningPoker extends Backbone.View
   className: 'planning-poker'
-  
+
   initialize: ->
     @template = HandlebarsTemplates['houston-scheduler/tickets/planning_poker']
     @tickets = @options.tickets
     @maintainers = @options.maintainers
     @myEstimateKey = "estimatedEffort[#{window.user.id}]"
     @allEstimateKeys = ("estimatedEffort[#{maintainer.id}]" for maintainer in @maintainers)
-    
+
     @$el.on 'click', '[role="menuitem"]', _.bind(@setEstimate, @)
-  
+
   render: ->
     tickets = @tickets.map (ticket)=>
       ticket = ticket.toJSON()
@@ -25,37 +25,37 @@ class Scheduler.PlanningPoker extends Backbone.View
     @$el.html @template
       tickets: tickets
       maintainers: @maintainers
-    
+
     $('.table-sortable').tablesorter
       headers:
         1: {sorter: 'sequence'}
     @
-  
+
   isComplete: (ticket)->
     _.intersection(_.keys(ticket), @allEstimateKeys).length == @allEstimateKeys.length
-  
+
   estimates: (ticket)->
     _.map(@allEstimateKeys, (key)-> ticket[key])
-  
+
   isUnanimous: (ticket)->
     _.uniq(@estimates(ticket)).length is 1
-  
+
   setEstimate: (e)->
     e.preventDefault()
     $a = $(e.target)
     ticketId = $a.closest('.ticket').data('ticket-id')
     estimate = $a.html()
-    
+
     if estimate is 'No Estimate'
       estimate = ''
       $a.closest('.dropdown').find('.estimate').addClass('no-estimate').html(estimate)
     else
       $a.closest('.dropdown').find('.estimate').removeClass('no-estimate').html(estimate)
     ticket = @tickets.get(ticketId)
-    
+
     attributes = {}
     attributes[@myEstimateKey] = estimate
-    
+
     allAttributes = ticket.toJSON()
     allAttributes[@myEstimateKey] = estimate
     if @isUnanimous(allAttributes)
@@ -70,8 +70,6 @@ class Scheduler.PlanningPoker extends Backbone.View
           attributes['unableToSetEstimatedEffort'] = false
     else
       attributes['estimatedEffort'] = ''
-    
+
     ticket.save attributes, patch: true
     @render() # <-- maybe render just the ticket in the future
-
-  

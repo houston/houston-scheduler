@@ -3,11 +3,11 @@ module Houston
     class UpdateValueStatements
       attr_reader :attributes
       attr_accessor :updated_by
-      
+
       def initialize(params)
         @attributes = params.fetch(:statements, {}).values
       end
-      
+
       def apply_to(project)
         attributes.each do |attrs|
           if attrs["id"]
@@ -25,10 +25,10 @@ module Houston
             statement.save
           end
         end
-        
+
         true
       end
-      
+
     end
   end
 end

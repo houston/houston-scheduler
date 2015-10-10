@@ -1,5 +1,5 @@
 $.fn.extend
-  
+
   cssHover: (selector)->
     if arguments.length == 0
       @hover(
@@ -11,7 +11,7 @@ $.fn.extend
           $(@).addClass('hovered')
         else
           $(@).removeClass('hovered')
-  
+
   serializeFormElements: ->
     data = {}
     @find('input, select, textarea').each ->
@@ -24,7 +24,7 @@ $.fn.extend
       else
         data[name] = elem.val()
     data
-  
+
   positionAbsolutely: ->
     positions = ($(el).position() for el in @)
     for i in [0...@length]

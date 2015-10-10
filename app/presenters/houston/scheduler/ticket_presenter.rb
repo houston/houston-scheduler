@@ -1,6 +1,6 @@
 class Houston::Scheduler::TicketPresenter < TicketPresenter
   include MarkdownHelper
-  
+
   def ticket_to_json(ticket)
     reporter = ticket.reporter
     super.merge(
@@ -20,5 +20,5 @@ class Houston::Scheduler::TicketPresenter < TicketPresenter
       resolved: ticket.resolved?,
       prerequisites: ticket.prerequisites)
   end
-  
+
 end

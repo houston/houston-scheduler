@@ -1,19 +1,19 @@
 class Scheduler.EditTicketEffortView extends Backbone.View
-  
+
   events:
     'change input[type="number"]': 'saveValue'
     'keypress input[type="number"]': 'onKeyPress'
     'keydown input[type="number"]': 'onKeyDown'
     'click .btn-unable-to-estimate': 'onToggleUnableToEstimate'
     'click #add_task_button': 'addTask'
-  
+
   initialize: ->
     @ticket = @options.ticket
     @prev = @options.prev
     @ticket.on 'change:tasks', _.bind(@render, @)
     @template = HandlebarsTemplates['houston-scheduler/tickets/edit_effort']
     @$el.addClass('estimate-effort')
-  
+
   render: ->
     @$el.html @template()
     $tasks = @$el.find('#tasks')
@@ -22,32 +22,32 @@ class Scheduler.EditTicketEffortView extends Backbone.View
       $tasks.appendView new Scheduler.EditTicketTaskView
         ticket: @ticket
         task: task
-    
+
     # Allow scrolling with mousewheel rather than
     # spinning a ticket's effort estimate up or down
     @$el.delegate 'input[type="number"]', 'mousewheel', -> $(@).blur()
-    
+
     @$el.find("input:#{if @prev then 'last' else 'first'}").focus()
     @$el.find('[data-toggle="tooltip"]').tooltip()
     @$el.toggleClass('saved', @ticket.estimated())
     @unableToEstimate() if @ticket.get('unableToSetEstimatedEffort')
     @
-  
-  
-  
+
+
+
   saveChanges: ->
     @$el.find('input:focus').blur()
-  
+
   saveValue: (e)->
     $task = $(e.target).closest('.ticket-task')
     task = @ticket.tasks().get $task.attr('data-id')
     attributes = $task.serializeFormElements()
     return unless task
-    
+
     @saveAttributes task, attributes, =>
       @ticket.trigger 'change'
       @$el.toggleClass('saved', @ticket.estimated())
-  
+
   saveAttributes: (model, attributes, callback)->
     model.save attributes,
       patch: true
@@ -61,30 +61,30 @@ class Scheduler.EditTicketEffortView extends Backbone.View
         @$el.removeClass 'working'
       complete: =>
         @$el.removeClass 'working'
-  
-  
-  
+
+
+
   onToggleUnableToEstimate: (e)->
     e.preventDefault()
-    
+
     attributes = {}
     attributes['unableToSetEstimatedEffort'] = disableMe = if @$el.hasClass('unable-to-estimate') then null else true
     @unableToEstimate() if disableMe
-    
+
     @saveAttributes @ticket, attributes, =>
       @updateAbilityToEstimate()
-  
+
   updateAbilityToEstimate: ->
     if @ticket.get('unableToSetEstimatedEffort')
       @unableToEstimate()
     else
       @ableToEstimate()
-  
+
   unableToEstimate: ->
     @$el.addClass('unable-to-estimate').removeClass('focus')
     @$el.find('.btn-unable-to-estimate').addClass('active btn-danger')
     @$el.find('input').attr('disabled', 'disabled')
-  
+
   ableToEstimate: ->
     @$el.removeClass('unable-to-estimate unable-to-estimate-on-render')
     @$el.find('.btn-unable-to-estimate').removeClass('active btn-danger')
@@ -151,4 +151,3 @@ class Scheduler.EditTicketEffortView extends Backbone.View
     xhr.success => @cancelNewTask()
     xhr.error ->
       console.log 'error', arguments
-

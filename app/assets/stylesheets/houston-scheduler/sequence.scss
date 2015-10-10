@@ -14,7 +14,7 @@
 
 .sequence-list {
   padding-bottom: 80px;
-  
+
   // Cause the sequence-list to fill the table
   // cell vertically if its height is less then
   // the height of the call.
@@ -51,12 +51,12 @@
   vertical-align: top;
   text-align: left;
   padding: 8px;
-  
+
   &.sequence-velocity {
     width: 12px;
     text-align: right;
   }
-  
+
   &.sequence-commands {
     width: 76px;
     text-align: right;
@@ -65,7 +65,7 @@
 
 #sequence_commands {
   display: none;
-  
+
   &.affix {
     top: 140px;
     width: 76px;
@@ -76,7 +76,7 @@ th.sequence-column { padding: 0 8px; }
 
 th.sequence-velocity {
   vertical-align: bottom;
-  
+
   h4 {
     margin: 0;
     font-family: 'FontAwesome';
@@ -84,7 +84,7 @@ th.sequence-velocity {
     cursor: default;
     color: #005580;
   }
-  
+
   .popover { font-weight: normal; }
 }
 
@@ -94,7 +94,7 @@ th.sequence-velocity {
   font-weight: 500;
   line-height: 1em;
   margin: 0;
-  
+
   .popover {
     text-transform: none;
     font-weight: normal;
@@ -107,7 +107,7 @@ th.sequence-velocity {
   cursor: pointer;
   display: inline-block;
   padding: 2px 4px;
-  
+
   &:hover { color: #333; }
 }
 
@@ -120,13 +120,13 @@ th.sequence-velocity {
 .sequence-ticket {
   display: block;
   margin: 0 0 5px 0;
-  
+
   .sequence-ticket-front {
     position: relative;
     border: 1px solid transparent;
     padding: 1px;
     background: white;
-    
+
     .sequence-ticket-mask {
       position: absolute;
       top: 1px;
@@ -135,7 +135,7 @@ th.sequence-velocity {
       left: 1px;
       overflow: hidden;
     }
-    
+
     .ticket-type {
       position: absolute;
       top: 1px;
@@ -144,11 +144,11 @@ th.sequence-velocity {
       width: 6px;
       z-index: 10;
     }
-    
+
     .sequence-ticket-summary {
       background: #f0f0f0;
     }
-    
+
     .sequence-ticket-number {
       width: 4.25em;
       font-size: 0.88em;
@@ -156,26 +156,26 @@ th.sequence-velocity {
       text-align: right;
       color: #aaa;
       padding-right: 1.5em;
-      
+
       &:hover { color: #005580; }
     }
   }
-  
+
   &.sequence-ticket-no-effort, &.sequence-ticket-cant-estimate {
     height: 10em;
   }
-  
+
   &.sequence-ticket-cant-estimate, &.resolved {
     .sequence-ticket-summary {
       background: #fbfbfb;
       color: #d8d8d8;
     }
-    
+
     .sequence-ticket-number {
       color: #d8d8d8;
     }
   }
-  
+
   &.hover { &::after { color: #333; } }
 }
 
@@ -212,9 +212,9 @@ th.sequence-velocity {
   margin-left: 0.5em;
   vertical-align: top;
   cursor: pointer;
-  
+
   &:hover { text-decoration: none; }
-  
+
   i.icon {
     font-family: 'FontAwesome';
     font-size: 11px;
@@ -239,13 +239,13 @@ th.sequence-velocity {
   cursor: pointer;
   position: relative;
   color: #666;
-  
+
   &:hover {
     text-decoration: none;
     background: #e5eef0;
     color: #254a53;
   }
-  
+
   i.fa-long-arrow-down {
     display: block;
     float: left;
@@ -253,32 +253,32 @@ th.sequence-velocity {
     margin-right: 0.25em;
     line-height: 1.5em;
   }
-  
+
   .prerequisite-statement { font-size: 0.88em; font-weight: 200; }
   .prerequisite-link { font-weight: 500; }
 }
 
 .ui-sortable .sequence-ticket.unresolved {
   cursor: pointer;
-  
+
   &.hover .sequence-ticket-front { // steel blue
     border-color: rgb(169, 215, 226);
-    
+
     .sequence-ticket-summary {
       background: #e5eef0;
       color: #254a53;
-      
+
       .sequence-ticket-number { color: #254a53; }
     }
   }
-  
+
   &.selected .sequence-ticket-front {
     border-color: rgb(99, 178, 196);
-    
+
     .sequence-ticket-summary {
       background: #dcecf0;
       color: #254a53;
-      
+
       .sequence-ticket-number { color: #254a53; }
     }
   }

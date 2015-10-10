@@ -1,7 +1,7 @@
 module Houston
   module Scheduler
     class ValueStatementsController < ApplicationController
-      
+
       def update
         project = Project.find(params[:id])
         update = UpdateValueStatements.new(params)
@@ -12,7 +12,7 @@ module Houston
           render text: project.errors.full_messages.to_sentence, status: :unprocessable_entity
         end
       end
-      
+
     end
   end
 end

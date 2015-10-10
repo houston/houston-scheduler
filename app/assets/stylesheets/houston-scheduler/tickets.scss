@@ -3,7 +3,7 @@
     text-shadow: none;
     color: #333;
     background-color: #bbb;
-  
+
     a { color: #0670a5; }
     a:hover { color: rgb(0, 60, 90); }
   }
@@ -21,7 +21,7 @@
   td.ticket-reporter { width: 24px; min-width: 24px; max-width:24px; padding-right: 0; }
 
   td.ticket-summary {
-    input { 
+    input {
       width: 100%;
       box-sizing: border-box;
       margin: 0;
@@ -39,7 +39,7 @@
     display: inline-block;
     border-radius: 3px;
     padding: 3px 6px;
-  
+
     &:hover { background: #EDF9FF; }
   }
 }

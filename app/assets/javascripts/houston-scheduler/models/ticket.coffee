@@ -1,9 +1,9 @@
 class Scheduler.Ticket extends @Ticket
   urlRoot: '/scheduler/tickets'
-  
+
   estimated: -> @tasks().every (task)-> +task.get('effort') > 0
   waitingForDiscussion: -> @get('unableToSetEstimatedEffort') or @get('unableToSetPriority')
-  
+
   contributionTo: (valueStatements)->
     _.inject valueStatements
       , (sum, statement)=>
@@ -11,30 +11,30 @@ class Scheduler.Ticket extends @Ticket
       , 0
   valueEstimated: (valueStatements)->
     _.every(valueStatements, (statement)=> @valueFor(statement))
-    
+
   valueFor: (statement)->
     value = @get("estimatedValue[#{statement.id}]")
     +(value || 0)
-  
+
   tasks: -> @_tasks ?= new Scheduler.Tasks(@get('tasks'))
-  
+
   addTask: (attributes)->
     xhr = $.post "/scheduler/tickets/#{@id}/tasks", attributes
     xhr.success (tasks)=>
       @_tasks = null
       @set('tasks', tasks)
     xhr
-  
+
   deleteTask: (task)->
     xhr = $.destroy "/scheduler/tasks/#{task.id}"
     xhr.success (tasks)=>
       @_tasks = null
       @set('tasks', tasks)
     xhr
-  
+
   nextTaskNumber: ->
     _.max(@tasks().pluck('number')) + 1
-  
+
   nextTaskLetter: ->
     bytes = []
     remaining = @nextTaskNumber()
@@ -42,7 +42,7 @@ class Scheduler.Ticket extends @Ticket
       bytes.unshift (remaining - 1) % 26 + 97
       remaining = Math.round((remaining - 1) / 26)
     String.fromCharCode(bytes)
-  
+
   parse: (ticket)->
     ticket = super(ticket)
     if ticket.extendedAttributes
@@ -51,11 +51,11 @@ class Scheduler.Ticket extends @Ticket
       ticket.unableToSetEstimatedEffort = ticket.extendedAttributes['unable_to_set_estimated_effort']
       ticket.unableToSetPriority = ticket.extendedAttributes['unable_to_set_priority']
       ticket.postponed = ticket.extendedAttributes['postponed']
-      
+
       ticket.seriousness = ticket.extendedAttributes['seriousness']
       ticket.likelihood = ticket.extendedAttributes['likelihood']
       ticket.clumsiness = ticket.extendedAttributes['clumsiness']
-      
+
       for key, value of ticket.extendedAttributes
         if key.match(/estimated_effort\[\d+\]/)
           ticket[key.replace(/estimated_effort/, 'estimatedEffort')] = value
@@ -67,18 +67,18 @@ class Scheduler.Ticket extends @Ticket
 
 class Scheduler.Tickets extends @Tickets
   model: Scheduler.Ticket
-  
+
   numbered: (numbers)->
     numbers = [] unless numbers
     numbers = [numbers] unless _.isArray(numbers)
     return [] unless numbers.length >= 1
     @select (ticket)-> ticket.get('number') in numbers
-  
+
   sortedBySequence: ->
     @sortBy (ticket)=>
       (+ticket.get('sequence') <= 0) * 9999999 + # then tickets with no priority,
        +ticket.get('sequence')                   # finally sort by priority
-  
+
   sorted: -> _.sortBy @withSequence(), (ticket)-> +ticket.get('sequence')
   withSequence: -> @select (ticket)-> !!ticket.get('sequence')
   unresolved: -> @scoped (ticket)-> !ticket.get('resolved')
@@ -96,7 +96,7 @@ class Scheduler.Tickets extends @Tickets
   waitingForDiscussion: -> @scoped (ticket)-> ticket.waitingForDiscussion()
   postponed: -> @scoped (ticket)-> !!ticket.get('postponed')
   unpostponed: -> @scoped (ticket)-> !ticket.get('postponed')
-  
+
   sorterFor: (attribute)->
     switch attribute
       when 'sequence'     then (ticket)-> +ticket.get('sequence')
