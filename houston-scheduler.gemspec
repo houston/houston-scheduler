@@ -4,21 +4,24 @@ $:.push File.expand_path("../lib", __FILE__)
 require "houston/scheduler/version"
 
 # Describe your gem and declare its dependencies:
-Gem::Specification.new do |s|
-  s.name        = "houston-scheduler"
-  s.version     = Houston::Scheduler::VERSION
-  s.authors     = ["Bob Lail"]
-  s.email       = ["bob.lailfamily@gmail.com"]
-  s.homepage    = "https://github.com/houstonmc/houston-scheduler"
-  s.summary     = "A module for Houston that projects schedules for work based on information about tasks' effort and payoff."
-  s.description = "Given effort and value of to-do list items, Houston::Scheduler employs different strategies for sequencing work. Then it projects a schedule based on your Work-in-Progress constraints"
+Gem::Specification.new do |spec|
+  spec.name        = "houston-scheduler"
+  spec.version     = Houston::Scheduler::VERSION
+  spec.authors     = ["Bob Lail"]
+  spec.email       = ["bob.lailfamily@gmail.com"]
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE.txt", "Rakefile", "README.md"]
-  s.test_files = Dir["test/**/*"]
+  spec.summary     = "A module for Houston that projects schedules for work based on information about tasks' effort and payoff."
+  spec.description = "Given effort and value of to-do list items, Houston::Scheduler employs different strategies for sequencing work. Then it projects a schedule based on your Work-in-Progress constraints"
+  spec.homepage    = "https://github.com/houston/houston-scheduler"
 
-  s.add_dependency "rails"
+  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.require_paths = ["lib"]
+  spec.test_files = Dir["test/**/*"]
 
-  s.add_development_dependency "sqlite3"
-  s.add_development_dependency "konacha"
-  s.add_development_dependency "poltergeist"
+  spec.add_development_dependency "bundler", "~> 1.10.6"
+  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "houston-core", ">= 0.5.3"
+  spec.add_development_dependency "sqlite3"
+  spec.add_development_dependency "konacha"
+  spec.add_development_dependency "poltergeist"
 end

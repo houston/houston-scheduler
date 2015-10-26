@@ -1,4 +1,4 @@
-source "http://rubygems.org"
+source "https://rubygems.org"
 
 # Declare your gem's dependencies in houston-scheduler.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
@@ -10,5 +10,15 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-# To use debugger
-# gem 'debugger'
+group :development, :test do
+  gem "pry"
+end
+
+group :test do
+  gem "minitest"
+  gem "capybara"
+  gem "shoulda-context"
+
+  gem "minitest-reporters", require: false
+  gem "minitest-reporters-turn_reporter", require: false
+end

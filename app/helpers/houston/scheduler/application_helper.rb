@@ -1,6 +1,4 @@
-module Houston
-  module Scheduler
-    module ApplicationHelper
-    end
+module Houston::Scheduler
+  module ApplicationHelper
   end
 end

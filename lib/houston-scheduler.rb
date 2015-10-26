@@ -1,1 +1,1 @@
-require 'houston/scheduler'
+require "houston/scheduler"

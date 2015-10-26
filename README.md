@@ -5,20 +5,21 @@ A module for Houston that projects schedules for work based on information about
 
 ## Installation
 
-In your [Houston](https://github.com/houstonmc/houston) `config/config.rb` file, add:
+In your `Gemfile`, add:
 
-    use :scheduler
+    gem "houston-scheduler"
+
+And in `config/main.rb`, add:
+
+```ruby
+use :scheduler do
+  # TODO: specify configuration options for Houston::Scheduler here
+end
+```
 
 And then execute:
 
     $ bundle
-
-Run Houston and you can navigate to the scheduler at the path '/scheduler'
-
-
-## Usage
-
-TODO: Write usage instructions here
 
 
 ## Contributing

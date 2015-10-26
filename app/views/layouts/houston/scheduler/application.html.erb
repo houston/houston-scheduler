@@ -1,9 +1,10 @@
 <% content_for :stylesheets do %>
-  <%= stylesheet_link_tag    "houston-scheduler/application", :media => "all" %>
+  <%= stylesheet_link_tag    "houston/scheduler/application", :media => "all" %>
 <% end %>
 
 <% content_for :javascripts do %>
-  <%= javascript_include_tag "houston-scheduler/application" %>
+  <%= javascript_include_tag "houston/scheduler/application" %>
 <% end %>
 
+<%# Houston's default layout %>
 <%= render template: "layouts/application" %>
