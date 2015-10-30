@@ -14,7 +14,7 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
 
     @unresolvedTickets = @tickets.unresolved().pluck('number')
     @sortedTickets = @tickets.sorted()
-    @unsortedTickets = @tickets.unresolved().unsorted().sortBy (ticket)-> ticket.get('summary')
+    @unsortedTickets = _.sortBy @tickets.unresolved().unsorted(), (ticket)-> ticket.get('summary')
 
   render: ->
     template = HandlebarsTemplates['houston/scheduler/tickets/sequence']
