@@ -17,7 +17,7 @@
   <li><a href="#unable-to-estimate">Discussion Needed <span class="badge tickets-discussion-needed-count zero"></span></a></li>
   <li><a href="#postponed">Postponed <span class="badge tickets-postponed-count zero"></span></a></li>
   <li><a href="#vision">Vision</a></li>
-  
+
   <li id="sequence_settings"></li>
 </ul>
 
@@ -27,19 +27,19 @@
 <script type="text/javascript">
   $(function() {
     var tickets = <%=raw Houston::Scheduler::TicketPresenter.new(@tickets).to_json %>;
-    
+
     var maintainers = <%=raw MultiJson.dump(@maintainers.map { |m| {
       "id" => m.id,
       "email" => m.email,
       "name" => m.name
     } }) %>;
-    
+
     Scheduler.tickets = new Scheduler.Tickets(tickets, {parse: true});
-    
+
     <% if current_user.view_options.fetch("scheduler.showEffort", "true") == "true" %>
     $('#houston_scheduler_view').addClass('with-effort');
     <% end %>
-    
+
     Scheduler.view = new Scheduler.ProjectView({
       project: {
         id: <%= @project.id %>,
@@ -54,7 +54,7 @@
       canPrioritize: <%= can?(:prioritize, @project) %>,
       el: $('#houston_scheduler_view')
     });
-    
+
     $(document).bind('ticket:create', function(e, ticket) {
       Scheduler.tickets.add(ticket);
     });
