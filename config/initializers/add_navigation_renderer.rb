@@ -1,4 +1,4 @@
-# Houston.config.add_navigation_renderer :scheduler do
+# Houston.add_navigation_renderer :scheduler do
 #   projects = followed_projects.select { |project| can?(:read, project) }
 #   unless projects.empty?
 #     menu_items = []
@@ -13,7 +13,7 @@
 #   end
 # end
 
-Houston.config.add_project_feature :scheduler do
+Houston.add_project_feature :scheduler do
   name "Scheduler"
   icon "fa-calendar-o"
   path { |project| Houston::Scheduler::Engine.routes.url_helpers.project_path(project) }

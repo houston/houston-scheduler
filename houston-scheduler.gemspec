@@ -18,9 +18,10 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.test_files = Dir["test/**/*"]
 
+  spec.add_dependency "houston-core", ">= 0.7.0.beta2"
+
   spec.add_development_dependency "bundler", "~> 1.11.2"
   spec.add_development_dependency "rake", "~> 11.2"
-  spec.add_development_dependency "houston-core", ">= 0.7.0.beta"
   spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "konacha"
   spec.add_development_dependency "poltergeist"
