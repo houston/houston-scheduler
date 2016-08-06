@@ -6,12 +6,12 @@ module Houston
 
 
       def index
-        @projects = Project.all
+        @projects = ::Project.all
       end
 
 
       def project
-        @project = Project.find_by_slug!(params[:slug])
+        @project = ::Project.find_by_slug!(params[:slug])
         @title = "Scheduler • #{@project.name}"
 
         velocity = Setting["Velocity"].to_i

@@ -61,7 +61,7 @@ module Houston
 
 
       def update_order
-        @project = Project.find_by_slug!(params[:slug])
+        @project = ::Project.find_by_slug!(params[:slug])
         ids = Array.wrap(params[:order]).map(&:to_i).reject(&:zero?)
 
         if ids.length > 0

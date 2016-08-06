@@ -1,4 +1,5 @@
-require 'houston/scheduler/ticket'
+require "houston/scheduler/ticket"
+require "houston/scheduler/project"
 
 module Houston
   module Scheduler
@@ -8,6 +9,7 @@ module Houston
       # development mode, but only once in production.
       config.to_prepare do
         ::Ticket.send(:include, Houston::Scheduler::Ticket)
+        ::Project.send(:include, Houston::Scheduler::Project)
       end
 
     end

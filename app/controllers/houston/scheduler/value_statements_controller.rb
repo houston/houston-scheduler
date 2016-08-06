@@ -3,7 +3,7 @@ module Houston
     class ValueStatementsController < ApplicationController
 
       def update
-        project = Project.find(params[:id])
+        project = ::Project.find(params[:id])
         update = UpdateValueStatements.new(params)
         update.updated_by = current_user
         if update.apply_to(project)
