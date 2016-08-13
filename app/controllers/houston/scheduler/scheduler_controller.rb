@@ -21,7 +21,7 @@ module Houston
 
         if @project.has_ticket_tracker?
           @tickets = @project.tickets.unclosed.includes(:project, :reporter, :tasks, :milestone)
-          @maintainers = @project.maintainers
+          @maintainers = @project.teammates.find_all { |teammate| Ability.new(teammate).can?(:estimate, @project) }
         else
           render template: "houston/scheduler/scheduler/no_ticket_tracker"
         end
