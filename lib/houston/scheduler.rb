@@ -17,7 +17,6 @@ module Houston
 
   Houston.add_project_feature :scheduler do
     name "Scheduler"
-    icon "fa-calendar-o"
     path { |project| Houston::Scheduler::Engine.routes.url_helpers.project_path(project) }
   end
 
