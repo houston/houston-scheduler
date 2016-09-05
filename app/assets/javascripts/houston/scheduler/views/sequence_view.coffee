@@ -2,7 +2,8 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
 
 
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     super
     @velocity = @options.velocity
 

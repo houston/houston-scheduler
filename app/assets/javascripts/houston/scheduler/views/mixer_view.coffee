@@ -4,7 +4,8 @@ class Scheduler.MixerView extends Backbone.View
     'click .mixer-inactive-project': 'addToActiveProjects'
     'click .remove-from-active-projects': 'removeFromActiveProjects'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @projects = @options.projects
     @readonly = @options.readonly
     @$el = $('#mixer_view')

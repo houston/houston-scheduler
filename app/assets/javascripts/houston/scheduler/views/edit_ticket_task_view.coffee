@@ -5,7 +5,8 @@ class Scheduler.EditTicketTaskView extends Backbone.View
   events:
     'click .delete-link': 'deleteTask'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @ticket = @options.ticket
     @task = @options.task
     @template = HandlebarsTemplates['houston/scheduler/tickets/task']

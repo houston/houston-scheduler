@@ -2,7 +2,8 @@ class Scheduler.SequenceTicketView extends Backbone.View
   tagName: 'div'
   className: 'sequence-ticket'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @ticket = @options.ticket
     @template = HandlebarsTemplates['houston/scheduler/tickets/sequence_ticket']
 

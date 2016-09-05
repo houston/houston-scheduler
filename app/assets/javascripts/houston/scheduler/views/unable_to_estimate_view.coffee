@@ -4,7 +4,8 @@ class Scheduler.UnableToEstimateView extends Backbone.View
     'click .btn-can-prioritize': 'clearUnableToPrioritize'
     'click .btn-can-estimate': 'clearUnableToEstimate'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @tickets = @options.tickets
     @canEstimate = @options.canEstimate
     @canPrioritize = @options.canPrioritize

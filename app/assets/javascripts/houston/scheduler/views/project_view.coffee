@@ -1,7 +1,8 @@
 class Scheduler.ProjectView extends Backbone.View
 
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @project = @options.project
     @tickets = @options.tickets
     @maintainers = @options.maintainers

@@ -7,7 +7,8 @@ class Scheduler.EditTicketEffortView extends Backbone.View
     'click .btn-unable-to-estimate': 'onToggleUnableToEstimate'
     'click #add_task_button': 'addTask'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @ticket = @options.ticket
     @prev = @options.prev
     @ticket.on 'change:tasks', _.bind(@render, @)

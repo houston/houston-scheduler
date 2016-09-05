@@ -5,7 +5,8 @@ class Scheduler.ValueStatementsView extends Backbone.View
     'click #update_value_statements': 'save'
     'click .delete-link': 'deleteValueStatement'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @project = @options.project
     @template = HandlebarsTemplates['houston/scheduler/value_statements/index']
     @renderStatement = HandlebarsTemplates['houston/scheduler/value_statements/show']

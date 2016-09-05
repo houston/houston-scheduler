@@ -1,6 +1,7 @@
 class Scheduler.MixPlannerView extends Backbone.View
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @projects = @options.projects
     @readonly = @options.readonly
     @mixes = @options.mixes

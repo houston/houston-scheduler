@@ -2,7 +2,8 @@ class Scheduler.ShowTicketsView extends Backbone.View
 
 
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @project = @options.project
     @tickets = @options.tickets
     @readonly = @options.readonly

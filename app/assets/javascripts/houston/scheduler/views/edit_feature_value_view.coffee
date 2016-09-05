@@ -5,7 +5,8 @@ class Scheduler.EditFeatureValueView extends Backbone.View
     'keydown input[type="number"]': 'onKeyDown'
     'keypress input[type="number"]': 'onKeyPress'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @ticket = @options.ticket
     @project = @options.project
     @prev = @options.prev

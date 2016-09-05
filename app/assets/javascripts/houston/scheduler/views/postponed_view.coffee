@@ -3,7 +3,8 @@ class Scheduler.PostponedView extends Backbone.View
   events:
     'click .btn-unpostpone': 'canPostpone'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @tickets = @options.tickets
     @canPrioritize = @options.canPrioritize
     super

@@ -5,7 +5,8 @@ class Scheduler.EditBugSeverityView extends Backbone.View
     'keydown input[type="number"]': 'onKeyDown'
     'keypress input[type="number"]': 'onKeyPress'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @ticket = @options.ticket
     @prev = @options.prev
     @template = HandlebarsTemplates['houston/scheduler/tickets/assess_bug']

@@ -1,7 +1,8 @@
 class Scheduler.PlanningPoker extends Backbone.View
   className: 'planning-poker'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @template = HandlebarsTemplates['houston/scheduler/tickets/planning_poker']
     @tickets = @options.tickets
     @maintainers = @options.maintainers
