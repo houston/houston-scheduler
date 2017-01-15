@@ -15,9 +15,7 @@ class Houston::Scheduler::TicketPresenter < TicketPresenter
         email: reporter.email,
         name: reporter.name },
       milestoneId: ticket.milestone_id,
-      milestoneName: ticket.milestone.try(:name),
-      resolved: ticket.resolved?,
-      prerequisites: ticket.prerequisites)
+      milestoneName: ticket.milestone.try(:name))
   end
 
 end

@@ -13,9 +13,9 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     #
     @delayedNotifier = new Lail.DelayedAction(_.bind(@saveTicketOrder, @), delay: 800)
 
-    @unresolvedTickets = @tickets.unresolved().pluck('number')
+    @unresolvedTickets = @tickets.pluck('number')
     @sortedTickets = @tickets.sorted()
-    @unsortedTickets = _.sortBy @tickets.unresolved().unsorted(), (ticket)-> ticket.get('summary')
+    @unsortedTickets = _.sortBy @tickets.unsorted(), (ticket)-> ticket.get('summary')
 
   render: ->
     template = HandlebarsTemplates['houston/scheduler/tickets/sequence']
@@ -32,8 +32,6 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
 
     @$el.find('#discuss_tickets_button').click _.bind(@unableToEstimate, @)
     @$el.find('#postpone_tickets_button').click _.bind(@postponeTickets, @)
-
-    @$el.on 'click', '.sequence-ticket-prerequisite', _.bind(@insertPrerequisite, @)
 
     @$el.find('#sequence_commands').affix
       offset:
@@ -67,7 +65,6 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
       @onOrderChanged(immediate: true)
 
     @adjustVelocityIndicatorHeight()
-    @identifyMissingPrerequisites()
 
   renderHelp: ->
     @$el.find('.sequence-explanation').popover()
@@ -108,35 +105,6 @@ class Scheduler.SequenceView extends Scheduler.ShowTicketsView
     ids = "empty" if $tickets.length == 0
     url = window.location.pathname + '/ticket_order'
     $.put url, {order: ids}
-    @identifyMissingPrerequisites()
-
-  identifyMissingPrerequisites: ->
-    $('#sequence_sorted .sequence-ticket-prerequisite').remove()
-    ticketNumbersSoFar = []
-    @tickets.sorted().each (ticket)=>
-      for prerequisite in (ticket.get('prerequisites') ? [])
-        if (prerequisite in @unresolvedTickets) and (prerequisite not in ticketNumbersSoFar)
-          ticketNumbersSoFar.push prerequisite
-          prerequisiteTicket = @tickets.findWhere(number: prerequisite)
-          if prerequisiteTicket
-            $ticket = $("#ticket_#{ticket.get('id')}")
-            $ticket.before """
-              <a class="sequence-ticket-prerequisite" data-ticket-id="#{prerequisiteTicket.get('id')}">
-                <i class="fa fa-long-arrow-down"></i>
-                <span class="prerequisite-statement">##{ticket.get('number')} requires ##{prerequisiteTicket.get('number')}</span>
-                <br/>
-                <span class="prerequisite-link">Insert ##{prerequisiteTicket.get('number')} here</span>
-                <i class="sequence-ticket-icon fa fa-plus-square" data-toggle="tooltip" title="Missing prerequisite" />
-              </a>
-            """
-      ticketNumbersSoFar.push ticket.get('number')
-    @activateTooltips()
-
-  insertPrerequisite: (e)->
-    $placeholder = $(e.target).closest('.sequence-ticket-prerequisite')
-    $ticket = $("#ticket_#{$placeholder.attr('data-ticket-id')}")
-    $placeholder.replaceWith $ticket
-    @onOrderChanged(immediate: true)
 
 
 

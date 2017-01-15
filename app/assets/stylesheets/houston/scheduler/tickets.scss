@@ -1,18 +1,4 @@
 #houston_scheduler_view {
-  .ticket-prerequisites {
-    text-shadow: none;
-    color: #333;
-    background-color: #bbb;
-
-    a { color: #0670a5; }
-    a:hover { color: rgb(0, 60, 90); }
-  }
-
-  tr.ticket-resolved {
-    background: #ECF8FD;
-    color: #62889E;
-  }
-
   tr.ticket-closed {
     background: #f4f4f4;
     color: #a4a4a4;
@@ -30,7 +16,7 @@
   }
 
   .hide-completed {
-    tr.ticket-closed, tr.ticket-released, tr.ticket-resolved { display: none; }
+    tr.ticket-closed { display: none; }
   }
 
   .check-out-button { white-space: nowrap; }

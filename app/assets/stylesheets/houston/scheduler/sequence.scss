@@ -165,7 +165,7 @@ th.sequence-velocity {
     height: 10em;
   }
 
-  &.sequence-ticket-cant-estimate, &.resolved {
+  &.sequence-ticket-cant-estimate {
     .sequence-ticket-summary {
       background: #fbfbfb;
       color: #d8d8d8;

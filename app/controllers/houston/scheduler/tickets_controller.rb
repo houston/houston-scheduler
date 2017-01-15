@@ -8,51 +8,50 @@ module Houston
         @project = ticket.project
 
 
-        extended_attributes = @ticket.extended_attributes.dup
+        props = {}
 
         params.keys.grep(/estimatedEffort\[\d+\]/).each do |key|
           authorize! :estimate, project
-          extended_attributes[key.gsub(/estimatedEffort/, "estimated_effort")] = params[key]
+          props["scheduler.#{key}"] = params[key]
         end
 
         if params.key?(:estimatedValue)
           authorize! :prioritize, project
-          extended_attributes["estimated_value"] = params[:estimatedValue]
+          props["scheduler.estimatedValue"] = params[:estimatedValue]
         end
 
         %w{seriousness likelihood clumsiness}.each do |key|
           if params.key?(key)
             authorize! :prioritize, project
-            extended_attributes[key] = params[key]
+            props["scheduler.#{key}"] = params[key]
           end
         end
 
         params.keys.grep(/estimatedValue\[\d+\]/).each do |key|
           authorize! :prioritize, project
-          extended_attributes[key.gsub(/estimatedValue/, "estimated_value")] = params[key]
+          props["scheduler.#{key}"] = params[key]
         end
 
         if params.key?(:unableToSetEstimatedEffort)
           authorize! :estimate, project
-          extended_attributes["unable_to_set_estimated_effort"] = params[:unableToSetEstimatedEffort]
+          props["scheduler.unableToSetEstimatedEffort"] = params[:unableToSetEstimatedEffort]
         end
 
         if params.key?(:unableToSetPriority)
           authorize! :prioritize, project
-          extended_attributes["unable_to_set_priority"] = params[:unableToSetPriority]
+          props["scheduler.unableToSetPriority"] = params[:unableToSetPriority]
         end
 
         if params.key?(:postponed)
           authorize! :prioritize, project
-          extended_attributes["postponed"] = params[:postponed]
+          props["scheduler.postponed"] = params[:postponed]
         end
 
 
 
-        attributes = {extended_attributes: extended_attributes}
-
+        ticket.props.merge!(props)
         ticket.updated_by = current_user
-        if ticket.update_attributes(attributes)
+        if ticket.save
           render json: [], :status => :ok
         else
           render json: ticket.errors, :status => :unprocessable_entity
@@ -67,14 +66,14 @@ module Houston
         if ids.length > 0
           ::Ticket.transaction do
             project.tickets.where(::Ticket.arel_table[:id].not_in(ids))
-              .update_all("extended_attributes = extended_attributes || 'sequence=>NULL'::hstore")
+              .update_all("props = props || '{\"scheduler.sequence\": null}'::jsonb")
 
             ids.each_with_index do |id, i|
-              ::Ticket.unscoped.where(id: id).update_all("extended_attributes = extended_attributes || 'sequence=>#{i+1}'::hstore")
+              ::Ticket.unscoped.where(id: id).update_all("props = props || '{\"scheduler.sequence\": #{i + 1}}'::jsonb")
             end
           end
         elsif params[:order] == "empty"
-          project.tickets.update_all("extended_attributes = extended_attributes || 'sequence=>NULL'::hstore")
+          project.tickets.update_all("props = props || '{\"scheduler.sequence\": null}'::jsonb")
         end
 
         head :ok

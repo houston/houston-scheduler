@@ -19,7 +19,7 @@ class Scheduler.ProjectView extends Backbone.View
 
   ticketsReadyToPrioritize: -> @tickets.unpostponed().ableToPrioritize()
   ticketsWaitingForSequence: -> @openTickets().ableToPrioritize().withoutSequence()
-  openTickets: -> @tickets.unpostponed().unresolved()
+  openTickets: -> @tickets.unpostponed()
   ticketsWaitingForDiscussion: -> @tickets.unpostponed().waitingForDiscussion()
   ticketsWaitingForEffortEstimate: -> @openTickets().withoutEffortEstimate().ableToEstimate()
   ticketsWaitingForValueEstimate: -> @openTickets().features().withoutValueEstimate(@project.valueStatements)

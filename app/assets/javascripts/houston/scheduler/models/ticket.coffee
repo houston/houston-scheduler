@@ -45,22 +45,20 @@ class Scheduler.Ticket extends @Ticket
 
   parse: (ticket)->
     ticket = super(ticket)
-    if ticket.extendedAttributes
-      ticket.sequence = +ticket.extendedAttributes['sequence']
+    if ticket.props
+      ticket.sequence = +ticket.props['scheduler.sequence']
       ticket.sequence = null if !ticket.sequence
-      ticket.unableToSetEstimatedEffort = ticket.extendedAttributes['unable_to_set_estimated_effort']
-      ticket.unableToSetPriority = ticket.extendedAttributes['unable_to_set_priority']
-      ticket.postponed = ticket.extendedAttributes['postponed']
+      ticket.unableToSetEstimatedEffort = ticket.props['scheduler.unableToSetEstimatedEffort']
+      ticket.unableToSetPriority = ticket.props['scheduler.unableToSetPriority']
+      ticket.postponed = ticket.props['scheduler.postponed']
 
-      ticket.seriousness = ticket.extendedAttributes['seriousness']
-      ticket.likelihood = ticket.extendedAttributes['likelihood']
-      ticket.clumsiness = ticket.extendedAttributes['clumsiness']
+      ticket.seriousness = ticket.props['scheduler.seriousness']
+      ticket.likelihood = ticket.props['scheduler.likelihood']
+      ticket.clumsiness = ticket.props['scheduler.clumsiness']
 
-      for key, value of ticket.extendedAttributes
-        if key.match(/estimated_effort\[\d+\]/)
-          ticket[key.replace(/estimated_effort/, 'estimatedEffort')] = value
-        if key.match(/estimated_value\[\d+\]/)
-          ticket[key.replace(/estimated_value/, 'estimatedValue')] = value
+      for key, value of ticket.props
+        if key.match(/scheduler\.estimated(Effort|Value)\.\d+/)
+          ticket[key.replace(/\.(\d+)$/, '[$1]')] = value
     ticket
 
 
@@ -81,7 +79,6 @@ class Scheduler.Tickets extends @Tickets
 
   sorted: -> _.sortBy @withSequence(), (ticket)-> +ticket.get('sequence')
   withSequence: -> @select (ticket)-> !!ticket.get('sequence')
-  unresolved: -> @scoped (ticket)-> !ticket.get('resolved')
   unsorted: -> @withoutSequence()
   withoutSequence: -> @select (ticket)-> !ticket.get('sequence')
   features: -> @scoped (ticket)-> ticket.get('type') == 'feature' || ticket.get('type') == 'enhancement'
