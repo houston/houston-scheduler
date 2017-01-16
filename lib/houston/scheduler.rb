@@ -5,6 +5,10 @@ module Houston
   module Scheduler
     extend self
 
+    def dependencies
+      [:tickets]
+    end
+
     def config(&block)
       @configuration ||= Scheduler::Configuration.new
       @configuration.instance_eval(&block) if block_given?

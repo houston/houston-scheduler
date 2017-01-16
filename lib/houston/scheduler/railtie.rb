@@ -1,3 +1,4 @@
+require "houston/tickets"
 require "houston/scheduler/ticket"
 require "houston/scheduler/project"
 
