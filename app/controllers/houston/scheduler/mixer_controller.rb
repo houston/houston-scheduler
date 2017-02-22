@@ -2,7 +2,7 @@ module Houston
   module Scheduler
     class MixerController < ApplicationController
       layout "houston/scheduler/application"
-      before_filter :get_week_range
+      before_action :get_week_range
       load_and_authorize_resource :class => Houston::Scheduler::ProjectQuota
 
 

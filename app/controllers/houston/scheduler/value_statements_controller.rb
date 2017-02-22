@@ -9,7 +9,7 @@ module Houston
         if update.apply_to(project)
           render json: project.value_statements
         else
-          render text: project.errors.full_messages.to_sentence, status: :unprocessable_entity
+          render plain: project.errors.full_messages.to_sentence, status: :unprocessable_entity
         end
       end
 
