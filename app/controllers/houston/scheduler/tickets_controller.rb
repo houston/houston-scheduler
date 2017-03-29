@@ -49,6 +49,7 @@ module Houston
 
 
 
+        ticket.attributes = params.pick(:summary, :description)
         ticket.props.merge!(props)
         ticket.updated_by = current_user
         if ticket.save
