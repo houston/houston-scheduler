@@ -13,7 +13,6 @@ module Houston
           if attrs["id"]
             statement = project.value_statements.find_by_id(attrs["id"])
             next unless statement
-            statement.updated_by = updated_by
             if attrs["_destroy"] == "true"
               statement.destroy
             else
@@ -21,7 +20,6 @@ module Houston
             end
           else
             statement = project.value_statements.build(attrs)
-            statement.updated_by = updated_by
             statement.save
           end
         end
