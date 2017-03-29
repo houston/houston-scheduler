@@ -24,7 +24,13 @@ group :test do
 end
 
 # Use the development version of houston-core
-gem "houston-core", github: "houston/houston-core", branch: "master"
+gem "houston-core", github: "houston/houston-core", branch: "0.9-dev"
+
+# Use the development version of houston-commits
+gem "houston-commits", github: "houston/houston-commits", branch: "master"
+
+# Use the development version of houston-credentials
+gem "houston-credentials", github: "houston/houston-credentials", branch: "master"
 
 # Use the development version of houston-tickets
 gem "houston-tickets", github: "houston/houston-tickets", branch: "master"
